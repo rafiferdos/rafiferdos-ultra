@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -28,15 +28,15 @@ body {
 
 /* Load Agale from public/fonts and expose it via the `.font-agale` class */
 @font-face {
-  font-family: "Agale";
-  src: url("/fonts/Agale DEMO.otf") format("opentype");
+  font-family: 'Agale';
+  src: url('/fonts/Agale DEMO.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 .font-agale {
-  font-family: "Agale", Arial, sans-serif;
+  font-family: 'Agale', Arial, sans-serif;
 }
 
 * {
