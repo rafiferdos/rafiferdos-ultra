@@ -1,7 +1,7 @@
 'use client'
 
-import { useTheme } from 'next-themes'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
+import { useTheme } from 'next-themes'
 
 export default function HeroClient() {
   const theme = useTheme()
