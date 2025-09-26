@@ -1,9 +1,9 @@
 'use client'
 
 import { BlurFade } from '@/components/ui/blur-fade'
+import { Highlighter } from '@/components/ui/highlighter'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
-import { TextAnimate } from '@/components/ui/text-animate'
 // No need to read theme in JS for shadow color; use CSS variables instead
 
 export default function HeroClient() {
@@ -18,9 +18,9 @@ export default function HeroClient() {
   ]
   return (
     // Main grid container
-    <section className="grid grid-cols-2 border">
+    <section className="grid grid-cols-2 border lg:gap-24 gap-5">
       {/* Left column with text content */}
-      <div className="col-span-2 lg:col-span-1 border">
+      <div className="col-span-2 lg:col-span-1 border space-y-3">
         <BlurFade delay={0.3} inView>
           <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
             It's me{' '}
@@ -36,12 +36,20 @@ export default function HeroClient() {
             <MorphingText className="leading-none" texts={texts} />
           </div>
         </BlurFade>
-        <TextAnimate animation="blurIn" as={'h1'}>
-          I'm a passionate MERN Stack Developer with a knack for crafting
-          dynamic and responsive web applications. With expertise in Next.js,
-          React, Node.js, Express, and MongoDB, I bring ideas to life through
-          code. Explore my portfolio to see my projects and skills in action.
-        </TextAnimate>
+        {/* <TextAnimate animation="blurIn" as={'h1'}> */}
+        <div className="leading-relaxed">
+          I'm a passionate MERN Stack Developer with a knack for{' '}
+          <Highlighter action="underline" color="#FF9800">
+            crafting dynamic
+          </Highlighter>{' '}
+          and responsive web applications. With expertise in Next.js, React,
+          Node.js, Express, and MongoDB, I bring ideas to life through code.
+          Explore my portfolio to see my projects and{' '}
+          <Highlighter action="highlight" color="#87CEFA">
+            skills in action.
+          </Highlighter>
+        </div>
+        {/* </TextAnimate> */}
       </div>
       {/* Right column image */}
       <div className="col-span-2 lg:col-span-1 border"></div>
