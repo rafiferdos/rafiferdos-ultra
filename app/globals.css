@@ -83,11 +83,11 @@
   --font-mono: var(--font-geist-mono);
   --animate-line-shadow: line-shadow 15s linear infinite;
   @keyframes line-shadow {
-  0% {
-    background-position: 0 0;
+    0% {
+      background-position: 0 0;
     }
-  100% {
-    background-position: 100% -100%;
+    100% {
+      background-position: 100% -100%;
     }
   }
   --animate-line-shadow: line-shadow 15s linear infinite;
@@ -97,6 +97,12 @@
     }
     100% {
       background-position: 100% -100%;
+    }
+  }
+  --animate-gradient: gradient 8s linear infinite;
+  @keyframes gradient {
+    to {
+      background-position: var(--bg-size, 300%) 0;
     }
   }
 }
@@ -126,4 +132,23 @@ body {
 
 * {
   cursor: none !important;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    @apply border-border;
+    /* Set a default outline color using the design token, avoid invalid @apply */
+    outline-color: var(--ring);
+    outline-offset: 2px;
+  }
+  /* Accessible default focus style */
+  :focus-visible {
+    outline-width: 2px;
+    outline-style: solid;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
