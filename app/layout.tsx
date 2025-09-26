@@ -1,5 +1,5 @@
-import { ThemeProvider } from '@/components/providers/theme-provider'
 import { PreloadProvider } from '@/components/providers/preload-provider'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 import { PreloadSplash } from '@/components/ui/preload-splash'
 import { TubelightNavBar } from '@/components/ui/tubelight-navbar'
 import type { Metadata } from 'next'

@@ -1,9 +1,9 @@
 'use client'
 
+import { usePreload } from '@/components/providers/preload-provider'
 import { cn } from '@/lib/utils'
 import { DotLottiePlayer } from '@dotlottie/react-player'
 import { useEffect, useRef, useState } from 'react'
-import { usePreload } from '@/components/providers/preload-provider'
 
 interface PreloadSplashProps {
   src?: string // path to .lottie file in public/
@@ -39,7 +39,9 @@ export function PreloadSplash({
           setDone(true)
           onFinish?.()
           // Signal that the site can start its own animations
-          try { markReady() } catch {}
+          try {
+            markReady()
+          } catch {}
         }
       }, 500) // match CSS duration below
     }, 4000)

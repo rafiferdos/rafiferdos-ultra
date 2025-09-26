@@ -1,6 +1,12 @@
 'use client'
 
-import { createContext, useContext, useMemo, useState, useCallback } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react'
 
 type PreloadContextValue = {
   ready: boolean
@@ -29,7 +35,9 @@ export function PreloadProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(() => ({ ready, markReady }), [ready, markReady])
 
-  return <PreloadContext.Provider value={value}>{children}</PreloadContext.Provider>
+  return (
+    <PreloadContext.Provider value={value}>{children}</PreloadContext.Provider>
+  )
 }
 
 export function usePreload() {
