@@ -44,7 +44,9 @@ export default function RootLayout({
             {/* Preloader uses public/preload.lottie */}
             <PreloadSplash />
             <div className="space-y-7">
-              <TubelightNavBar />
+              <div className="h-24">
+                <TubelightNavBar />
+              </div>
               {children}
             </div>
           </PreloadProvider>
