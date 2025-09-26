@@ -86,8 +86,8 @@ export function SmoothCursor({
     damping: 45,
     stiffness: 400,
     mass: 1,
-    restDelta: 0.001,
-  },
+    restDelta: 0.001
+  }
 }: SmoothCursorProps) {
   const [isMoving, setIsMoving] = useState(false)
   const lastMousePos = useRef<Position>({ x: 0, y: 0 })
@@ -101,12 +101,12 @@ export function SmoothCursor({
   const rotation = useSpring(0, {
     ...springConfig,
     damping: 60,
-    stiffness: 300,
+    stiffness: 300
   })
   const scale = useSpring(1, {
     ...springConfig,
     stiffness: 500,
-    damping: 35,
+    damping: 35
   })
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export function SmoothCursor({
       if (deltaTime > 0) {
         velocity.current = {
           x: (currentPos.x - lastMousePos.current.x) / deltaTime,
-          y: (currentPos.y - lastMousePos.current.y) / deltaTime,
+          y: (currentPos.y - lastMousePos.current.y) / deltaTime
         }
       }
 
@@ -192,14 +192,14 @@ export function SmoothCursor({
         scale: scale,
         zIndex: 100,
         pointerEvents: 'none',
-        willChange: 'transform',
+        willChange: 'transform'
       }}
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       transition={{
         type: 'spring',
         stiffness: 400,
-        damping: 30,
+        damping: 30
       }}
     >
       {cursor}
