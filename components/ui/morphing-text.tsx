@@ -101,11 +101,11 @@ const Texts: React.FC<Pick<MorphingTextProps, 'texts'>> = ({ texts }) => {
   return (
     <>
       <span
-        className="absolute inset-x-0 top-0 m-auto inline-block w-full"
+        className="absolute inset-x-0 bottom-0 m-auto inline-block w-full"
         ref={text1Ref}
       />
       <span
-        className="absolute inset-x-0 top-0 m-auto inline-block w-full"
+        className="absolute inset-x-0 bottom-0 m-auto inline-block w-full"
         ref={text2Ref}
       />
     </>
@@ -139,10 +139,14 @@ export const MorphingText: React.FC<MorphingTextProps> = ({
 }) => (
   <div
     className={cn(
-      'relative font-sans text-nowrap leading-none font-bold [filter:url(#threshold)_blur(0.6px)] border',
+      'relative inline-block align-baseline font-sans text-nowrap leading-none font-bold [filter:url(#threshold)_blur(0.6px)]',
       className
     )}
   >
+    {/* Hidden sizing span to establish height and baseline for the container */}
+    <span aria-hidden className="invisible select-none pointer-events-none">
+      {texts?.[0] ?? ''}
+    </span>
     <Texts texts={texts} />
     <SvgFilters />
   </div>

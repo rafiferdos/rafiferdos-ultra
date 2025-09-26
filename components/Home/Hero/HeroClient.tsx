@@ -32,7 +32,7 @@ export default function HeroClient() {
       </BlurFade>
       <BlurFade delay={0.6} inView>
         <div className="text-3xl flex items-baseline gap-2 justify-start">
-          <span className="leading-none">I'm a</span>
+          <span className="leading-none font-bold">I'm a</span>
           <span className="inline-flex items-baseline leading-none">
             <MorphingText className="leading-none" texts={texts} />
           </span>
