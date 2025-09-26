@@ -13,7 +13,7 @@ interface LineShadowTextProps
 
 export function LineShadowText({
   children,
-  shadowColor = "black",
+  shadowColor = "var(--hero-shadow)",
   className,
   as: Component = "span",
   ...props

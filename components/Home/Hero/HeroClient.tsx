@@ -3,25 +3,9 @@
 import { BlurFade } from '@/components/ui/blur-fade'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
-import { useTheme } from 'next-themes'
+// No need to read theme in JS for shadow color; use CSS variables instead
 
 export default function HeroClient() {
-  const theme = useTheme()
-  // Robust dark detection across hydration:
-  // 1) Use resolvedTheme when available
-  // 2) Fallback to html.dark class
-  // 3) As last resort, system preference
-  const prefersDark =
-    typeof window !== 'undefined' &&
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  const htmlHasDark =
-    typeof document !== 'undefined' &&
-    document.documentElement.classList.contains('dark')
-  const resolved = theme.resolvedTheme
-  const isDark = resolved ? resolved === 'dark' : htmlHasDark || prefersDark
-  const shadowColor = isDark ? 'white' : 'black'
-  const themeKey = resolved ?? (isDark ? 'dark' : 'light')
   const texts = [
     'Full Stack Developer',
     'MERN Stack Developer',
@@ -39,11 +23,7 @@ export default function HeroClient() {
         <BlurFade delay={0.3} inView>
           <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
             It's me{' '}
-            <LineShadowText
-              key={themeKey}
-              className="italic text-8xl font-agale"
-              shadowColor={shadowColor}
-            >
+            <LineShadowText className="italic text-8xl font-agale">
               Rafi
             </LineShadowText>
           </h1>
