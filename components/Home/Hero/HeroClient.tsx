@@ -3,6 +3,7 @@
 import { BlurFade } from '@/components/ui/blur-fade'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
+import { TextAnimate } from '@/components/ui/text-animate'
 // No need to read theme in JS for shadow color; use CSS variables instead
 
 export default function HeroClient() {
@@ -35,7 +36,12 @@ export default function HeroClient() {
             <MorphingText className="leading-none" texts={texts} />
           </div>
         </BlurFade>
-        
+        <TextAnimate animation="blurIn" as={'h1'}>
+          I'm a passionate MERN Stack Developer with a knack for crafting
+          dynamic and responsive web applications. With expertise in Next.js,
+          React, Node.js, Express, and MongoDB, I bring ideas to life through
+          code. Explore my portfolio to see my projects and skills in action.
+        </TextAnimate>
       </div>
       {/* Right column image */}
       <div className="col-span-2 lg:col-span-1 border"></div>
