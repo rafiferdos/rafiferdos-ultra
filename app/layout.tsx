@@ -20,8 +20,10 @@ const geistMono = Geist_Mono({
 // only when using the `.font-agale` class.
 
 export const metadata: Metadata = {
-  title: 'Rafif Erdős | Portfolio',
-  description: 'Rafif Erdős – Developer Portfolio'
+  title: 'Rafi Ferdos | Portfolio',
+  description: `
+    Rafi Ferdos - A MERN Stack Developer specializing in building dynamic and responsive web applications. Explore my portfolio to see my projects and skills in action. Technologies including NextJS, React, Node.js, Express, and MongoDB.    
+  `
 }
 
 export default function RootLayout({
