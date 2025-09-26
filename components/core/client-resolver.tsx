@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 type ClientResolverProps = {
-  children: React.ReactNode
+  children: React.ReactNode | (() => React.ReactNode)
   fallback?: React.ReactNode
 }
 
@@ -22,6 +22,9 @@ export function ClientResolver({
   }, [])
 
   if (!mounted) return <>{fallback}</>
+  if (typeof children === 'function') {
+    return <>{(children as () => React.ReactNode)()}</>
+  }
   return <>{children}</>
 }
 

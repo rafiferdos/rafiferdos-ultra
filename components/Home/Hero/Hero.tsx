@@ -7,7 +7,7 @@ const Hero = () => {
   return (
     <div className="border">
       <ClientResolver>
-        {(() => {
+        {() => {
           const theme = useTheme()
           const shadowColor = theme.resolvedTheme === 'dark' ? 'white' : 'black'
           return (
@@ -20,7 +20,7 @@ const Hero = () => {
               </h1>
             </div>
           )
-        })()}
+        }}
       </ClientResolver>
       <LightRays />
     </div>
