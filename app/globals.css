@@ -134,7 +134,6 @@
   }
 }
 
-
 /* Load Agale from public/fonts and expose it via the `.font-agale` class */
 @font-face {
   font-family: 'Agale';
