@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,14 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Load local font from public/fonts
-const agale = localFont({
-  src: "../public/fonts/Agale DEMO.otf",
-  variable: "--font-agale",
-  weight: "400",
-  style: "normal",
-  display: "swap",
-});
+// Note: Agale font is loaded via CSS @font-face in globals.css and is applied
+// only when using the `.font-agale` class.
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -35,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${agale.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
