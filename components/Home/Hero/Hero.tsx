@@ -4,7 +4,7 @@ import HeroClient from './HeroClient'
 
 const Hero = () => {
   return (
-    <div className="border">
+    <div>
       <ClientResolver>
         <HeroClient />
       </ClientResolver>
