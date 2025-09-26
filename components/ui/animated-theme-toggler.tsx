@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useCallback, useEffect, useRef, useState } from "react"
-import { Moon, Sun } from "lucide-react"
-import { flushSync } from "react-dom"
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Moon, Sun } from 'lucide-react'
+import { flushSync } from 'react-dom'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 type Props = {
   className?: string
@@ -16,7 +16,7 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
 
   useEffect(() => {
     const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"))
+      setIsDark(document.documentElement.classList.contains('dark'))
     }
 
     updateTheme()
@@ -24,7 +24,7 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
     const observer = new MutationObserver(updateTheme)
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["class"],
+      attributeFilter: ['class']
     })
 
     return () => observer.disconnect()
@@ -37,8 +37,8 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
       flushSync(() => {
         const newTheme = !isDark
         setIsDark(newTheme)
-        document.documentElement.classList.toggle("dark")
-        localStorage.setItem("theme", newTheme ? "dark" : "light")
+        document.documentElement.classList.toggle('dark')
+        localStorage.setItem('theme', newTheme ? 'dark' : 'light')
       })
     }).ready
 
@@ -55,13 +55,13 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
       {
         clipPath: [
           `circle(0px at ${x}px ${y}px)`,
-          `circle(${maxRadius}px at ${x}px ${y}px)`,
-        ],
+          `circle(${maxRadius}px at ${x}px ${y}px)`
+        ]
       },
       {
         duration: 700,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
+        easing: 'ease-in-out',
+        pseudoElement: '::view-transition-new(root)'
       }
     )
   }, [isDark])

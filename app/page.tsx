@@ -3,7 +3,8 @@ import { SmoothCursor } from '@/components/ui/smooth-cursor'
 
 const metadata = {
   title: 'Rafi Ferdos | Portfolio',
-  description: 'Rafi Ferdos - A MERN Stack Developer specializing in building dynamic and responsive web applications. Explore my portfolio to see my projects and skills in action. Technologies including NextJS, React, Node.js, Express, and MongoDB.',
+  description:
+    'Rafi Ferdos - A MERN Stack Developer specializing in building dynamic and responsive web applications. Explore my portfolio to see my projects and skills in action. Technologies including NextJS, React, Node.js, Express, and MongoDB.'
 }
 
 export default function Home() {

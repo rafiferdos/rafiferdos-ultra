@@ -4,6 +4,7 @@ import { BlurFade } from '@/components/ui/blur-fade'
 import { Highlighter } from '@/components/ui/highlighter'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
+import { Ripple } from '@/components/ui/ripple'
 // No need to read theme in JS for shadow color; use CSS variables instead
 
 export default function HeroClient() {
@@ -18,9 +19,9 @@ export default function HeroClient() {
   ]
   return (
     // Main grid container
-    <section className="grid grid-cols-2 border lg:gap-24 gap-5">
+    <section className="grid grid-cols-2  lg:gap-24 gap-5">
       {/* Left column with text content */}
-      <div className="col-span-2 lg:col-span-1 border space-y-3">
+      <div className="col-span-2 lg:col-span-1  space-y-3 flex flex-col items-start justify-center max-w-2xl">
         <BlurFade delay={0.3} inView>
           <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
             It's me{' '}
@@ -52,7 +53,11 @@ export default function HeroClient() {
         {/* </TextAnimate> */}
       </div>
       {/* Right column image */}
-      <div className="col-span-2 lg:col-span-1 border"></div>
+      <div className="col-span-2 lg:col-span-1">
+        <div className="relative h-[500px] w-full overflow-hidden">
+          <Ripple />
+        </div>
+      </div>
     </section>
   )
 }

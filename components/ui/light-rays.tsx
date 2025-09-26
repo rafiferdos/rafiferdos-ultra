@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   forwardRef,
@@ -6,13 +6,13 @@ import {
   useState,
   type CSSProperties,
   type HTMLAttributes,
-  type ReactNode,
-} from "react"
-import { motion } from "motion/react"
+  type ReactNode
+} from 'react'
+import { motion } from 'motion/react'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
-export type LightRaysProps = Omit<HTMLAttributes<HTMLDivElement>, "color"> & {
+export type LightRaysProps = Omit<HTMLAttributes<HTMLDivElement>, 'color'> & {
   children?: ReactNode
   count?: number
   color?: string
@@ -54,7 +54,7 @@ const createRays = (count: number, cycle: number): LightRay[] => {
       swing,
       delay,
       duration,
-      intensity,
+      intensity
     }
   })
 }
@@ -66,28 +66,28 @@ const Ray = ({
   swing,
   delay,
   duration,
-  intensity,
+  intensity
 }: LightRay) => {
   return (
     <motion.div
       className="pointer-events-none absolute -top-[12%] left-[var(--ray-left)] h-[var(--light-rays-length)] w-[var(--ray-width)] origin-top -translate-x-1/2 rounded-full bg-gradient-to-b from-[color-mix(in_srgb,var(--light-rays-color)_70%,transparent)] to-transparent opacity-0 mix-blend-screen blur-[var(--light-rays-blur)]"
       style={
         {
-          "--ray-left": `${left}%`,
-          "--ray-width": `${width}px`,
+          '--ray-left': `${left}%`,
+          '--ray-width': `${width}px`
         } as CSSProperties
       }
       initial={{ rotate: rotate }}
       animate={{
         opacity: [0, intensity, 0],
-        rotate: [rotate - swing, rotate + swing, rotate - swing],
+        rotate: [rotate - swing, rotate + swing, rotate - swing]
       }}
       transition={{
         duration: duration,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: 'easeInOut',
         delay: delay,
-        repeatDelay: duration * 0.1,
+        repeatDelay: duration * 0.1
       }}
     />
   )
@@ -100,11 +100,11 @@ export const LightRays = forwardRef<HTMLDivElement, LightRaysProps>(
       style,
       count = 7,
       // prefer a theme-aware CSS variable but fall back to a warm shadcn-like yellow
-      color = "var(--shadcn-yellow, rgba(250, 204, 21, 0.18))",
+      color = 'var(--shadcn-yellow, rgba(250, 204, 21, 0.18))',
       blur = 36,
       opacity = 0.65,
       speed = 14,
-      length = "70vh",
+      length = '70vh',
       fill = true,
       ...props
     },
@@ -121,15 +121,15 @@ export const LightRays = forwardRef<HTMLDivElement, LightRaysProps>(
       <div
         ref={ref}
         className={cn(
-          "pointer-events-none absolute inset-0 isolate overflow-hidden rounded-[inherit]",
+          'pointer-events-none absolute inset-0 isolate overflow-hidden rounded-[inherit]',
           className
         )}
         style={
           {
-            "--light-rays-color": color,
-            "--light-rays-blur": `${blur}px`,
-            "--light-rays-length": length,
-            ...style,
+            '--light-rays-color': color,
+            '--light-rays-blur': `${blur}px`,
+            '--light-rays-length': length,
+            ...style
           } as CSSProperties
         }
         {...props}
@@ -141,7 +141,7 @@ export const LightRays = forwardRef<HTMLDivElement, LightRaysProps>(
             style={
               {
                 background:
-                  "radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--light-rays-color) 45%, transparent), transparent 70%)",
+                  'radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--light-rays-color) 45%, transparent), transparent 70%)'
               } as CSSProperties
             }
           />
@@ -151,7 +151,7 @@ export const LightRays = forwardRef<HTMLDivElement, LightRaysProps>(
             style={
               {
                 background:
-                  "radial-gradient(circle at 80% 10%, color-mix(in srgb, var(--light-rays-color) 35%, transparent), transparent 75%)",
+                  'radial-gradient(circle at 80% 10%, color-mix(in srgb, var(--light-rays-color) 35%, transparent), transparent 75%)'
               } as CSSProperties
             }
           />
@@ -164,4 +164,4 @@ export const LightRays = forwardRef<HTMLDivElement, LightRaysProps>(
   }
 )
 
-LightRays.displayName = "LightRays"
+LightRays.displayName = 'LightRays'
