@@ -1,7 +1,12 @@
-import React from 'react'
+import { LightRays } from "@/components/ui/light-rays"
 
 const Hero = () => {
-  return <div></div>
+  return (
+    <>
+    
+      <LightRays />
+    </>
+  )
 }
 
 export default Hero
