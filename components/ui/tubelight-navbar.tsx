@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import { Briefcase, FileText, Home, LucideIcon, User } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { AnimatedThemeToggler } from './animated-theme-toggler'
 
 interface NavItem {
   name: string
@@ -87,6 +88,7 @@ export function TubelightNavBar({
             </button>
           )
         })}
+        <AnimatedThemeToggler className="pr-2" />
       </div>
     </div>
   )
