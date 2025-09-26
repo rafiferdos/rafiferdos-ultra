@@ -1,6 +1,6 @@
+import ClientResolver from '@/components/core/client-resolver'
 import { LightRays } from '@/components/ui/light-rays'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
-import ClientResolver from '@/components/core/client-resolver'
 import { useTheme } from 'next-themes'
 
 const Hero = () => {
