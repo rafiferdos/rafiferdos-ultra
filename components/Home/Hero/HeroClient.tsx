@@ -23,7 +23,7 @@ export default function HeroClient() {
         <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
           I'm{' '}
           <LineShadowText
-            className="italic text-9xl font-agale"
+            className="italic text-8xl font-agale"
             shadowColor={shadowColor}
           >
             Rafi
@@ -31,9 +31,8 @@ export default function HeroClient() {
         </h1>
       </BlurFade>
       <BlurFade delay={0.6} inView>
-        <div>
-
-        <MorphingText texts={texts} />
+        <div className='text-start text-2xl border'>
+        <MorphingText texts={texts} className='border'/>
         </div>
       </BlurFade>
     </div>
