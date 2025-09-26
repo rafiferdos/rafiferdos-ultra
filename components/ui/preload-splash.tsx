@@ -25,13 +25,13 @@ export function PreloadSplash({
     const prevOverflow = document.documentElement.style.overflow
     document.documentElement.style.overflow = 'hidden'
 
-    // safety: ensure we clear in case the animation is too long or events fail
+    // Keep the preloader visible for a fixed 4 seconds
     timeoutRef.current = window.setTimeout(() => {
       if (!done) {
         setDone(true)
         onFinish?.()
       }
-    }, 2900) // keep it snappy
+    }, 4000)
 
     return () => {
       if (timeoutRef.current) window.clearTimeout(timeoutRef.current)
@@ -51,20 +51,17 @@ export function PreloadSplash({
   return (
     <div
       className={cn(
-        'fixed inset-0 z-[9999] flex items-center justify-center bg-transparent',
+        'fixed inset-0 z-[9999] flex items-center justify-center bg-background/60 backdrop-blur-[1px]',
         className
       )}
-      style={{ backgroundColor: 'transparent' }}
+      style={{ WebkitBackdropFilter: 'blur(16px)' }}
     >
       <DotLottiePlayer
         src={src}
         autoplay
-        loop={false}
+        loop
         speed={speed}
-        onEvent={(evt) => {
-          // complete or error: finish early
-          if (evt === 'complete' || evt === 'error') finish()
-        }}
+        // We intentionally ignore 'complete' to keep the overlay for 4s
         // size to fit without overwhelming the viewport
         style={{ width: 'min(90vw, 560px)', height: 'auto' }}
         className="bg-transparent"
