@@ -35,6 +35,7 @@ export default function HeroClient() {
             <MorphingText className="leading-none" texts={texts} />
           </div>
         </BlurFade>
+        
       </div>
       {/* Right column image */}
       <div className="col-span-2 lg:col-span-1 border"></div>
