@@ -31,7 +31,10 @@ export default function HeroClient() {
         </h1>
       </BlurFade>
       <BlurFade delay={0.6} inView>
+        <div>
+
         <MorphingText texts={texts} />
+        </div>
       </BlurFade>
     </div>
   )
