@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@/components/providers/theme-provider'
+import { PreloadProvider } from '@/components/providers/preload-provider'
 import { PreloadSplash } from '@/components/ui/preload-splash'
 import { TubelightNavBar } from '@/components/ui/tubelight-navbar'
 import type { Metadata } from 'next'
@@ -39,10 +40,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Preloader uses public/preload.lottie */}
-          <PreloadSplash />
-          <TubelightNavBar />
-          {children}
+          <PreloadProvider>
+            {/* Preloader uses public/preload.lottie */}
+            <PreloadSplash />
+            <TubelightNavBar />
+            {children}
+          </PreloadProvider>
         </ThemeProvider>
       </body>
     </html>

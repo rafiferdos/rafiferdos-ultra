@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils'
 import { DotLottiePlayer } from '@dotlottie/react-player'
 import { useEffect, useRef, useState } from 'react'
+import { usePreload } from '@/components/providers/preload-provider'
 
 interface PreloadSplashProps {
   src?: string // path to .lottie file in public/
@@ -21,6 +22,7 @@ export function PreloadSplash({
   const [fading, setFading] = useState(false)
   const timeoutRef = useRef<number | undefined>(undefined)
   const fadeRef = useRef<number | undefined>(undefined)
+  const { markReady } = usePreload()
 
   useEffect(() => {
     // prevent background scrolling while splash is visible
@@ -36,6 +38,8 @@ export function PreloadSplash({
         if (!done) {
           setDone(true)
           onFinish?.()
+          // Signal that the site can start its own animations
+          try { markReady() } catch {}
         }
       }, 500) // match CSS duration below
     }, 4000)
