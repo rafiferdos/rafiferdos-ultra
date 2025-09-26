@@ -19,9 +19,9 @@ export default function HeroClient() {
   ]
   return (
     // Main grid container
-    <section className="grid grid-cols-2  lg:gap-24 gap-5">
+    <section className="w-full max-w-7xl mx-auto min-h-screen grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4">
       {/* Left column with text content */}
-      <div className="col-span-2 lg:col-span-1  space-y-3 flex flex-col items-start justify-center max-w-2xl">
+      <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl border h-full">
         <BlurFade delay={0.3} inView>
           <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
             It's me{' '}
@@ -53,7 +53,7 @@ export default function HeroClient() {
         {/* </TextAnimate> */}
       </div>
       {/* Right column image */}
-      <div className="col-span-2 lg:col-span-1">
+      <div className="col-span-2 lg:col-span-1 h-full border">
         <div className="relative h-[500px] w-full overflow-hidden">
           <Ripple />
         </div>
