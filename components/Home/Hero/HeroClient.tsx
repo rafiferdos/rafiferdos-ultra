@@ -12,14 +12,11 @@ export default function HeroClient() {
     'Full Stack Developer',
     'MERN Stack Developer',
     'Next.js Developer',
-    'React Developer',
-    'Node.js Developer',
-    'Express.js Developer',
-    'MongoDB Developer'
+    'React Developer'
   ]
   return (
     // Main grid container
-    <section className="w-full max-w-7xl mx-auto min-h-screen grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4">
+    <section className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4">
       {/* Left column with text content */}
       <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl border h-full">
         <BlurFade delay={0.3} inView>
