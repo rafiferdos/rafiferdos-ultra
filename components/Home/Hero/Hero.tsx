@@ -4,12 +4,12 @@ import HeroClient from './HeroClient'
 
 const Hero = () => {
   return (
-    <div>
+    <>
       <ClientResolver>
         <HeroClient />
       </ClientResolver>
       <LightRays />
-    </div>
+    </>
   )
 }
 
