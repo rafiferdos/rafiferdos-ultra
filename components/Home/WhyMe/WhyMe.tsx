@@ -1,14 +1,14 @@
 import { BentoCard, BentoGrid } from '@/components/ui/bento-grid'
-import { Code, Layers, Smartphone, Zap } from 'lucide-react'
+import { Code, Layers, MonitorSmartphone, Zap } from 'lucide-react'
 
 const features = [
   {
-    Icon: Layers,
-    name: 'Full Stack Expertise',
+    Icon: MonitorSmartphone,
+    name: 'Cross-Platform Mastery',
     description:
-      'Seamlessly bridging frontend and backend with the MERN stack. From database design to responsive UIs, I handle it all.',
+      'Why fragment your team? I deliver unified experiences across Web (Next.js) and Mobile (React Native). One codebase mindset, native performance, and consistent branding on iOS, Android, and the Web.',
     href: '#contact',
-    cta: 'Hire Me',
+    cta: 'See cross-platform work',
     className: 'col-span-3 lg:col-span-2',
     background: (
       <div className="absolute right-0 top-0 h-[300px] w-[600px] opacity-10 [mask-image:linear-gradient(to_bottom,white,transparent)]">
@@ -28,23 +28,23 @@ const features = [
   },
   {
     Icon: Zap,
-    name: 'Performance First',
+    name: 'High-Performance Engineering',
     description:
-      'Building lightning-fast applications with Next.js and Turbopack. Optimization is not an afterthought, it is a priority.',
+      'I build apps that fly. By optimizing rendering cycles, managing state efficiently, and leveraging server-side capabilities, I ensure your application feels instant and responsive.',
     href: '#contact',
-    cta: 'Learn more',
+    cta: 'Check performance',
     className: 'col-span-3 lg:col-span-1',
     background: (
       <div className="absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-yellow-500/20 blur-3xl" />
     )
   },
   {
-    Icon: Smartphone,
-    name: 'Responsive Design',
+    Icon: Layers,
+    name: 'Scalable Architecture',
     description:
-      'Pixel-perfect experiences on any device. Mobile-first approach ensures your site looks great everywhere.',
+      'Future-proof your product. I design clean, modular, and type-safe (TypeScript) architectures that make scaling up and adding new features painless and bug-free.',
     href: '#contact',
-    cta: 'See projects',
+    cta: 'View architecture',
     className: 'col-span-3 lg:col-span-1',
     background: (
       <div className="absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-blue-500/20 blur-3xl" />
@@ -52,11 +52,11 @@ const features = [
   },
   {
     Icon: Code,
-    name: 'Modern Architecture',
+    name: 'Full-Cycle Development',
     description:
-      'Scalable, maintainable, and robust codebases using the latest tech like Tailwind v4, Framer Motion, and TypeScript.',
+      'From database schema design in MongoDB to pixel-perfect UI implementation. I handle the entire lifecycle, ensuring that the backend logic perfectly supports the frontend user experience.',
     href: '#contact',
-    cta: 'View code',
+    cta: 'Hire a pro',
     className: 'col-span-3 lg:col-span-2',
     background: (
       <div className="absolute right-0 top-0 h-[300px] w-[600px] opacity-10 [mask-image:linear-gradient(to_bottom,white,transparent)]">
