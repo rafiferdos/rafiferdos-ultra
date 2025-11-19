@@ -27,43 +27,58 @@ import { useRef, useState } from 'react'
 
 const CrossPlatformBackground = () => {
   return (
-    <div className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_bottom,white,transparent)]">
+    <div className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]">
       <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
         React
       </span>
+
+      {/* Inner Orbit */}
       <OrbitingCircles
-        className="size-[30px] border-none bg-transparent"
+        className="border-none bg-transparent"
         duration={20}
-        delay={20}
         radius={80}
+        iconSize={40}
       >
-        <Smartphone className="text-blue-500" size={24} />
-      </OrbitingCircles>
-      <OrbitingCircles
-        className="size-[30px] border-none bg-transparent"
-        duration={20}
-        delay={10}
-        radius={80}
-      >
-        <Globe className="text-green-500" size={24} />
+        <img
+          src="https://cdn.simpleicons.org/nextdotjs/000000/ffffff"
+          alt="Next.js"
+          className="size-8 dark:invert"
+        />
+        <img
+          src="https://cdn.simpleicons.org/typescript/3178C6"
+          alt="TypeScript"
+          className="size-8"
+        />
+        <img
+          src="https://cdn.simpleicons.org/prisma/2D3748/white"
+          alt="Prisma"
+          className="size-8 dark:invert"
+        />
       </OrbitingCircles>
 
+      {/* Outer Orbit */}
       <OrbitingCircles
-        className="size-[50px] border-none bg-transparent"
-        radius={140}
-        duration={20}
+        className="border-none bg-transparent"
+        radius={150}
+        duration={30}
         reverse
+        iconSize={50}
       >
-        <MonitorSmartphone className="text-purple-500" size={32} />
-      </OrbitingCircles>
-      <OrbitingCircles
-        className="size-[50px] border-none bg-transparent"
-        radius={140}
-        duration={20}
-        delay={20}
-        reverse
-      >
-        <Layout className="text-orange-500" size={32} />
+        <img
+          src="https://cdn.simpleicons.org/react/58C4DC"
+          alt="React Native"
+          className="size-10"
+        />
+        <img
+          src="https://cdn.simpleicons.org/graphql/E10098"
+          alt="GraphQL"
+          className="size-10"
+        />
+        <img
+          src="https://cdn.simpleicons.org/mongodb/47A248"
+          alt="MongoDB"
+          className="size-10"
+        />
       </OrbitingCircles>
     </div>
   )
@@ -149,7 +164,7 @@ const PerformanceList = () => {
   }
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_bottom,white,transparent)]">
+    <div className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]">
       <AnimatedList>
         {notifications.map((item, idx) => (
           <Notification {...item} key={idx} />
@@ -171,7 +186,7 @@ const ArchitectureBeam = () => {
 
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_bottom,white,transparent)]"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]"
       ref={containerRef}
     >
       <div className="flex size-full flex-col items-stretch justify-between gap-10 p-10">
@@ -274,7 +289,7 @@ const FullCycleTerminal = () => {
   const [terminalKey, setTerminalKey] = useState(0)
 
   return (
-    <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-end p-4 lg:p-10">
+    <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-end p-4 lg:p-10 [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]">
       <Terminal
         key={terminalKey}
         onTerminalComplete={() => {
