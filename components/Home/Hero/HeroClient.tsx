@@ -20,7 +20,7 @@ export default function HeroClient() {
       <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl border h-full">
         <BlurFade delay={0.3} inView>
           <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
-            It's me{' '}
+            It&apos;s me{' '}
             <LineShadowText className="italic text-8xl font-agale">
               Rafi
             </LineShadowText>
@@ -28,14 +28,14 @@ export default function HeroClient() {
         </BlurFade>
         <BlurFade delay={0.6} inView>
           <div className="text-3xl flex items-baseline gap-2 justify-start">
-            <span className="leading-none">I'm a</span>
+            <span className="leading-none">I&apos;m a</span>
 
             <MorphingText className="leading-none" texts={texts} />
           </div>
         </BlurFade>
 
         <div className="leading-relaxed">
-          I'm a passionate MERN Stack Developer with a knack for{' '}
+          I&apos;m a passionate MERN Stack Developer with a knack for{' '}
           <Highlighter action="underline" color="#FF9800">
             crafting dynamic
           </Highlighter>{' '}
@@ -47,7 +47,7 @@ export default function HeroClient() {
           </Highlighter>
         </div>
 
-        <div>
+        <div className='flex items-center justify-center'>
           <RainbowButton className='rounded-2xl px-7' variant={'outline'}>Resume</RainbowButton>
         </div>
       </div>
