@@ -93,8 +93,8 @@ export default function HeroClient() {
 
       {/* Right column image */}
       <div className="col-span-2 lg:col-span-1 h-full">
-        <div className="relative h-[500px] w-full overflow-hidden">
-          <Ripple />
+        <div className="relative h-[500px] w-full">
+          <Ripple className="[mask-image:none]" />
         </div>
       </div>
 
