@@ -50,19 +50,19 @@ export default function HeroClient() {
 
         <div className="flex items-center justify-center w-fit gap-2">
           <Link href={'/'}>
-            <RainbowButton className="rounded-full h-10 px-12" variant={'outline'}>
+            <RainbowButton
+              className="rounded-full h-10 px-12"
+              variant={'outline'}
+            >
               Resume
             </RainbowButton>
           </Link>
           <Link href={'#contact'}>
-          
-            <InteractiveHoverButton className='!:px-7'>
+            <InteractiveHoverButton className="text-sm h-10.5 px-8">
               Contact Me
             </InteractiveHoverButton>
           </Link>
-          <>
-
-          </>
+          <></>
         </div>
       </div>
 
