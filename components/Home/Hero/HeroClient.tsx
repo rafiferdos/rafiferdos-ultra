@@ -4,6 +4,7 @@ import { Highlighter } from '@/components/ui/highlighter'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
+import { PixelImage } from '@/components/ui/pixel-image'
 import { RainbowButton } from '@/components/ui/rainbow-button'
 import { Ripple } from '@/components/ui/ripple'
 import { DotLottiePlayer } from '@dotlottie/react-player'
@@ -93,8 +94,16 @@ export default function HeroClient() {
 
       {/* Right column image */}
       <div className="col-span-2 lg:col-span-1 h-full">
-        <div className="relative h-[500px] w-full">
+        <div className="relative max-h-[500px] w-full flex items-center justify-center">
           <Ripple className="[mask-image:none]" />
+          <div className="z-10">
+            <PixelImage
+              src="https://github.com/rafiferdos.png"
+              grid="8x8"
+              pixelFadeInDuration={1000}
+              colorRevealDelay={1300}
+            />
+          </div>
         </div>
       </div>
 
