@@ -1,5 +1,6 @@
-"use client"
+'use client'
 
+import { motion, MotionProps, useInView } from 'motion/react'
 import {
   Children,
   createContext,
@@ -7,11 +8,10 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
-} from "react"
-import { motion, MotionProps, useInView } from "motion/react"
+  useState
+} from 'react'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 interface SequenceContextValue {
   completeItem: (index: number) => void
@@ -43,7 +43,7 @@ export const AnimatedSpan = ({
   const elementRef = useRef<HTMLDivElement | null>(null)
   const isInView = useInView(elementRef as React.RefObject<Element>, {
     amount: 0.3,
-    once: true,
+    once: true
   })
 
   const sequence = useSequence()
@@ -66,7 +66,7 @@ export const AnimatedSpan = ({
       initial={{ opacity: 0, y: -5 }}
       animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
       transition={{ duration: 0.3, delay: sequence ? 0 : delay / 1000 }}
-      className={cn("grid text-sm font-normal tracking-tight", className)}
+      className={cn('grid text-sm font-normal tracking-tight', className)}
       onAnimationComplete={() => {
         if (!sequence) return
         if (itemIndex === null) return
@@ -93,28 +93,28 @@ export const TypingAnimation = ({
   className,
   duration = 60,
   delay = 0,
-  as: Component = "span",
+  as: Component = 'span',
   startOnView = true,
   ...props
 }: TypingAnimationProps) => {
-  if (typeof children !== "string") {
-    throw new Error("TypingAnimation: children must be a string. Received:")
+  if (typeof children !== 'string') {
+    throw new Error('TypingAnimation: children must be a string. Received:')
   }
 
   const MotionComponent = useMemo(
     () =>
       motion.create(Component, {
-        forwardMotionProps: true,
+        forwardMotionProps: true
       }),
     [Component]
   )
 
-  const [displayedText, setDisplayedText] = useState<string>("")
+  const [displayedText, setDisplayedText] = useState<string>('')
   const [started, setStarted] = useState(false)
   const elementRef = useRef<HTMLElement | null>(null)
   const isInView = useInView(elementRef as React.RefObject<Element>, {
     amount: 0.3,
-    once: true,
+    once: true
   })
 
   const sequence = useSequence()
@@ -146,7 +146,7 @@ export const TypingAnimation = ({
     started,
     sequence?.activeIndex,
     sequence?.sequenceStarted,
-    itemIndex,
+    itemIndex
   ])
 
   useEffect(() => {
@@ -173,7 +173,7 @@ export const TypingAnimation = ({
   return (
     <MotionComponent
       ref={elementRef}
-      className={cn("text-sm font-normal tracking-tight", className)}
+      className={cn('text-sm font-normal tracking-tight', className)}
       {...props}
     >
       {displayedText}
@@ -186,6 +186,7 @@ interface TerminalProps {
   className?: string
   sequence?: boolean
   startOnView?: boolean
+  onTerminalComplete?: () => void
 }
 
 export const Terminal = ({
@@ -193,15 +194,23 @@ export const Terminal = ({
   className,
   sequence = true,
   startOnView = true,
+  onTerminalComplete
 }: TerminalProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const isInView = useInView(containerRef as React.RefObject<Element>, {
     amount: 0.3,
-    once: true,
+    once: true
   })
 
   const [activeIndex, setActiveIndex] = useState(0)
   const sequenceHasStarted = sequence ? !startOnView || isInView : false
+  const childCount = Children.count(children)
+
+  useEffect(() => {
+    if (sequence && activeIndex === childCount && onTerminalComplete) {
+      onTerminalComplete()
+    }
+  }, [activeIndex, childCount, sequence, onTerminalComplete])
 
   const contextValue = useMemo<SequenceContextValue | null>(() => {
     if (!sequence) return null
@@ -210,7 +219,7 @@ export const Terminal = ({
         setActiveIndex((current) => (index === current ? current + 1 : current))
       },
       activeIndex,
-      sequenceStarted: sequenceHasStarted,
+      sequenceStarted: sequenceHasStarted
     }
   }, [sequence, activeIndex, sequenceHasStarted])
 
@@ -228,7 +237,7 @@ export const Terminal = ({
     <div
       ref={containerRef}
       className={cn(
-        "border-border bg-background z-0 h-full max-h-[400px] w-full max-w-lg rounded-xl border",
+        'border-border bg-background z-0 h-full max-h-[400px] w-full max-w-lg rounded-xl border',
         className
       )}
     >

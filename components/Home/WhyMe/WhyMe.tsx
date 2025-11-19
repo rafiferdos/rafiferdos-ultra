@@ -21,7 +21,7 @@ import {
   Smartphone,
   Zap
 } from 'lucide-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 // --- Background Components ---
 
@@ -271,9 +271,19 @@ const ArchitectureBeam = () => {
 }
 
 const FullCycleTerminal = () => {
+  const [terminalKey, setTerminalKey] = useState(0)
+
   return (
     <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-end p-4 lg:p-10">
-      <Terminal className="h-full max-h-[250px] w-full max-w-[350px] border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-950">
+      <Terminal
+        key={terminalKey}
+        onTerminalComplete={() => {
+          setTimeout(() => {
+            setTerminalKey((prev) => prev + 1)
+          }, 2000)
+        }}
+        className="h-full max-h-[250px] w-full max-w-[350px] border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-950"
+      >
         <TypingAnimation>
           &gt; git checkout -b feature/full-stack
         </TypingAnimation>
