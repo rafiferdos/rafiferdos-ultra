@@ -1,4 +1,5 @@
 import Hero from '@/components/Home/Hero/Hero'
+import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
 import { SmoothCursor } from '@/components/ui/smooth-cursor'
 import { Metadata } from 'next'
@@ -14,6 +15,7 @@ export default function Home() {
     <div className="p-5 max-w-8xl mx-auto w-11/12">
       <Hero />
       <WhyMe />
+      <TechStack />
       <SmoothCursor />
     </div>
   )
