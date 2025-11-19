@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@dotlottie/react-player": "^1.6.19",
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
     "framer-motion": "^12.23.22",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.544.0",

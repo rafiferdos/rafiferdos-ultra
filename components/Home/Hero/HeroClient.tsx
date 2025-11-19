@@ -1,15 +1,13 @@
-'use client'
-
 import { BlurFade } from '@/components/ui/blur-fade'
 import { Highlighter } from '@/components/ui/highlighter'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
+import { RainbowButton } from '@/components/ui/rainbow-button'
 import { Ripple } from '@/components/ui/ripple'
-// No need to read theme in JS for shadow color; use CSS variables instead
 
 export default function HeroClient() {
   const texts = [
-    'Full Stack Developer',
+    'Software Developer',
     'MERN Stack Developer',
     'Next.js Developer',
     'React Developer'
@@ -17,6 +15,7 @@ export default function HeroClient() {
   return (
     // Main grid container
     <section className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4">
+
       {/* Left column with text content */}
       <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl border h-full">
         <BlurFade delay={0.3} inView>
@@ -34,7 +33,7 @@ export default function HeroClient() {
             <MorphingText className="leading-none" texts={texts} />
           </div>
         </BlurFade>
-        {/* <TextAnimate animation="blurIn" as={'h1'}> */}
+
         <div className="leading-relaxed">
           I'm a passionate MERN Stack Developer with a knack for{' '}
           <Highlighter action="underline" color="#FF9800">
@@ -47,8 +46,12 @@ export default function HeroClient() {
             skills in action.
           </Highlighter>
         </div>
-        {/* </TextAnimate> */}
+
+        <div>
+          <RainbowButton className='rounded-2xl px-7' variant={'outline'}>Resume</RainbowButton>
+        </div>
       </div>
+
       {/* Right column image */}
       <div className="col-span-2 lg:col-span-1 h-full border">
         <div className="relative h-[500px] w-full overflow-hidden">
