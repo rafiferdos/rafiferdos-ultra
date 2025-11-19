@@ -12,13 +12,14 @@ export default function HeroClient() {
     'Software Developer',
     'MERN Stack Developer',
     'Next.js Developer',
-    'React Developer'
+    'React Native Developer',
+    'App Developer'
   ]
   return (
     // Main grid container
-    <section className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4">
+    <section className="w-full max-w-7xl h-screen mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4">
       {/* Left column with text content */}
-      <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl border h-full">
+      <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl h-full">
         <BlurFade delay={0.3} inView>
           <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
             It&apos;s me{' '}
@@ -67,7 +68,7 @@ export default function HeroClient() {
       </div>
 
       {/* Right column image */}
-      <div className="col-span-2 lg:col-span-1 h-full border">
+      <div className="col-span-2 lg:col-span-1 h-full">
         <div className="relative h-[500px] w-full overflow-hidden">
           <Ripple />
         </div>
