@@ -1,12 +1,14 @@
 'use client'
 
+import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern'
 import { BlurFade } from '@/components/ui/blur-fade'
 import { OrbitingCircles } from '@/components/ui/orbiting-circles'
 import { cn } from '@/lib/utils'
+import { useState } from 'react'
 
 const TechStack = () => {
   return (
-    <section className="relative flex min-h-[800px] w-full flex-col items-center justify-center overflow-hidden rounded-lg py-20">
+    <section className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl">
       {/* Background Pattern */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]"></div>
 
@@ -25,15 +27,29 @@ const TechStack = () => {
       </div>
 
       <div className="z-10 flex w-full flex-col items-center gap-8 md:flex-row md:items-center md:justify-between">
-        {/* Text Content */}
-        <div className="flex flex-1 flex-col gap-8 px-8 md:px-16">
-          <div className="space-y-6 text-lg text-muted-foreground">
+        {/* Text Content with Animated Grid */}
+        <div className="relative flex flex-1 flex-col gap-8 overflow-hidden px-8 md:ml-16 md:px-0">
+          <AnimatedGridPattern
+            numSquares={30}
+            maxOpacity={0.1}
+            duration={3}
+            repeatDelay={1}
+            className={cn(
+              '[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]',
+              'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12'
+            )}
+          />
+
+          <div className="z-10 space-y-8">
             <BlurFade delay={0.4} inView>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-semibold text-foreground">
+              <div className="group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
+                <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
+                    ⚛️
+                  </span>
                   Frontend Mastery
                 </h3>
-                <p>
+                <p className="text-muted-foreground">
                   I specialize in the{' '}
                   <span className="font-semibold text-foreground">
                     JavaScript ecosystem
@@ -50,11 +66,14 @@ const TechStack = () => {
             </BlurFade>
 
             <BlurFade delay={0.5} inView>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-semibold text-foreground">
+              <div className="group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
+                <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
+                    🛠️
+                  </span>
                   Backend & Architecture
                 </h3>
-                <p>
+                <p className="text-muted-foreground">
                   On the server side, I architect solutions using{' '}
                   <span className="font-semibold text-foreground">Node.js</span>
                   ,{' '}
@@ -71,11 +90,14 @@ const TechStack = () => {
             </BlurFade>
 
             <BlurFade delay={0.6} inView>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-semibold text-foreground">
+              <div className="group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
+                <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
+                    📱
+                  </span>
                   Mobile & Beyond
                 </h3>
-                <p>
+                <p className="text-muted-foreground">
                   Expanding into mobile with{' '}
                   <span className="font-semibold text-foreground">
                     React Native
@@ -139,7 +161,7 @@ const TechStack = () => {
             <Icon slug="prisma" color="2D3748" darkInvert tooltip="Prisma" />
             <Icon slug="graphql" color="E10098" tooltip="GraphQL" />
             <Icon slug="firebase" color="FFCA28" tooltip="Firebase" />
-            <Icon slug="amazonaws" color="232F3E" darkInvert tooltip="AWS" />
+            <Icon slug="amazon" color="232F3E" darkInvert tooltip="AWS" />
             <Icon slug="redux" color="764ABC" tooltip="Redux" />
           </OrbitingCircles>
 
@@ -152,7 +174,7 @@ const TechStack = () => {
           >
             <Icon slug="javascript" color="F7DF1E" tooltip="JavaScript" />
             <Icon slug="html5" color="E34F26" tooltip="HTML5" />
-            <Icon slug="css3" color="1572B6" tooltip="CSS3" />
+            <Icon slug="css" color="1572B6" tooltip="CSS3" />
             <Icon slug="git" color="F05032" tooltip="Git" />
             <Icon slug="github" color="181717" darkInvert tooltip="GitHub" />
             <Icon slug="vercel" color="000000" darkInvert tooltip="Vercel" />
@@ -178,17 +200,26 @@ const Icon = ({
   darkInvert?: boolean
   tooltip: string
 }) => {
+  const [error, setError] = useState(false)
+
   return (
     <div className="group relative flex items-center justify-center">
       <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-sm ring-1 ring-border transition-all duration-300 hover:scale-110 hover:ring-primary">
-        <img
-          src={`https://cdn.simpleicons.org/${slug}/${color}`}
-          alt={tooltip}
-          className={cn(
-            'size-6 transition-all duration-300',
-            darkInvert && 'dark:invert'
-          )}
-        />
+        {!error ? (
+          <img
+            src={`https://cdn.simpleicons.org/${slug}/${color}`}
+            alt={tooltip}
+            className={cn(
+              'size-6 transition-all duration-300',
+              darkInvert && 'dark:invert'
+            )}
+            onError={() => setError(true)}
+          />
+        ) : (
+          <span className="text-xs font-bold text-muted-foreground">
+            {tooltip.slice(0, 2).toUpperCase()}
+          </span>
+        )}
       </div>
       <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-background px-2 py-1 text-xs font-medium text-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
         {tooltip}
