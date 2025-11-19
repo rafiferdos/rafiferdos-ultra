@@ -25,6 +25,8 @@ export function PreloadSplash({
   const { markReady } = usePreload()
 
   useEffect(() => {
+    if (done) return
+
     // prevent background scrolling while splash is visible
     const prevOverflow = document.documentElement.style.overflow
     document.documentElement.style.overflow = 'hidden'
@@ -41,6 +43,8 @@ export function PreloadSplash({
           // Signal that the site can start its own animations
           try {
             markReady()
+            // Restore scrolling
+            document.documentElement.style.overflow = ''
           } catch {}
         }
       }, 500) // match CSS duration below
@@ -49,7 +53,8 @@ export function PreloadSplash({
     return () => {
       if (timeoutRef.current) window.clearTimeout(timeoutRef.current)
       if (fadeRef.current) window.clearTimeout(fadeRef.current)
-      document.documentElement.style.overflow = prevOverflow
+      // Ensure overflow is restored if component unmounts
+      document.documentElement.style.overflow = ''
     }
   }, [onFinish, done])
 
