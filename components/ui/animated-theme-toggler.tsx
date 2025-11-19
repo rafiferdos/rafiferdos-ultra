@@ -1,7 +1,7 @@
 'use client'
 
+import { DotLottiePlayer } from '@dotlottie/react-player'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Moon, Sun } from 'lucide-react'
 import { flushSync } from 'react-dom'
 
 import { cn } from '@/lib/utils'
@@ -67,8 +67,26 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
   }, [isDark])
 
   return (
-    <button ref={buttonRef} onClick={toggleTheme} className={cn(className)}>
-      {isDark ? <Sun /> : <Moon />}
+    <button
+      ref={buttonRef}
+      onClick={toggleTheme}
+      className={cn('flex h-10 w-10 items-center justify-center', className)}
+    >
+      {isDark ? (
+        <DotLottiePlayer
+          src="/summer-vibes.lottie"
+          autoplay
+          loop
+          className="h-8 w-8"
+        />
+      ) : (
+        <DotLottiePlayer
+          src="/weather-night.lottie"
+          autoplay
+          loop
+          className="h-8 w-8"
+        />
+      )}
     </button>
   )
 }
