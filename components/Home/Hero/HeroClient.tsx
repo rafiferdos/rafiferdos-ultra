@@ -42,7 +42,7 @@ export default function HeroClient() {
 
   return (
     // Main grid container
-    <section className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4 min-h-[calc(100vh-10rem)] relative">
+    <section className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center px-4 min-h-[calc(100vh-10rem)] relative">
       {/* Left column with text content */}
       <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl h-full">
         <BlurFade delay={0.3} inView>
