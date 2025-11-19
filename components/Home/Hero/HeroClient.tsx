@@ -1,9 +1,11 @@
 import { BlurFade } from '@/components/ui/blur-fade'
 import { Highlighter } from '@/components/ui/highlighter'
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
 import { RainbowButton } from '@/components/ui/rainbow-button'
 import { Ripple } from '@/components/ui/ripple'
+import Link from 'next/link'
 
 export default function HeroClient() {
   const texts = [
@@ -46,10 +48,21 @@ export default function HeroClient() {
           </Highlighter>
         </div>
 
-        <div className="flex items-center justify-center">
-          <RainbowButton className="rounded-2xl px-7" variant={'outline'}>
-            Resume
-          </RainbowButton>
+        <div className="flex items-center justify-center w-fit gap-2">
+          <Link href={'/'}>
+            <RainbowButton className="rounded-full h-10 px-12" variant={'outline'}>
+              Resume
+            </RainbowButton>
+          </Link>
+          <Link href={'#contact'}>
+          
+            <InteractiveHoverButton className='!:px-7'>
+              Contact Me
+            </InteractiveHoverButton>
+          </Link>
+          <>
+
+          </>
         </div>
       </div>
 
