@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 const TechStack = () => {
   return (
-    <section className="relative flex min-h-[800px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background py-20 md:shadow-xl">
+    <section className="relative flex min-h-[800px] w-full flex-col items-center justify-center overflow-hidden rounded-lg py-20">
       {/* Background Pattern */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]"></div>
 
@@ -95,7 +95,15 @@ const TechStack = () => {
           {/* Central Core */}
           <div className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 blur-xl"></div>
           <div className="absolute left-1/2 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background shadow-xl ring-1 ring-border">
-            <span className="text-xl font-bold text-foreground">RF</span>
+            <span className="absolute text-xl font-bold text-foreground">
+              RF
+            </span>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ5QmE9bCXCz5zEiL2IT7mi-SZrdFshZ1uEA&s"
+              alt="RF"
+              className="relative z-10 h-full w-full rounded-full object-cover"
+              onError={(e) => (e.currentTarget.style.display = 'none')}
+            />
           </div>
 
           {/* Inner Orbit - Core & Frontend */}
