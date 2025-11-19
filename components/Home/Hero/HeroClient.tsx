@@ -1,3 +1,4 @@
+'use client'
 import { BlurFade } from '@/components/ui/blur-fade'
 import { Highlighter } from '@/components/ui/highlighter'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
@@ -5,7 +6,15 @@ import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
 import { RainbowButton } from '@/components/ui/rainbow-button'
 import { Ripple } from '@/components/ui/ripple'
+import { DotLottiePlayer } from '@dotlottie/react-player'
+import {
+  motion,
+  useAnimation,
+  useMotionValueEvent,
+  useScroll
+} from 'framer-motion'
 import Link from 'next/link'
+import { useState } from 'react'
 
 export default function HeroClient() {
   const texts = [
@@ -15,9 +24,24 @@ export default function HeroClient() {
     'React Native Developer',
     'App Developer'
   ]
+
+  const { scrollY } = useScroll()
+  const controls = useAnimation()
+  const [hasLaunched, setHasLaunched] = useState(false)
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    if (latest > 50 && !hasLaunched) {
+      setHasLaunched(true)
+      controls.start({
+        y: -window.innerHeight - 200,
+        transition: { duration: 1.5, ease: 'easeIn' }
+      })
+    }
+  })
+
   return (
     // Main grid container
-    <section className="w-full max-w-7xl h-screen mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4">
+    <section className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center border px-4 min-h-[calc(100vh-10rem)] relative">
       {/* Left column with text content */}
       <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl h-full">
         <BlurFade delay={0.3} inView>
@@ -73,6 +97,19 @@ export default function HeroClient() {
           <Ripple />
         </div>
       </div>
+
+      {/* Rocket Animation */}
+      <motion.div
+        animate={controls}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+      >
+        <DotLottiePlayer
+          src="/rocket-launch.lottie"
+          autoplay
+          loop
+          style={{ width: '100px', height: '100px' }}
+        />
+      </motion.div>
     </section>
   )
 }
