@@ -1,3 +1,4 @@
+import { PreloadContent } from '@/components/providers/preload-content'
 import { PreloadProvider } from '@/components/providers/preload-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { PreloadSplash } from '@/components/ui/preload-splash'
@@ -45,12 +46,14 @@ export default function RootLayout({
           <PreloadProvider>
             {/* Preloader uses public/preload.lottie */}
             <PreloadSplash />
-            <div className="space-y-7">
-              <div className="h-24">
-                <TubelightNavBar />
+            <PreloadContent>
+              <div className="space-y-7">
+                <div className="h-24">
+                  <TubelightNavBar />
+                </div>
+                {children}
               </div>
-              {children}
-            </div>
+            </PreloadContent>
           </PreloadProvider>
         </ThemeProvider>
       </body>
