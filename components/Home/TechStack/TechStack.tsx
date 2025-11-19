@@ -4,6 +4,7 @@ import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern'
 import { BlurFade } from '@/components/ui/blur-fade'
 import { OrbitingCircles } from '@/components/ui/orbiting-circles'
 import { cn } from '@/lib/utils'
+import { DotLottiePlayer } from '@dotlottie/react-player'
 import { useState } from 'react'
 
 const TechStack = () => {
@@ -114,18 +115,30 @@ const TechStack = () => {
 
         {/* Orbiting Visualization */}
         <div className="relative flex h-[600px] w-full flex-1 flex-col items-center justify-center overflow-hidden md:h-[600px]">
-          {/* Central Core */}
-          <div className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 blur-xl"></div>
-          <div className="absolute left-1/2 top-1/2 z-20 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background shadow-xl ring-1 ring-border">
-            <span className="absolute text-xl font-bold text-foreground">
-              RF
-            </span>
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ5QmE9bCXCz5zEiL2IT7mi-SZrdFshZ1uEA&s"
-              alt="RF"
-              className="relative z-10 h-full w-full rounded-full object-cover"
-              onError={(e) => (e.currentTarget.style.display = 'none')}
-            />
+          {/* Central Core with Lightning Lottie */}
+          <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2">
+            {/* Lottie Animation Layer */}
+            <div className="absolute inset-0 z-10 flex items-center justify-center">
+              <DotLottiePlayer
+                src="/Lightning.lottie"
+                loop
+                autoplay
+                className="h-full w-full scale-175"
+              />
+            </div>
+
+            {/* Image Container */}
+            <div className="absolute left-1/2 top-1/2 z-20 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background shadow-xl ring-1 ring-border">
+              <span className="absolute text-xl font-bold text-foreground">
+                RF
+              </span>
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ5QmE9bCXCz5zEiL2IT7mi-SZrdFshZ1uEA&s"
+                alt="RF"
+                className="relative z-10 h-full w-full rounded-full object-cover"
+                onError={(e) => (e.currentTarget.style.display = 'none')}
+              />
+            </div>
           </div>
 
           {/* Inner Orbit - Core & Frontend */}
