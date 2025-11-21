@@ -1,19 +1,19 @@
-"use client"
+'use client'
 
+import { motion } from 'motion/react'
 import {
   ComponentPropsWithoutRef,
   useCallback,
   useEffect,
   useId,
   useRef,
-  useState,
-} from "react"
-import { motion } from "motion/react"
+  useState
+} from 'react'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 export interface AnimatedGridPatternProps
-  extends ComponentPropsWithoutRef<"svg"> {
+  extends ComponentPropsWithoutRef<'svg'> {
   width?: number
   height?: number
   x?: number
@@ -40,22 +40,26 @@ export function AnimatedGridPattern({
   const id = useId()
   const containerRef = useRef(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  const [squares, setSquares] = useState(() => generateSquares(numSquares))
 
   const getPos = useCallback(() => {
     return [
       Math.floor((Math.random() * dimensions.width) / width),
-      Math.floor((Math.random() * dimensions.height) / height),
+      Math.floor((Math.random() * dimensions.height) / height)
     ]
   }, [dimensions, width, height])
 
   // Adjust the generateSquares function to return objects with an id, x, and y
-  const generateSquares = useCallback((count: number) => {
-    return Array.from({ length: count }, (_, i) => ({
-      id: i,
-      pos: getPos(),
-    }))
-  }, [getPos])
+  const generateSquares = useCallback(
+    (count: number) => {
+      return Array.from({ length: count }, (_, i) => ({
+        id: i,
+        pos: getPos()
+      }))
+    },
+    [getPos]
+  )
+
+  const [squares, setSquares] = useState(() => generateSquares(numSquares))
 
   // Function to update a single square's position
   const updateSquarePosition = (id: number) => {
@@ -64,7 +68,7 @@ export function AnimatedGridPattern({
         sq.id === id
           ? {
               ...sq,
-              pos: getPos(),
+              pos: getPos()
             }
           : sq
       )
@@ -84,7 +88,7 @@ export function AnimatedGridPattern({
       for (const entry of entries) {
         setDimensions({
           width: entry.contentRect.width,
-          height: entry.contentRect.height,
+          height: entry.contentRect.height
         })
       }
     })
@@ -105,7 +109,7 @@ export function AnimatedGridPattern({
       ref={containerRef}
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute inset-0 h-full w-full fill-gray-400/30 stroke-gray-400/30",
+        'pointer-events-none absolute inset-0 h-full w-full fill-gray-400/30 stroke-gray-400/30',
         className
       )}
       {...props}
@@ -136,7 +140,7 @@ export function AnimatedGridPattern({
               duration,
               repeat: 1,
               delay: index * 0.1,
-              repeatType: "reverse",
+              repeatType: 'reverse'
             }}
             onAnimationComplete={() => updateSquarePosition(id)}
             key={`${x}-${y}-${index}`}
