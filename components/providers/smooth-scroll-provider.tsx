@@ -10,10 +10,10 @@ gsap.registerPlugin(ScrollTrigger)
 export const SmoothScrollProvider = ({ children }: { children: ReactNode }) => {
   useLayoutEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.7,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
+      // direction: 'vertical',
+      // gestureDirection: 'vertical',
       smoothWheel: true,
       touchMultiplier: 2
     })

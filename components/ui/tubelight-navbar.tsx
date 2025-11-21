@@ -29,11 +29,10 @@ export function TubelightNavBar({
   defaultActive = 'Home'
 }: TubelightNavBarProps) {
   const [activeTab, setActiveTab] = useState(defaultActive)
-  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
+      // setIsMobile(window.innerWidth < 768)
     }
 
     handleResize()
@@ -48,7 +47,13 @@ export function TubelightNavBar({
         className
       )}
     >
-      <div className="flex items-center gap-3 bg-background/5 border border-border backdrop-blur-lg py-1 px-1 rounded-full shadow-lg">
+      <div
+        className="flex items-center gap-3 px-1 py-1 rounded-full border shadow-[0_10px_40px_rgba(15,23,42,0.25)] bg-white/30 dark:bg-white/10 border-white/40 dark:border-white/5"
+        style={{
+          backdropFilter: 'blur(18px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(18px) saturate(180%)'
+        }}
+      >
         {items.map((item) => {
           const Icon = item.icon
           const isActive = activeTab === item.name
