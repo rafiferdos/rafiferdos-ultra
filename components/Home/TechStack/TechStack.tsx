@@ -118,7 +118,7 @@ const TechStack = () => {
         {/* Orbiting Visualization */}
         <div className="relative flex h-[600px] w-full flex-1 flex-col items-center justify-center overflow-hidden md:h-[600px]">
           {/* Central Core with Lightning Lottie */}
-          <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2">
             {/* Blue Lightning (Default) - Hides on Hover */}
             <div
               className={cn(
@@ -246,7 +246,7 @@ const Icon = ({
 
   return (
     <div className="group relative flex items-center justify-center">
-      <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-sm ring-1 ring-border transition-all duration-300 hover:scale-110 hover:ring-primary">
+      <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-md ring-1 ring-border transition-all duration-300 hover:scale-110 hover:ring-cyan-500 hover:shadow-cyan-400">
         {!error ? (
           <img
             src={`https://cdn.simpleicons.org/${slug}/${color}`}
