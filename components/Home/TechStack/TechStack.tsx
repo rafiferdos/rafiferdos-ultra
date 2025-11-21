@@ -246,7 +246,7 @@ const Icon = ({
 
   return (
     <div className="group relative flex items-center justify-center">
-      <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-md ring-1 ring-border transition-all duration-300 hover:scale-110 hover:ring-cyan-500 hover:shadow-cyan-400">
+      <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background shadow-md ring-1 ring-border transition-all duration-300 hover:scale-110 hover:ring-cyan-500 hover:shadow-cyan-400 dark:hover:shadow-cyan-600 dark:hover:ring-cyan-300 dark:shadow-xl">
         {!error ? (
           <img
             src={`https://cdn.simpleicons.org/${slug}/${color}`}
