@@ -8,6 +8,8 @@ import { DotLottiePlayer } from '@dotlottie/react-player'
 import { useState } from 'react'
 
 const TechStack = () => {
+  const [isHovering, setIsHovering] = useState(false)
+
   return (
     <section className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl">
       {/* Background Pattern */}
@@ -117,27 +119,54 @@ const TechStack = () => {
         <div className="relative flex h-[600px] w-full flex-1 flex-col items-center justify-center overflow-hidden md:h-[600px]">
           {/* Central Core with Lightning Lottie */}
           <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2">
-            {/* Lottie Animation Layer */}
-            <div className="absolute inset-0 z-10 flex items-center justify-center">
+            {/* Blue Lightning (Default) - Hides on Hover */}
+            <div
+              className={cn(
+                'absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300',
+                isHovering ? 'opacity-0' : 'opacity-100'
+              )}
+            >
               <DotLottiePlayer
                 src="/Lightning.lottie"
                 loop
                 autoplay
-                className="h-full w-full scale-175"
+                className="h-full w-full scale-125"
               />
             </div>
 
             {/* Image Container */}
-            <div className="absolute left-1/2 top-1/2 z-20 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background shadow-xl ring-1 ring-border">
+            <div
+              className="absolute left-1/2 top-1/2 z-20 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-background shadow-xl ring-1 ring-border transition-all duration-500"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
               <span className="absolute text-xl font-bold text-foreground">
                 RF
               </span>
               <img
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ5QmE9bCXCz5zEiL2IT7mi-SZrdFshZ1uEA&s"
                 alt="RF"
-                className="relative z-10 h-full w-full rounded-full object-cover"
+                className={cn(
+                  'relative z-10 h-full w-full rounded-full object-cover transition-transform duration-500 ease-in-out',
+                  isHovering ? 'scale-110' : 'scale-100'
+                )}
                 onError={(e) => (e.currentTarget.style.display = 'none')}
               />
+
+              {/* Red Lightning Overlay - Shows on Hover */}
+              <div
+                className={cn(
+                  'absolute inset-0 z-30 flex items-center justify-center pointer-events-none transition-opacity duration-300',
+                  isHovering ? 'opacity-100' : 'opacity-0'
+                )}
+              >
+                <DotLottiePlayer
+                  src="/Red Lightning.lottie"
+                  loop
+                  autoplay
+                  className="h-[180%] w-[180%]"
+                />
+              </div>
             </div>
           </div>
 
