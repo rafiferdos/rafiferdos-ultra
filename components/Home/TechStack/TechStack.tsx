@@ -134,6 +134,21 @@ const TechStack = () => {
               />
             </div>
 
+            {/* Red Lightning Overlay - Shows on Hover (Outside image container for bigger effect) */}
+            <div
+              className={cn(
+                'absolute inset-0 z-30 flex items-center justify-center pointer-events-none transition-all duration-300',
+                isHovering ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+              )}
+            >
+              <DotLottiePlayer
+                src="/Red Lightning.lottie"
+                loop
+                autoplay
+                className="h-[300%] w-[300%]"
+              />
+            </div>
+
             {/* Image Container */}
             <div
               className="absolute left-1/2 top-1/2 z-20 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-background shadow-xl ring-1 ring-border transition-all duration-500"
@@ -152,21 +167,6 @@ const TechStack = () => {
                 )}
                 onError={(e) => (e.currentTarget.style.display = 'none')}
               />
-
-              {/* Red Lightning Overlay - Shows on Hover */}
-              <div
-                className={cn(
-                  'absolute inset-0 z-30 flex items-center justify-center pointer-events-none transition-opacity duration-300',
-                  isHovering ? 'opacity-100' : 'opacity-0'
-                )}
-              >
-                <DotLottiePlayer
-                  src="/Red Lightning.lottie"
-                  loop
-                  autoplay
-                  className="h-[180%] w-[180%]"
-                />
-              </div>
             </div>
           </div>
 
