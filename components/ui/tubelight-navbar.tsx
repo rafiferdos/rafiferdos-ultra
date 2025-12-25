@@ -48,7 +48,7 @@ export function TubelightNavBar({
       )}
     >
       <div
-        className="flex items-center gap-3 px-1 py-1 rounded-full border shadow-[0_10px_40px_rgba(15,23,42,0.25)] bg-white/20 dark:bg-gray-900/20 backdrop-blur-xs border-white dark:border-white/5"
+        className="flex items-center gap-3 px-1 py-1 rounded-full border shadow-[0_10px_40px_rgba(15,23,42,0.25)] bg-white/20 dark:bg-gray-900/20 backdrop-blur-sm backdrop-saturate-200 backdrop-brightness-300 border-white dark:border-white/5"
       >
         {items.map((item) => {
           const Icon = item.icon
