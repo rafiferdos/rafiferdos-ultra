@@ -109,19 +109,24 @@ export function TubelightNavBar({
                 onClick={() => handleScroll(item.name, item.url)}
                 className={cn(
                   'relative cursor-pointer text-sm font-semibold px-6 py-1 rounded-full transition-colors',
-                  'text-foreground/80 hover:text-primary',
-                  isActive && 'text-primary'
+                  'text-foreground/80 hover:text-[#FFCC00]',
+                  isActive && 'text-[#FFCC00] drop-shadow-[0_0_12px_rgba(255,204,0,0.8)]'
                 )}
                 aria-label={item.name}
               >
                 <span className="relative z-10 block">
-                  <Icon size={34} />
+                  <Icon
+                    size={34}
+                    style={isActive ? {
+                      filter: 'sepia(100%) hue-rotate(20deg) saturate(800%) drop-shadow(0 0 8px rgba(255, 204, 0, 0.8))'
+                    } : {}}
+                  />
                 </span>
 
                 {isActive && (
                   <motion.div
                     layoutId="lamp"
-                    className="absolute inset-0 w-full bg-primary/5 rounded-full -z-10"
+                    className="absolute inset-0 w-full bg-[#FFCC00]/5 rounded-full -z-10"
                     initial={false}
                     transition={{
                       type: 'spring',
@@ -129,10 +134,10 @@ export function TubelightNavBar({
                       damping: 30
                     }}
                   >
-                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-t-full">
-                      <div className="absolute w-12 h-6 bg-primary/30 rounded-full blur-md -top-2 -left-2" />
-                      <div className="absolute w-8 h-6 bg-primary/30 rounded-full blur-md -top-1" />
-                      <div className="absolute w-4 h-4 bg-primary/30 rounded-full blur-sm top-0 left-2" />
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#FFCC00] rounded-t-full">
+                      <div className="absolute w-12 h-6 bg-[#FFCC00]/20 rounded-full blur-md -top-2 -left-2" />
+                      <div className="absolute w-8 h-6 bg-[#FFCC00]/20 rounded-full blur-md -top-1" />
+                      <div className="absolute w-4 h-4 bg-[#FFCC00]/20 rounded-full blur-sm top-0 left-2" />
                     </div>
                   </motion.div>
                 )}
