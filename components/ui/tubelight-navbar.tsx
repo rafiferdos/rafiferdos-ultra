@@ -102,7 +102,7 @@ export function TubelightNavBar({
                 key={item.name}
                 onClick={() => handleScroll(item.name, item.url)}
                 className={cn(
-                  'relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors',
+                  'relative cursor-pointer text-sm font-semibold px-6 py-1 rounded-full transition-colors',
                   'text-foreground/80 hover:text-primary',
                   isActive && 'text-primary'
                 )}
@@ -110,7 +110,7 @@ export function TubelightNavBar({
               >
                 <span className="relative z-10 block">
                   <Icon
-                    size={24}
+                    size={34}
                     style={{ filter: item.colorFilter }}
                   />
                 </span>
