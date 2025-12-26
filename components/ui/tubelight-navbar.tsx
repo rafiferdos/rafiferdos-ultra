@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { Briefcase, FileText, Home, LucideIcon, User } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { AnimatedThemeToggler } from './animated-theme-toggler'
+import GlassSurface from './GlassSurface'
 
 interface NavItem {
   name: string
@@ -43,12 +44,20 @@ export function TubelightNavBar({
   return (
     <div
       className={cn(
-        'fixed bottom-0 sm:top-0 left-1/2 -translate-x-1/2 z-50 mb-6 sm:pt-6',
+        'fixed bottom-0 left-1/2 -translate-x-1/2 z-50 mb-6',
         className
       )}
     >
-      <div
-        className="flex items-center gap-3 px-1 py-1 rounded-full border shadow-[0_10px_40px_rgba(15,23,42,0.25)] bg-white/20 dark:bg-gray-900/20 backdrop-blur-sm backdrop-saturate-200 backdrop-brightness-300 border-white dark:border-white/5"
+      <GlassSurface
+        height="auto"
+        width="auto"
+        borderRadius={50}
+        opacity={0.9}
+        backgroundOpacity={0}
+        blur={10}
+        distortionScale={-110}
+        displace={1}
+        mixBlendMode='difference'
       >
         {items.map((item) => {
           const Icon = item.icon
@@ -90,7 +99,7 @@ export function TubelightNavBar({
           )
         })}
         <AnimatedThemeToggler className="pr-2" />
-      </div>
+      </GlassSurface>
     </div>
   )
 }
