@@ -77,9 +77,7 @@ const TechStack = () => {
           <div className="z-10 space-y-8">
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
-                  <IconSparkle size="20px" />
-                </span>
+                <IconSparkle size="48px" style={{ filter: 'sepia(100%) hue-rotate(190deg) saturate(500%)' }} />
                 Frontend Mastery
               </h3>
               <p className="text-muted-foreground">
@@ -99,9 +97,7 @@ const TechStack = () => {
 
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
-                  <IconStorage size="20px" />
-                </span>
+                <IconStorage size="48px" style={{ filter: 'sepia(100%) hue-rotate(90deg) saturate(500%)' }} />
                 Backend & Architecture
               </h3>
               <p className="text-muted-foreground">
@@ -121,9 +117,7 @@ const TechStack = () => {
 
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
-                  <IconSquareChartLine size="20px" />
-                </span>
+                <IconSquareChartLine size="48px" style={{ filter: 'sepia(100%) hue-rotate(260deg) saturate(500%)' }} />
                 Mobile & Beyond
               </h3>
               <p className="text-muted-foreground">
