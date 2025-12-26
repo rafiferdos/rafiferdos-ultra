@@ -1,4 +1,5 @@
 import Hero from '@/components/Home/Hero/Hero'
+import Projects from '@/components/Home/Projects/Projects'
 import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
 import { SmoothCursor } from '@/components/ui/smooth-cursor'
@@ -76,6 +77,7 @@ export default function Home() {
       <Hero />
       <WhyMe />
       <TechStack />
+      <Projects />
       <SmoothCursor />
     </div>
   )
