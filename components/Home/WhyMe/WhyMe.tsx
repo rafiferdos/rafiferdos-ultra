@@ -25,6 +25,7 @@ import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { HyperText } from '@/components/ui/hyper-text'
 
 // Register GSAP plugins at module level (runs once)
 gsap.registerPlugin(ScrollTrigger)
@@ -443,7 +444,9 @@ export function WhyMe() {
           className="whyme-title text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
           style={{ opacity: 0, transform: 'translateY(60px)' }}
         >
-          Why Me?
+          <HyperText duration={1500} delay={200} startOnView>
+            Why Me?
+          </HyperText>
         </h2>
         <p
           className="whyme-desc mx-auto mt-4 max-w-[700px] text-muted-foreground"
