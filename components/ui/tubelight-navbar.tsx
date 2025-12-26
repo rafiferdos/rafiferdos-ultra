@@ -35,32 +35,38 @@ export function TubelightNavBar({
 }: TubelightNavBarProps) {
   const [activeTab, setActiveTab] = useState(defaultActive)
 
-  const items: (NavItem & { colorFilter: string })[] = [
-    {
-      name: 'Home',
-      url: '#hero',
-      Icon: IconHouse,
-      colorFilter: 'sepia(100%) hue-rotate(190deg) saturate(400%) drop-shadow(0 0 5px rgba(59, 130, 246, 0.5))' // Blue
-    },
-    {
-      name: 'About',
-      url: '#whyme',
-      Icon: IconUser,
-      colorFilter: 'sepia(100%) hue-rotate(90deg) saturate(400%) drop-shadow(0 0 5px rgba(34, 197, 94, 0.5))' // Green
-    },
-    {
-      name: 'Projects',
-      url: '#projects',
-      Icon: IconStackPerspective,
-      colorFilter: 'sepia(100%) hue-rotate(30deg) saturate(600%) drop-shadow(0 0 5px rgba(234, 179, 8, 0.5))' // Gold/Orange
-    },
-    {
-      name: 'Resume',
-      url: '#techstack',
-      Icon: IconFeather,
-      colorFilter: 'sepia(100%) hue-rotate(260deg) saturate(400%) drop-shadow(0 0 5px rgba(168, 85, 247, 0.5))' // Purple
-    }
+  const items: NavItem[] = [
+    { name: 'Home', url: '#hero', Icon: IconHouse },
+    { name: 'About', url: '#whyme', Icon: IconUser },
+    { name: 'Projects', url: '#projects', Icon: IconStackPerspective },
+    { name: 'Resume', url: '#techstack', Icon: IconFeather }
   ]
+
+  useEffect(() => {
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const activeItem = items.find((item) => item.url === `#${entry.target.id}`)
+          if (activeItem) {
+            setActiveTab(activeItem.name)
+          }
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.5,
+    })
+
+    items.forEach((item) => {
+      const element = document.querySelector(item.url)
+      if (element) {
+        observer.observe(element)
+      }
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   const handleScroll = (name: string, url: string) => {
     setActiveTab(name)
@@ -109,10 +115,7 @@ export function TubelightNavBar({
                 aria-label={item.name}
               >
                 <span className="relative z-10 block">
-                  <Icon
-                    size={34}
-                    style={{ filter: item.colorFilter }}
-                  />
+                  <Icon size={34} />
                 </span>
 
                 {isActive && (
