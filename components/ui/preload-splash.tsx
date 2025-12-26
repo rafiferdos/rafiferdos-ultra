@@ -42,10 +42,12 @@ export function PreloadSplash({
           onFinish?.()
           // Signal that the site can start its own animations
           try {
+            // CRITICAL: Reset scroll to top before revealing content
+            window.scrollTo(0, 0)
             markReady()
             // Restore scrolling
             document.documentElement.style.overflow = ''
-          } catch {}
+          } catch { }
         }
       }, 500) // match CSS duration below
     }, 4000)

@@ -44,20 +44,20 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PreloadProvider>
-            {/* Preloader uses public/preload.lottie */}
+          {/* PRELOADER DISABLED - causes FOUC with GSAP animations */}
+          {/* <PreloadProvider>
             <PreloadSplash />
-            <PreloadContent>
-              <SmoothScrollProvider>
-                <div className="space-y-7">
-                  <div className="h-24">
-                    <TubelightNavBar />
-                  </div>
-                  {children}
-                </div>
-              </SmoothScrollProvider>
-            </PreloadContent>
-          </PreloadProvider>
+            <PreloadContent> */}
+          <SmoothScrollProvider>
+            <div className="space-y-7">
+              <div className="h-24">
+                <TubelightNavBar />
+              </div>
+              {children}
+            </div>
+          </SmoothScrollProvider>
+          {/* </PreloadContent>
+          </PreloadProvider> */}
         </ThemeProvider>
       </body>
     </html>

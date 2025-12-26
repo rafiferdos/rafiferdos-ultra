@@ -22,6 +22,12 @@ import {
   Zap
 } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+// Register GSAP plugins at module level (runs once)
+gsap.registerPlugin(ScrollTrigger)
 
 // --- Background Components ---
 
@@ -371,57 +377,90 @@ const features = [
   }
 ]
 
-// ... (imports remain)
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
 export function WhyMe() {
   const containerRef = useRef<HTMLElement>(null)
 
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse'
-      }
-    })
+  useGSAP(
+    () => {
+      // 1. GSAP.SET - Immediately set initial hidden states
+      //    This runs synchronously on mount, preventing any flash of content
+      gsap.set('.whyme-title', { y: 60, opacity: 0 })
+      gsap.set('.whyme-desc', { y: 40, opacity: 0 })
+      gsap.set('.whyme-card', { y: 80, opacity: 0, scale: 0.95 })
 
-    tl.fromTo('.whyme-title-reveal',
-      { y: 50, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' }
-    )
-      .fromTo('.whyme-desc-reveal',
-        { y: 30, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' },
-        '-=0.6'
-      )
-      .fromTo('.bento-card-reveal',
-        { y: 50, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
-        '-=0.4'
-      )
+      // 2. SCROLL REVEAL - Title
+      gsap.to('.whyme-title', {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.whyme-title',
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+      })
 
-  }, { scope: containerRef })
+      // 3. SCROLL REVEAL - Description
+      gsap.to('.whyme-desc', {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.whyme-desc',
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+
+      // 4. SCROLL REVEAL - Cards (each with its own trigger)
+      const cards = gsap.utils.toArray<Element>('.whyme-card')
+      cards.forEach((card, i) => {
+        gsap.to(card, {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          delay: i * 0.1, // Stagger effect
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 90%',
+            toggleActions: 'play none none reverse',
+          },
+        })
+      })
+    },
+    { scope: containerRef }
+  )
 
   return (
     <section ref={containerRef} className="py-24">
       <div className="mb-12 text-center">
-        <h2 className="whyme-title-reveal invisible text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+        {/* opacity:0 prevents FOUC - GSAP will animate to visible */}
+        <h2
+          className="whyme-title text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+          style={{ opacity: 0, transform: 'translateY(60px)' }}
+        >
           Why Me?
         </h2>
-        <p className="whyme-desc-reveal invisible mx-auto mt-4 max-w-[700px] text-muted-foreground">
+        <p
+          className="whyme-desc mx-auto mt-4 max-w-[700px] text-muted-foreground"
+          style={{ opacity: 0, transform: 'translateY(40px)' }}
+        >
           I bring a unique blend of technical skills and creative
           problem-solving to every project.
         </p>
       </div>
       <BentoGrid>
         {features.map((feature, idx) => (
-          <BentoCard key={idx} {...feature} className={cn(feature.className, "bento-card-reveal invisible")} />
+          <BentoCard
+            key={idx}
+            {...feature}
+            className={cn(feature.className, 'whyme-card')}
+            style={{ opacity: 0, transform: 'translateY(80px) scale(0.95)' }}
+          />
         ))}
       </BentoGrid>
     </section>
