@@ -73,7 +73,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="p-5 max-w-8xl mx-auto w-11/12">
+    <div className="max-w-8xl mx-auto w-11/12">
       <Hero />
       <WhyMe />
       <TechStack />

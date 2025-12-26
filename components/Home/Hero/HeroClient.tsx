@@ -75,7 +75,7 @@ export default function HeroClient() {
 
   return (
     // Main grid container
-    <section id="hero" ref={containerRef} className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center px-4 min-h-[calc(100vh-10rem)] relative">
+    <section id="hero" ref={containerRef} className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center px-4 min-h-[calc(100vh-12rem)] relative">
       {/* Left column with text content */}
       <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl h-full">
         <div className="hero-title-reveal">
@@ -143,7 +143,7 @@ export default function HeroClient() {
 
       {/* Rocket Animation */}
       <div
-        className="rocket-container absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+        className="rocket-container absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <DotLottiePlayer
           src="/rocket-launch.lottie"
