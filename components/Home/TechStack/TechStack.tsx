@@ -77,7 +77,7 @@ const TechStack = () => {
           <div className="z-10 space-y-8">
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <IconSparkle size="48px" style={{ filter: 'sepia(100%) hue-rotate(190deg) saturate(500%)' }} />
+                <IconSparkle size="48px" style={{ filter: 'sepia(100%) hue-rotate(190deg) saturate(500%) drop-shadow(0 0 15px rgba(59, 130, 246, 0.6))' }} />
                 Frontend Mastery
               </h3>
               <p className="text-muted-foreground">
@@ -97,7 +97,7 @@ const TechStack = () => {
 
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <IconStorage size="48px" style={{ filter: 'sepia(100%) hue-rotate(90deg) saturate(500%)' }} />
+                <IconStorage size="48px" style={{ filter: 'sepia(100%) hue-rotate(90deg) saturate(500%) drop-shadow(0 0 15px rgba(34, 197, 94, 0.6))' }} />
                 Backend & Architecture
               </h3>
               <p className="text-muted-foreground">
@@ -117,7 +117,7 @@ const TechStack = () => {
 
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <IconSquareChartLine size="48px" style={{ filter: 'sepia(100%) hue-rotate(260deg) saturate(500%)' }} />
+                <IconSquareChartLine size="48px" style={{ filter: 'sepia(100%) hue-rotate(260deg) saturate(500%) drop-shadow(0 0 15px rgba(168, 85, 247, 0.6))' }} />
                 Mobile & Beyond
               </h3>
               <p className="text-muted-foreground">
