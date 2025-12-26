@@ -4,6 +4,7 @@ import { AuroraText } from '@/components/ui/aurora-text'
 import { BlurFade } from '@/components/ui/blur-fade'
 import { MagicCard } from '@/components/ui/magic-card'
 import { NumberTicker } from '@/components/ui/number-ticker'
+import { TextAnimate } from '@/components/ui/text-animate'
 import { cn } from '@/lib/utils'
 import { ExternalLink, Github } from 'lucide-react'
 
@@ -150,42 +151,56 @@ const Projects = () => {
             <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]" />
 
             {/* Section Header */}
-            <div className="mb-16 flex flex-col items-center text-center">
-                <BlurFade delay={0.1} inView>
-                    <h2 className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-5xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-                        Selected{' '}
-                        <AuroraText
-                            colors={['#FF6B6B', '#FF8E53', '#FFC107']}
-                            speed={2}
+            <div className="mb-24 flex flex-col items-center text-center">
+                {/* Title */}
+                <div className="overflow-hidden">
+                    <h2 className="text-5xl font-bold leading-[0.9] tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
+                        <TextAnimate
+                            animation="blurInUp"
+                            by="character"
+                            className="inline-block text-foreground"
                         >
-                            Works
-                        </AuroraText>
+                            Selected
+                        </TextAnimate>
+                        <span className="block md:inline-block md:ml-6">
+                            <AuroraText
+                                colors={['#FF6B6B', '#FF8E53', '#FFC107']}
+                                speed={2.5}
+                                className="font-bold"
+                            >
+                                Works
+                            </AuroraText>
+                        </span>
                     </h2>
-                </BlurFade>
+                </div>
 
-                <BlurFade delay={0.2} inView>
-                    <p className="mt-4 max-w-xl text-base text-muted-foreground">
-                        Handpicked projects showcasing full-stack expertise and attention to detail.
+                <BlurFade delay={0.4} inView>
+                    <p className="mt-8 max-w-2xl text-xl text-muted-foreground md:text-2xl">
+                        Handpicked projects showcasing full-stack expertise, <br className="hidden md:block" />
+                        attention to detail, and performant code.
                     </p>
                 </BlurFade>
 
-                {/* Stats with NumberTicker - cleaner layout */}
-                <BlurFade delay={0.3} inView>
-                    <div className="mt-6 flex items-center gap-6">
-                        <span className="text-sm text-muted-foreground">
-                            <span className="font-semibold text-foreground">
-                                <NumberTicker value={47} delay={0.5} />+
-                            </span>{' '}
-                            projects completed
-                        </span>
-                        <span className="text-muted-foreground/50">•</span>
-                        <span className="text-sm text-muted-foreground">
-                            Showcasing{' '}
-                            <span className="font-semibold text-foreground">
-                                <NumberTicker value={5} delay={0.7} />
-                            </span>{' '}
-                            best works
-                        </span>
+                {/* Stats with NumberTicker - Bigger & Bolder */}
+                <BlurFade delay={0.6} inView>
+                    <div className="mt-12 flex items-center gap-12 rounded-full border border-border/50 bg-background/50 px-8 py-4 backdrop-blur-sm">
+                        <div className="flex flex-col items-center">
+                            <span className="text-4xl font-bold text-foreground md:text-5xl">
+                                <NumberTicker value={47} delay={0.8} />+
+                            </span>
+                            <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                                Projects
+                            </span>
+                        </div>
+                        <div className="h-12 w-px bg-border/50" />
+                        <div className="flex flex-col items-center">
+                            <span className="text-4xl font-bold text-foreground md:text-5xl">
+                                <NumberTicker value={5} delay={1.0} />
+                            </span>
+                            <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                                Featured
+                            </span>
+                        </div>
                     </div>
                 </BlurFade>
             </div>
