@@ -383,16 +383,16 @@ export function WhyMe() {
 
   useGSAP(
     () => {
-      // 1. GSAP.SET - Immediately set initial hidden states
-      //    This runs synchronously on mount, preventing any flash of content
-      gsap.set('.whyme-title', { y: 60, opacity: 0 })
-      gsap.set('.whyme-desc', { y: 40, opacity: 0 })
-      gsap.set('.whyme-card', { y: 80, opacity: 0, scale: 0.95 })
+      // 1. GSAP.SET - Set initial hidden states with transforms
+      //    CSS handles opacity/visibility, GSAP handles transforms
+      gsap.set('.whyme-title', { y: 60 })
+      gsap.set('.whyme-desc', { y: 40 })
+      gsap.set('.whyme-card', { y: 80, scale: 0.95 })
 
-      // 2. SCROLL REVEAL - Title
+      // 2. SCROLL REVEAL - Title (autoAlpha = opacity + visibility)
       gsap.to('.whyme-title', {
         y: 0,
-        opacity: 1,
+        autoAlpha: 1, // Sets opacity:1 AND visibility:visible
         duration: 0.8,
         ease: 'power3.out',
         scrollTrigger: {
@@ -405,7 +405,7 @@ export function WhyMe() {
       // 3. SCROLL REVEAL - Description
       gsap.to('.whyme-desc', {
         y: 0,
-        opacity: 1,
+        autoAlpha: 1,
         duration: 0.8,
         ease: 'power3.out',
         scrollTrigger: {
@@ -420,10 +420,10 @@ export function WhyMe() {
       cards.forEach((card, i) => {
         gsap.to(card, {
           y: 0,
-          opacity: 1,
+          autoAlpha: 1,
           scale: 1,
           duration: 0.8,
-          delay: i * 0.1, // Stagger effect
+          delay: i * 0.1,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: card,
@@ -439,19 +439,13 @@ export function WhyMe() {
   return (
     <section ref={containerRef} className="py-24">
       <div className="mb-12 text-center">
-        {/* opacity:0 prevents FOUC - GSAP will animate to visible */}
-        <h2
-          className="whyme-title text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
-          style={{ opacity: 0, transform: 'translateY(60px)' }}
-        >
+        {/* CSS in globals.css hides these by default - GSAP reveals on scroll */}
+        <h2 className="whyme-title text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
           <HyperText duration={1500} delay={200} startOnView>
             Why Me?
           </HyperText>
         </h2>
-        <p
-          className="whyme-desc mx-auto mt-4 max-w-[700px] text-muted-foreground"
-          style={{ opacity: 0, transform: 'translateY(40px)' }}
-        >
+        <p className="whyme-desc mx-auto mt-4 max-w-[700px] text-muted-foreground">
           I bring a unique blend of technical skills and creative
           problem-solving to every project.
         </p>
@@ -462,7 +456,6 @@ export function WhyMe() {
             key={idx}
             {...feature}
             className={cn(feature.className, 'whyme-card')}
-            style={{ opacity: 0, transform: 'translateY(80px) scale(0.95)' }}
           />
         ))}
       </BentoGrid>

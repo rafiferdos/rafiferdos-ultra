@@ -271,3 +271,10 @@
 ::view-transition-new(root) {
   z-index: 2147483646;
 }
+/* GSAP Scroll Reveal - Initial Hidden States */
+.whyme-title,
+.whyme-desc,
+.whyme-card {
+  opacity: 0;
+  visibility: hidden;
+}
