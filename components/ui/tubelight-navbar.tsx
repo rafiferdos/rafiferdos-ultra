@@ -38,8 +38,8 @@ export function TubelightNavBar({
   const items: NavItem[] = [
     { name: 'Home', url: '#hero', Icon: IconHouse },
     { name: 'About', url: '#whyme', Icon: IconUser },
+    { name: 'Tech', url: '#techstack', Icon: IconFeather },
     { name: 'Projects', url: '#projects', Icon: IconStackPerspective },
-    { name: 'Tech', url: '#techstack', Icon: IconFeather }
   ]
 
   useEffect(() => {
@@ -55,7 +55,8 @@ export function TubelightNavBar({
     }
 
     const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0.5,
+      rootMargin: '-20% 0px -35% 0px', // Triggers when section is near middle-top
+      threshold: 0.1, // Low threshold to catch tall elements
     })
 
     items.forEach((item) => {

@@ -76,8 +76,8 @@ export default function Home() {
     <div className="p-5 max-w-8xl mx-auto w-11/12">
       <Hero />
       <WhyMe />
-      <Projects />
       <TechStack />
+      <Projects />
       <SmoothCursor />
     </div>
   )
