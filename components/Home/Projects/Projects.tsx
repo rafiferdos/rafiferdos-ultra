@@ -1,12 +1,19 @@
 'use client'
 
+// ... (imports)
 import { AuroraText } from '@/components/ui/aurora-text'
-import { BlurFade } from '@/components/ui/blur-fade'
+import { GsapReveal } from '@/components/ui/gsap-reveal'
 import { GsapText } from '@/components/ui/gsap-text'
 import { MagicCard } from '@/components/ui/magic-card'
 import { NumberTicker } from '@/components/ui/number-ticker'
 import { cn } from '@/lib/utils'
+import { useGSAP } from '@gsap/react' // Added useGSAP
+import gsap from 'gsap' // Added gsap
+import { ScrollTrigger } from 'gsap/ScrollTrigger' // Added ScrollTrigger
 import { ExternalLink, Github } from 'lucide-react'
+import { useRef } from 'react'
+
+gsap.registerPlugin(ScrollTrigger)
 
 // Project data - replace screenshots with your actual images
 const projects = [
@@ -64,7 +71,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
     return (
-        <BlurFade delay={0.2 + index * 0.1} inView>
+        <div className="project-card-reveal invisible h-full"> {/* Wrapped in div for clean GSAP targeting */}
             <MagicCard
                 className="group relative h-[420px] w-full overflow-hidden rounded-2xl"
                 gradientSize={250}
@@ -74,13 +81,6 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             >
                 {/* Screenshot Container with Scroll Effect */}
                 <div className="relative h-[280px] w-full overflow-hidden">
-                    {/* 
-            SCROLL-ON-HOVER EFFECT
-            -----------------------
-            The image is taller than the container.
-            On hover, it translates up to reveal more content.
-            Adjust the translateY percentage based on your screenshot height.
-          */}
                     <img
                         src={project.screenshot}
                         alt={project.title}
@@ -134,26 +134,58 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
                                 className="flex items-center gap-1.5 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
                             >
                                 <Github size={16} />
-                                Code
+                                code
                             </a>
                         )}
                     </div>
                 </div>
             </MagicCard>
-        </BlurFade>
+        </div>
     )
 }
 
 const Projects = () => {
+    const containerRef = useRef<HTMLElement>(null)
+
+    useGSAP(() => {
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: containerRef.current,
+                start: 'top 80%', // Start animation when section enters view
+                end: 'bottom 20%',
+                toggleActions: 'play none none reverse'
+            }
+        })
+
+        // Animate subtitle
+        tl.fromTo('.project-desc-reveal',
+            { y: 30, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' }
+        )
+            // Animate stats
+            .fromTo('.project-stats-reveal',
+                { scale: 0.9, autoAlpha: 0 },
+                { scale: 1, autoAlpha: 1, duration: 0.6, ease: 'back.out(1.7)' },
+                '-=0.4'
+            )
+            // Animate Cards Staggered
+            .fromTo('.project-card-reveal',
+                { y: 50, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
+                '-=0.2'
+            )
+
+    }, { scope: containerRef })
+
     return (
-        <section className="relative min-h-screen w-full py-20">
+        <section ref={containerRef} className="relative min-h-screen w-full py-20">
             {/* Background Pattern (matching TechStack) */}
             <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]" />
 
             {/* Section Header */}
             <div className="mb-24 flex flex-col items-center text-center">
-                {/* Title */}
-                <div className="overflow-hidden p-2">
+                {/* Title - Keeping GsapText for specialized animation */}
+                <div className="p-2">
                     <h2 className="text-5xl font-bold leading-[0.9] tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
                         <GsapText
                             className="inline-block text-foreground"
@@ -163,46 +195,44 @@ const Projects = () => {
                             Selected
                         </GsapText>
                         <span className="block md:inline-block md:ml-6">
-                            <AuroraText
-                                colors={['#FF6B6B', '#FF8E53', '#FFC107']}
-                                speed={2.5}
-                                className="font-bold"
-                            >
-                                Works
-                            </AuroraText>
+                            <GsapReveal delay={0.4}>
+                                <AuroraText
+                                    colors={['#FF6B6B', '#FF8E53', '#FFC107']}
+                                    speed={2.5}
+                                    className="font-bold"
+                                >
+                                    Works
+                                </AuroraText>
+                            </GsapReveal>
                         </span>
                     </h2>
                 </div>
 
-                <BlurFade delay={0.4} inView>
-                    <p className="mt-8 max-w-2xl text-xl text-muted-foreground md:text-2xl">
-                        Handpicked projects showcasing full-stack expertise, <br className="hidden md:block" />
-                        attention to detail, and performant code.
-                    </p>
-                </BlurFade>
+                <p className="project-desc-reveal invisible mt-8 max-w-2xl text-xl text-muted-foreground md:text-2xl">
+                    Handpicked projects showcasing full-stack expertise, <br className="hidden md:block" />
+                    attention to detail, and performant code.
+                </p>
 
                 {/* Stats with NumberTicker - Bigger & Bolder */}
-                <BlurFade delay={0.6} inView>
-                    <div className="mt-12 flex items-center gap-12 rounded-full border border-border/50 bg-background/50 px-8 py-4 backdrop-blur-sm">
-                        <div className="flex flex-col items-center">
-                            <span className="text-4xl font-bold text-foreground md:text-5xl">
-                                <NumberTicker value={47} delay={0.8} />+
-                            </span>
-                            <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                                Projects
-                            </span>
-                        </div>
-                        <div className="h-12 w-px bg-border/50" />
-                        <div className="flex flex-col items-center">
-                            <span className="text-4xl font-bold text-foreground md:text-5xl">
-                                <NumberTicker value={5} delay={1.0} />
-                            </span>
-                            <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                                Featured
-                            </span>
-                        </div>
+                <div className="project-stats-reveal invisible mt-12 flex items-center gap-12 rounded-full border border-border/50 bg-background/50 px-8 py-4 backdrop-blur-sm">
+                    <div className="flex flex-col items-center">
+                        <span className="text-4xl font-bold text-foreground md:text-5xl">
+                            <NumberTicker value={47} delay={0.8} />+
+                        </span>
+                        <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                            Projects
+                        </span>
                     </div>
-                </BlurFade>
+                    <div className="h-12 w-px bg-border/50" />
+                    <div className="flex flex-col items-center">
+                        <span className="text-4xl font-bold text-foreground md:text-5xl">
+                            <NumberTicker value={5} delay={1.0} />
+                        </span>
+                        <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                            Featured
+                        </span>
+                    </div>
+                </div>
             </div>
 
             {/* Projects Grid */}

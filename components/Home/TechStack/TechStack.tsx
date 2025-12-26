@@ -1,32 +1,60 @@
 'use client'
 
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern'
-import { BlurFade } from '@/components/ui/blur-fade'
 import { OrbitingCircles } from '@/components/ui/orbiting-circles'
 import { cn } from '@/lib/utils'
 import { DotLottiePlayer } from '@dotlottie/react-player'
-import { useState } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useRef, useState } from 'react'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const TechStack = () => {
   const [isHovering, setIsHovering] = useState(false)
+  const containerRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
+      }
+    })
+
+    tl.fromTo('.tech-title-reveal',
+      { y: 50, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' }
+    )
+      .fromTo('.tech-desc-reveal',
+        { y: 30, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' },
+        '-=0.6'
+      )
+      .fromTo('.tech-card-reveal',
+        { x: -50, autoAlpha: 0 },
+        { x: 0, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out' },
+        '-=0.4'
+      )
+
+  }, { scope: containerRef })
 
   return (
-    <section className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl">
+    <section ref={containerRef} className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl">
       {/* Background Pattern */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]"></div>
 
       <div className="mb-12 flex w-full flex-col items-center text-center">
-        <BlurFade delay={0.2}>
-          <h2 className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-5xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-            Technological Arsenal
-          </h2>
-        </BlurFade>
-        <BlurFade delay={0.3}>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            A curated collection of modern tools and frameworks I use to craft
-            exceptional digital experiences.
-          </p>
-        </BlurFade>
+        <h2 className="tech-title-reveal invisible pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-5xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
+          Technological Arsenal
+        </h2>
+        <p className="tech-desc-reveal invisible mt-4 max-w-2xl text-lg text-muted-foreground">
+          A curated collection of modern tools and frameworks I use to craft
+          exceptional digital experiences.
+        </p>
       </div>
 
       <div className="z-10 flex w-full flex-col items-center gap-8 md:flex-row md:items-center md:justify-between">
@@ -44,74 +72,68 @@ const TechStack = () => {
           />
 
           <div className="z-10 space-y-8">
-            <BlurFade delay={0.4} inView>
-              <div className="group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
-                <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
-                    ⚛️
-                  </span>
-                  Frontend Mastery
-                </h3>
-                <p className="text-muted-foreground">
-                  I specialize in the{' '}
-                  <span className="font-semibold text-foreground">
-                    JavaScript ecosystem
-                  </span>
-                  , leveraging the power of{' '}
-                  <span className="font-semibold text-foreground">Next.js</span>{' '}
-                  and{' '}
-                  <span className="font-semibold text-foreground">
-                    TypeScript
-                  </span>{' '}
-                  to build robust, scalable, and interactive user interfaces.
-                </p>
-              </div>
-            </BlurFade>
+            <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
+              <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
+                  ⚛️
+                </span>
+                Frontend Mastery
+              </h3>
+              <p className="text-muted-foreground">
+                I specialize in the{' '}
+                <span className="font-semibold text-foreground">
+                  JavaScript ecosystem
+                </span>
+                , leveraging the power of{' '}
+                <span className="font-semibold text-foreground">Next.js</span>{' '}
+                and{' '}
+                <span className="font-semibold text-foreground">
+                  TypeScript
+                </span>{' '}
+                to build robust, scalable, and interactive user interfaces.
+              </p>
+            </div>
 
-            <BlurFade delay={0.5} inView>
-              <div className="group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
-                <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
-                    🛠️
-                  </span>
-                  Backend & Architecture
-                </h3>
-                <p className="text-muted-foreground">
-                  On the server side, I architect solutions using{' '}
-                  <span className="font-semibold text-foreground">Node.js</span>
-                  ,{' '}
-                  <span className="font-semibold text-foreground">Express</span>
-                  , and modern databases like{' '}
-                  <span className="font-semibold text-foreground">
-                    PostgreSQL
-                  </span>{' '}
-                  and{' '}
-                  <span className="font-semibold text-foreground">MongoDB</span>
-                  .
-                </p>
-              </div>
-            </BlurFade>
+            <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
+              <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
+                  🛠️
+                </span>
+                Backend & Architecture
+              </h3>
+              <p className="text-muted-foreground">
+                On the server side, I architect solutions using{' '}
+                <span className="font-semibold text-foreground">Node.js</span>
+                ,{' '}
+                <span className="font-semibold text-foreground">Express</span>
+                , and modern databases like{' '}
+                <span className="font-semibold text-foreground">
+                  PostgreSQL
+                </span>{' '}
+                and{' '}
+                <span className="font-semibold text-foreground">MongoDB</span>
+                .
+              </p>
+            </div>
 
-            <BlurFade delay={0.6} inView>
-              <div className="group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
-                <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
-                    📱
-                  </span>
-                  Mobile & Beyond
-                </h3>
-                <p className="text-muted-foreground">
-                  Expanding into mobile with{' '}
-                  <span className="font-semibold text-foreground">
-                    React Native
-                  </span>{' '}
-                  and{' '}
-                  <span className="font-semibold text-foreground">Expo</span>, I
-                  bring the same level of quality and performance to native
-                  applications.
-                </p>
-              </div>
-            </BlurFade>
+            <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
+              <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
+                  📱
+                </span>
+                Mobile & Beyond
+              </h3>
+              <p className="text-muted-foreground">
+                Expanding into mobile with{' '}
+                <span className="font-semibold text-foreground">
+                  React Native
+                </span>{' '}
+                and{' '}
+                <span className="font-semibold text-foreground">Expo</span>, I
+                bring the same level of quality and performance to native
+                applications.
+              </p>
+            </div>
           </div>
         </div>
 

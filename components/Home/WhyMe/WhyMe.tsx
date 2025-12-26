@@ -371,21 +371,57 @@ const features = [
   }
 ]
 
+// ... (imports remain)
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 export function WhyMe() {
+  const containerRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
+      }
+    })
+
+    tl.fromTo('.whyme-title-reveal',
+      { y: 50, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' }
+    )
+      .fromTo('.whyme-desc-reveal',
+        { y: 30, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' },
+        '-=0.6'
+      )
+      .fromTo('.bento-card-reveal',
+        { y: 50, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
+        '-=0.4'
+      )
+
+  }, { scope: containerRef })
+
   return (
-    <section className="py-24">
+    <section ref={containerRef} className="py-24">
       <div className="mb-12 text-center">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+        <h2 className="whyme-title-reveal invisible text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
           Why Me?
         </h2>
-        <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground">
+        <p className="whyme-desc-reveal invisible mx-auto mt-4 max-w-[700px] text-muted-foreground">
           I bring a unique blend of technical skills and creative
           problem-solving to every project.
         </p>
       </div>
       <BentoGrid>
         {features.map((feature, idx) => (
-          <BentoCard key={idx} {...feature} />
+          <BentoCard key={idx} {...feature} className={cn(feature.className, "bento-card-reveal invisible")} />
         ))}
       </BentoGrid>
     </section>

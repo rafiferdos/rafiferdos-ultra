@@ -49,8 +49,8 @@ export function GsapText({
                     delay: delay,
                     scrollTrigger: {
                         trigger: container.current,
-                        start: 'top 85%',
-                        toggleActions: 'restart none none reset'
+                        start: 'top 75%',
+                        toggleActions: 'play none none reset'
                     }
                 }
             )
