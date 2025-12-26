@@ -39,7 +39,7 @@ export function TubelightNavBar({
     { name: 'Home', url: '#hero', Icon: IconHouse },
     { name: 'About', url: '#whyme', Icon: IconUser },
     { name: 'Projects', url: '#projects', Icon: IconStackPerspective },
-    { name: 'Resume', url: '#techstack', Icon: IconFeather }
+    { name: 'Tech', url: '#techstack', Icon: IconFeather }
   ]
 
   useEffect(() => {
