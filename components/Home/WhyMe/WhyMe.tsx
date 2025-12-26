@@ -437,7 +437,7 @@ export function WhyMe() {
   )
 
   return (
-    <section ref={containerRef} className="py-24">
+    <section id="whyme" ref={containerRef} className="py-24">
       <div className="mb-12 text-center">
         {/* CSS in globals.css hides these by default - GSAP reveals on scroll */}
         <h2 className="whyme-title text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">

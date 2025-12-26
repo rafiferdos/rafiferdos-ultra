@@ -46,7 +46,7 @@ const TechStack = () => {
   }, { scope: containerRef })
 
   return (
-    <section ref={containerRef} className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl">
+    <section id="techstack" ref={containerRef} className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl">
       {/* Background Pattern */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]"></div>
 

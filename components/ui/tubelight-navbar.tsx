@@ -1,45 +1,58 @@
 'use client'
 
-import { cn } from '@/lib/utils'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Briefcase, FileText, Home, LucideIcon, User } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
 import { AnimatedThemeToggler } from './animated-theme-toggler'
 import GlassSurface from './GlassSurface'
+
+// Icons
+import IconHouse from '@/components/icons/House'
+import IconUser from '@/components/icons/User'
+import IconStackPerspective from '@/components/icons/Stack'
+import IconFeather from '@/components/icons/Feather'
+
+// GSAP
+import gsap from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+
+gsap.registerPlugin(ScrollToPlugin)
 
 interface NavItem {
   name: string
   url: string
-  icon: LucideIcon
+  Icon: React.ElementType
 }
 
 interface TubelightNavBarProps {
-  items?: NavItem[]
   className?: string
   defaultActive?: string
 }
 
 export function TubelightNavBar({
-  items = [
-    { name: 'Home', url: '#', icon: Home },
-    { name: 'About', url: '#', icon: User },
-    { name: 'Projects', url: '#', icon: Briefcase },
-    { name: 'Resume', url: '#', icon: FileText }
-  ],
   className,
   defaultActive = 'Home'
 }: TubelightNavBarProps) {
   const [activeTab, setActiveTab] = useState(defaultActive)
 
-  useEffect(() => {
-    const handleResize = () => {
-      // setIsMobile(window.innerWidth < 768)
-    }
+  const items: NavItem[] = [
+    { name: 'Home', url: '#hero', Icon: IconHouse },
+    { name: 'About', url: '#whyme', Icon: IconUser },
+    { name: 'Projects', url: '#projects', Icon: IconStackPerspective },
+    { name: 'Resume', url: '#techstack', Icon: IconFeather }
+  ]
 
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const handleScroll = (name: string, url: string) => {
+    setActiveTab(name)
+    const target = document.querySelector(url)
+    if (target) {
+      gsap.to(window, {
+        scrollTo: { y: target as Element, offsetY: 100 },
+        duration: 1.2,
+        ease: 'power4.inOut'
+      })
+    }
+  }
 
   return (
     <div
@@ -59,58 +72,50 @@ export function TubelightNavBar({
         displace={1}
         mixBlendMode='difference'
       >
-        {items.map((item) => {
-          const Icon = item.icon
-          const isActive = activeTab === item.name
+        <div className="flex items-center px-2"> {/* Wrapper for flex alignment if needed, though map returns elements */}
+          {items.map((item) => {
+            const Icon = item.Icon
+            const isActive = activeTab === item.name
 
-          return (
-            <button
-              key={item.name}
-              onClick={() => setActiveTab(item.name)}
-              className={cn(
-                'relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors',
-                'text-foreground/80 hover:text-primary',
-                isActive && 'text-primary'
-              )}
-            >
-              <span className="hidden md:inline">{item.name}</span>
-              <span className="md:hidden">
-                <Icon size={18} strokeWidth={2.5} />
-              </span>
-              {isActive && (
-                <motion.div
-                  layoutId="lamp"
-                  className="absolute inset-0 w-full bg-primary/5 rounded-full -z-10"
-                  initial={false}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 30
-                  }}
-                >
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-t-full">
-                    <div className="absolute w-12 h-6 bg-primary/30 rounded-full blur-md -top-2 -left-2" />
-                    <div className="absolute w-8 h-6 bg-primary/30 rounded-full blur-md -top-1" />
-                    <div className="absolute w-4 h-4 bg-primary/30 rounded-full blur-sm top-0 left-2" />
-                  </div>
-                </motion.div>
-              )}
-            </button>
-          )
-        })}
-        <AnimatedThemeToggler className="pr-2" />
+            return (
+              <button
+                key={item.name}
+                onClick={() => handleScroll(item.name, item.url)}
+                className={cn(
+                  'relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors',
+                  'text-foreground/80 hover:text-primary',
+                  isActive && 'text-primary'
+                )}
+                aria-label={item.name}
+              >
+                <span className="relative z-10 block">
+                  <Icon size={24} />
+                </span>
+
+                {isActive && (
+                  <motion.div
+                    layoutId="lamp"
+                    className="absolute inset-0 w-full bg-primary/5 rounded-full -z-10"
+                    initial={false}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 300,
+                      damping: 30
+                    }}
+                  >
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-t-full">
+                      <div className="absolute w-12 h-6 bg-primary/30 rounded-full blur-md -top-2 -left-2" />
+                      <div className="absolute w-8 h-6 bg-primary/30 rounded-full blur-md -top-1" />
+                      <div className="absolute w-4 h-4 bg-primary/30 rounded-full blur-sm top-0 left-2" />
+                    </div>
+                  </motion.div>
+                )}
+              </button>
+            )
+          })}
+          <AnimatedThemeToggler className="pr-2 ml-2" />
+        </div>
       </GlassSurface>
     </div>
   )
-}
-
-export default function TubelightNavBarDemo() {
-  const navItems = [
-    { name: 'Home', url: '#', icon: Home },
-    { name: 'About', url: '#', icon: User },
-    { name: 'Projects', url: '#', icon: Briefcase },
-    { name: 'Resume', url: '#', icon: FileText }
-  ]
-
-  return <TubelightNavBar items={navItems} />
 }

@@ -1,5 +1,4 @@
 import React from 'react'
-import TubelightNavBar from '../ui/tubelight-navbar'
 
 const Navbar = () => {
   return (
