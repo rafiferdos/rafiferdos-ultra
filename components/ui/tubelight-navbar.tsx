@@ -55,8 +55,8 @@ export function TubelightNavBar({
     }
 
     const observer = new IntersectionObserver(handleIntersection, {
-      rootMargin: '-20% 0px -35% 0px', // Triggers when section is near middle-top
-      threshold: 0.1, // Low threshold to catch tall elements
+      rootMargin: '-45% 0px -45% 0px',
+      threshold: 0,
     })
 
     items.forEach((item) => {
@@ -69,12 +69,23 @@ export function TubelightNavBar({
     return () => observer.disconnect()
   }, [])
 
-  const handleScroll = (name: string, url: string) => {
+  useEffect(() => {
+    const handleWindowScroll = () => {
+      if (window.scrollY < 100) {
+        setActiveTab('Home')
+      }
+    }
+
+    window.addEventListener('scroll', handleWindowScroll)
+    return () => window.removeEventListener('scroll', handleWindowScroll)
+  }, [])
+
+  const handleNavClick = (name: string, url: string) => {
     setActiveTab(name)
     const target = document.querySelector(url)
     if (target) {
       gsap.to(window, {
-        scrollTo: { y: target as Element, offsetY: 100 },
+        scrollTo: { y: target as Element, offsetY: 0 },
         duration: 1.2,
         ease: 'power4.inOut'
       })
@@ -107,7 +118,7 @@ export function TubelightNavBar({
             return (
               <button
                 key={item.name}
-                onClick={() => handleScroll(item.name, item.url)}
+                onClick={() => handleNavClick(item.name, item.url)}
                 className={cn(
                   'relative cursor-pointer text-sm font-semibold px-6 py-1 rounded-full transition-colors',
                   'text-foreground/80 hover:text-[#FFCC00]',
