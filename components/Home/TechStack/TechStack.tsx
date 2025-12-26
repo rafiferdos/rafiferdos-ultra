@@ -1,5 +1,8 @@
 'use client'
 
+import IconSquareChartLine from '@/components/icons/Mobile'
+import IconSparkle from '@/components/icons/Sparkle'
+import IconStorage from '@/components/icons/Storage'
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern'
 import { OrbitingCircles } from '@/components/ui/orbiting-circles'
 import { cn } from '@/lib/utils'
@@ -75,7 +78,7 @@ const TechStack = () => {
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
-                  ⚛️
+                  <IconSparkle size="20px" />
                 </span>
                 Frontend Mastery
               </h3>
@@ -97,7 +100,7 @@ const TechStack = () => {
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
-                  🛠️
+                  <IconStorage size="20px" />
                 </span>
                 Backend & Architecture
               </h3>
@@ -119,7 +122,7 @@ const TechStack = () => {
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
-                  📱
+                  <IconSquareChartLine size="20px" />
                 </span>
                 Mobile & Beyond
               </h3>
