@@ -39,10 +39,12 @@ export function BlurFade({
   inView = false,
   inViewMargin = '-50px',
   blur = '6px',
+  //   once = false, // Add once prop, default false for repeat
   ...props
 }: BlurFadeProps) {
   const ref = useRef(null)
-  const inViewResult = useInView(ref, { once: true, margin: inViewMargin })
+  // Use once: false to allow re-triggering
+  const inViewResult = useInView(ref, { once: false, margin: inViewMargin })
   const isInView = !inView || inViewResult
   const defaultVariants: Variants = {
     hidden: {

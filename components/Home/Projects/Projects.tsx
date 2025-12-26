@@ -2,9 +2,9 @@
 
 import { AuroraText } from '@/components/ui/aurora-text'
 import { BlurFade } from '@/components/ui/blur-fade'
+import { GsapText } from '@/components/ui/gsap-text'
 import { MagicCard } from '@/components/ui/magic-card'
 import { NumberTicker } from '@/components/ui/number-ticker'
-import { TextAnimate } from '@/components/ui/text-animate'
 import { cn } from '@/lib/utils'
 import { ExternalLink, Github } from 'lucide-react'
 
@@ -153,15 +153,15 @@ const Projects = () => {
             {/* Section Header */}
             <div className="mb-24 flex flex-col items-center text-center">
                 {/* Title */}
-                <div className="overflow-hidden">
+                <div className="overflow-hidden p-2">
                     <h2 className="text-5xl font-bold leading-[0.9] tracking-tight sm:text-7xl md:text-8xl lg:text-9xl">
-                        <TextAnimate
-                            animation="blurInUp"
-                            by="character"
+                        <GsapText
                             className="inline-block text-foreground"
+                            delay={0.2}
+                            stagger={0.06}
                         >
                             Selected
-                        </TextAnimate>
+                        </GsapText>
                         <span className="block md:inline-block md:ml-6">
                             <AuroraText
                                 colors={['#FF6B6B', '#FF8E53', '#FFC107']}
