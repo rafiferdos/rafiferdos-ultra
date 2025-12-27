@@ -3,6 +3,7 @@ import Projects from '@/components/Home/Projects/Projects'
 import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
 import { SmoothCursor } from '@/components/ui/smooth-cursor'
+import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -79,6 +80,7 @@ export default function Home() {
       <TechStack />
       <Projects />
       <SmoothCursor />
+      <ScrollToTop />
     </div>
   )
 }
