@@ -1,16 +1,13 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { AnimatedThemeToggler } from './animated-theme-toggler'
 import GlassSurface from './GlassSurface'
 
 // Icons
-import IconHouse from '@/components/icons/House'
-import IconUser from '@/components/icons/User'
-import IconStackPerspective from '@/components/icons/Stack'
-import IconFeather from '@/components/icons/Feather'
+import { Home, User, Cpu, Briefcase } from 'lucide-react'
 
 // GSAP
 import gsap from 'gsap'
@@ -36,10 +33,10 @@ export function TubelightNavBar({
   const [activeTab, setActiveTab] = useState(defaultActive)
 
   const items: NavItem[] = [
-    { name: 'Home', url: '#hero', Icon: IconHouse },
-    { name: 'About', url: '#whyme', Icon: IconUser },
-    { name: 'Tech', url: '#techstack', Icon: IconFeather },
-    { name: 'Projects', url: '#projects', Icon: IconStackPerspective },
+    { name: 'Home', url: '#hero', Icon: Home },
+    { name: 'About', url: '#whyme', Icon: User },
+    { name: 'Tech', url: '#techstack', Icon: Cpu },
+    { name: 'Projects', url: '#projects', Icon: Briefcase },
   ]
 
   useEffect(() => {
@@ -120,19 +117,25 @@ export function TubelightNavBar({
                 key={item.name}
                 onClick={() => handleNavClick(item.name, item.url)}
                 className={cn(
-                  'relative cursor-pointer text-sm font-semibold px-6 py-1 rounded-full transition-colors',
-                  'text-foreground/80 hover:text-[#FFCC00]',
-                  isActive && 'text-[#FFCC00] drop-shadow-[0_0_12px_rgba(255,204,0,0.8)]'
+                  'relative cursor-pointer flex items-center justify-center gap-2 rounded-full transition-all duration-300',
+                  isActive ? 'px-5 py-2 text-[#FFCC00] drop-shadow-[0_0_8px_rgba(255,204,0,0.5)]' : 'px-3 py-2 text-foreground/60 hover:text-foreground/80'
                 )}
                 aria-label={item.name}
               >
-                <span className="relative z-10 block">
-                  <Icon
-                    size={34}
-                    style={isActive ? {
-                      filter: 'sepia(100%) hue-rotate(20deg) saturate(800%) drop-shadow(0 0 8px rgba(255, 204, 0, 0.8))'
-                    } : {}}
-                  />
+                <span className="relative z-10 flex items-center gap-2">
+                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.span
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: 'auto', opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        className="overflow-hidden whitespace-nowrap text-sm font-semibold"
+                      >
+                        {item.name}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </span>
 
                 {isActive && (
