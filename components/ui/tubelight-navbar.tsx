@@ -36,14 +36,16 @@ export function TubelightNavBar({
     { name: 'Home', url: '#hero', Icon: Home },
     { name: 'About', url: '#whyme', Icon: User },
     { name: 'Tech', url: '#techstack', Icon: Cpu },
-    { name: 'Projects', url: '#projects', Icon: Briefcase },
+    { name: 'Projects', url: '#projects', Icon: Briefcase }
   ]
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const activeItem = items.find((item) => item.url === `#${entry.target.id}`)
+          const activeItem = items.find(
+            (item) => item.url === `#${entry.target.id}`
+          )
           if (activeItem) {
             setActiveTab(activeItem.name)
           }
@@ -53,7 +55,7 @@ export function TubelightNavBar({
 
     const observer = new IntersectionObserver(handleIntersection, {
       rootMargin: '-45% 0px -45% 0px',
-      threshold: 0,
+      threshold: 0
     })
 
     items.forEach((item) => {
@@ -105,9 +107,11 @@ export function TubelightNavBar({
         blur={10}
         distortionScale={-110}
         displace={1}
-        mixBlendMode='difference'
+        mixBlendMode="difference"
       >
-        <div className="flex items-center px-2"> {/* Wrapper for flex alignment if needed, though map returns elements */}
+        <div className="flex items-center px-2">
+          {' '}
+          {/* Wrapper for flex alignment if needed, though map returns elements */}
           {items.map((item) => {
             const Icon = item.Icon
             const isActive = activeTab === item.name
@@ -118,7 +122,9 @@ export function TubelightNavBar({
                 onClick={() => handleNavClick(item.name, item.url)}
                 className={cn(
                   'relative cursor-pointer flex items-center justify-center gap-2 rounded-full transition-all duration-300',
-                  isActive ? 'px-5 py-2 text-[#FFCC00] drop-shadow-[0_0_8px_rgba(255,204,0,0.5)]' : 'px-3 py-2 text-foreground/60 hover:text-foreground/80'
+                  isActive
+                    ? 'px-5 py-2 text-[#FFCC00] drop-shadow-[0_0_8px_rgba(255,204,0,0.5)]'
+                    : 'px-3 py-2 text-foreground/60 hover:text-foreground/80'
                 )}
                 aria-label={item.name}
               >

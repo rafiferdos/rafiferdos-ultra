@@ -47,7 +47,7 @@ export function PreloadSplash({
             markReady()
             // Restore scrolling
             document.documentElement.style.overflow = ''
-          } catch { }
+          } catch {}
         }
       }, 500) // match CSS duration below
     }, 4000)

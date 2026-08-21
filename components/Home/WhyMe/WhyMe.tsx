@@ -398,8 +398,8 @@ export function WhyMe() {
         scrollTrigger: {
           trigger: '.whyme-title',
           start: 'top 85%',
-          toggleActions: 'play none none reverse',
-        },
+          toggleActions: 'play none none reverse'
+        }
       })
 
       // 3. SCROLL REVEAL - Description
@@ -411,8 +411,8 @@ export function WhyMe() {
         scrollTrigger: {
           trigger: '.whyme-desc',
           start: 'top 85%',
-          toggleActions: 'play none none reverse',
-        },
+          toggleActions: 'play none none reverse'
+        }
       })
 
       // 4. SCROLL REVEAL - Cards (each with its own trigger)
@@ -428,8 +428,8 @@ export function WhyMe() {
           scrollTrigger: {
             trigger: card,
             start: 'top 90%',
-            toggleActions: 'play none none reverse',
-          },
+            toggleActions: 'play none none reverse'
+          }
         })
       })
     },

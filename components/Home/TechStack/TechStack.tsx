@@ -18,35 +18,50 @@ const TechStack = () => {
   const [isHovering, setIsHovering] = useState(false)
   const containerRef = useRef<HTMLElement>(null)
 
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse'
-      }
-    })
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse'
+        }
+      })
 
-    tl.fromTo('.tech-title-reveal',
-      { y: 50, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' }
-    )
-      .fromTo('.tech-desc-reveal',
-        { y: 30, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' },
-        '-=0.6'
+      tl.fromTo(
+        '.tech-title-reveal',
+        { y: 50, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' }
       )
-      .fromTo('.tech-card-reveal',
-        { x: -50, autoAlpha: 0 },
-        { x: 0, autoAlpha: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out' },
-        '-=0.4'
-      )
-
-  }, { scope: containerRef })
+        .fromTo(
+          '.tech-desc-reveal',
+          { y: 30, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out' },
+          '-=0.6'
+        )
+        .fromTo(
+          '.tech-card-reveal',
+          { x: -50, autoAlpha: 0 },
+          {
+            x: 0,
+            autoAlpha: 1,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power3.out'
+          },
+          '-=0.4'
+        )
+    },
+    { scope: containerRef }
+  )
 
   return (
-    <section id="techstack" ref={containerRef} className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl">
+    <section
+      id="techstack"
+      ref={containerRef}
+      className="relative flex min-h-[800px] w-full flex-col items-center justify-center rounded-lg bg-background py-20 md:shadow-xl"
+    >
       {/* Background Pattern */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)]"></div>
 
@@ -77,7 +92,13 @@ const TechStack = () => {
           <div className="z-10 space-y-8">
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <IconSparkle size="48px" style={{ filter: 'sepia(100%) hue-rotate(190deg) saturate(500%) drop-shadow(0 0 15px rgba(59, 130, 246, 0.6))' }} />
+                <IconSparkle
+                  size="48px"
+                  style={{
+                    filter:
+                      'sepia(100%) hue-rotate(190deg) saturate(500%) drop-shadow(0 0 15px rgba(59, 130, 246, 0.6))'
+                  }}
+                />
                 Frontend Mastery
               </h3>
               <p className="text-muted-foreground">
@@ -97,27 +118,37 @@ const TechStack = () => {
 
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <IconStorage size="48px" style={{ filter: 'sepia(100%) hue-rotate(90deg) saturate(500%) drop-shadow(0 0 15px rgba(34, 197, 94, 0.6))' }} />
+                <IconStorage
+                  size="48px"
+                  style={{
+                    filter:
+                      'sepia(100%) hue-rotate(90deg) saturate(500%) drop-shadow(0 0 15px rgba(34, 197, 94, 0.6))'
+                  }}
+                />
                 Backend & Architecture
               </h3>
               <p className="text-muted-foreground">
                 On the server side, I architect solutions using{' '}
-                <span className="font-semibold text-foreground">Node.js</span>
-                ,{' '}
-                <span className="font-semibold text-foreground">Express</span>
-                , and modern databases like{' '}
+                <span className="font-semibold text-foreground">Node.js</span>,{' '}
+                <span className="font-semibold text-foreground">Express</span>,
+                and modern databases like{' '}
                 <span className="font-semibold text-foreground">
                   PostgreSQL
                 </span>{' '}
                 and{' '}
-                <span className="font-semibold text-foreground">MongoDB</span>
-                .
+                <span className="font-semibold text-foreground">MongoDB</span>.
               </p>
             </div>
 
             <div className="tech-card-reveal invisible group rounded-xl border border-transparent bg-background/50 p-6 transition-all">
               <h3 className="mb-2 flex items-center gap-2 text-xl font-semibold text-foreground">
-                <IconSquareChartLine size="48px" style={{ filter: 'sepia(100%) hue-rotate(260deg) saturate(500%) drop-shadow(0 0 15px rgba(168, 85, 247, 0.6))' }} />
+                <IconSquareChartLine
+                  size="48px"
+                  style={{
+                    filter:
+                      'sepia(100%) hue-rotate(260deg) saturate(500%) drop-shadow(0 0 15px rgba(168, 85, 247, 0.6))'
+                  }}
+                />
                 Mobile & Beyond
               </h3>
               <p className="text-muted-foreground">
@@ -125,9 +156,8 @@ const TechStack = () => {
                 <span className="font-semibold text-foreground">
                   React Native
                 </span>{' '}
-                and{' '}
-                <span className="font-semibold text-foreground">Expo</span>, I
-                bring the same level of quality and performance to native
+                and <span className="font-semibold text-foreground">Expo</span>,
+                I bring the same level of quality and performance to native
                 applications.
               </p>
             </div>

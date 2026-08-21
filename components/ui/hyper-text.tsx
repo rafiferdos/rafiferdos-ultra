@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion, MotionProps } from "motion/react"
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, MotionProps } from 'motion/react'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 type CharacterSet = string[] | readonly string[]
 
@@ -27,7 +27,7 @@ interface HyperTextProps extends MotionProps {
 }
 
 const DEFAULT_CHARACTER_SET = Object.freeze(
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 ) as readonly string[]
 
 const getRandomInt = (max: number): number => Math.floor(Math.random() * max)
@@ -37,18 +37,18 @@ export function HyperText({
   className,
   duration = 800,
   delay = 0,
-  as: Component = "div",
+  as: Component = 'div',
   startOnView = false,
   animateOnHover = true,
   characterSet = DEFAULT_CHARACTER_SET,
   ...props
 }: HyperTextProps) {
   const MotionComponent = motion.create(Component, {
-    forwardMotionProps: true,
+    forwardMotionProps: true
   })
 
   const [displayText, setDisplayText] = useState<string[]>(() =>
-    children.split("")
+    children.split('')
   )
   const [isAnimating, setIsAnimating] = useState(false)
   const iterationCount = useRef(0)
@@ -79,7 +79,7 @@ export function HyperText({
           observer.disconnect()
         }
       },
-      { threshold: 0.1, rootMargin: "-30% 0px -30% 0px" }
+      { threshold: 0.1, rootMargin: '-30% 0px -30% 0px' }
     )
 
     if (elementRef.current) {
@@ -105,7 +105,7 @@ export function HyperText({
 
       setDisplayText((currentText) =>
         currentText.map((letter, index) =>
-          letter === " "
+          letter === ' '
             ? letter
             : index <= iterationCount.current
               ? children[index]
@@ -128,7 +128,7 @@ export function HyperText({
   return (
     <MotionComponent
       ref={elementRef}
-      className={cn("overflow-hidden py-2 text-4xl font-bold", className)}
+      className={cn('overflow-hidden py-2 text-4xl font-bold', className)}
       onMouseEnter={handleAnimationTrigger}
       {...props}
     >
@@ -136,7 +136,7 @@ export function HyperText({
         {displayText.map((letter, index) => (
           <motion.span
             key={index}
-            className={cn("font-mono", letter === " " ? "w-3" : "")}
+            className={cn('font-mono', letter === ' ' ? 'w-3' : '')}
           >
             {letter.toUpperCase()}
           </motion.span>

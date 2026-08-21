@@ -26,56 +26,73 @@ export default function HeroClient() {
     'App Developer'
   ]
 
-  useGSAP(() => {
-    // Entrance animations
-    const tl = gsap.timeline()
+  useGSAP(
+    () => {
+      // Entrance animations
+      const tl = gsap.timeline()
 
-    tl.from('.hero-title-reveal', {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: 'power3.out'
-    })
-      .from('.hero-text-reveal', {
-        y: 30,
+      tl.from('.hero-title-reveal', {
+        y: 50,
         opacity: 0,
-        duration: 0.8,
+        duration: 1,
+        stagger: 0.2,
         ease: 'power3.out'
-      }, '-=0.5')
-      .from('.hero-desc-reveal', {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, '-=0.6')
-      .from('.hero-btn-reveal', {
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'back.out(1.7)'
-      }, '-=0.6')
+      })
+        .from(
+          '.hero-text-reveal',
+          {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power3.out'
+          },
+          '-=0.5'
+        )
+        .from(
+          '.hero-desc-reveal',
+          {
+            y: 20,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power3.out'
+          },
+          '-=0.6'
+        )
+        .from(
+          '.hero-btn-reveal',
+          {
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'back.out(1.7)'
+          },
+          '-=0.6'
+        )
 
-
-    // Rocket Launch Animation using ScrollTrigger
-    gsap.to('.rocket-container', {
-      y: -window.innerHeight - 200,
-      ease: 'power1.in',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1, // Smooth scrubbing
-        // markers: true
-      }
-    })
-
-  }, { scope: containerRef })
+      // Rocket Launch Animation using ScrollTrigger
+      gsap.to('.rocket-container', {
+        y: -window.innerHeight - 200,
+        ease: 'power1.in',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1 // Smooth scrubbing
+          // markers: true
+        }
+      })
+    },
+    { scope: containerRef }
+  )
 
   return (
     // Main grid container
-    <section id="hero" ref={containerRef} className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center px-4 min-h-[calc(100vh-12rem)] relative">
+    <section
+      id="hero"
+      ref={containerRef}
+      className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center px-4 min-h-[calc(100vh-12rem)] relative"
+    >
       {/* Left column with text content */}
       <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl h-full">
         <div className="hero-title-reveal">
@@ -107,7 +124,9 @@ export default function HeroClient() {
 
         <div className="flex items-center justify-center w-fit gap-2">
           <div className="hero-btn-reveal">
-            <Link href={'/resume.pdf'}> {/* Assuming resume link, keeping consistent */}
+            <Link href={'/resume.pdf'}>
+              {' '}
+              {/* Assuming resume link, keeping consistent */}
               <RainbowButton
                 className="rounded-full h-10 px-12"
                 variant={'outline'}
@@ -142,9 +161,7 @@ export default function HeroClient() {
       </div>
 
       {/* Rocket Animation */}
-      <div
-        className="rocket-container absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
+      <div className="rocket-container absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
         <DotLottiePlayer
           src="/rocket-launch.lottie"
           autoplay
