@@ -156,12 +156,12 @@ function Studio({ onLogout }: { onLogout: () => void }) {
   return (
     <main className="min-h-svh bg-muted/20">
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4">
           <div>
             <p className="text-base font-semibold tracking-tight">
               Rafi · Studio
             </p>
-            <p className="text-[10px] uppercase tracking-[.2em] text-muted-foreground">
+            <p className="hidden text-[10px] uppercase tracking-[.2em] text-muted-foreground sm:block">
               Portfolio control plane
             </p>
           </div>
@@ -175,7 +175,7 @@ function Studio({ onLogout }: { onLogout: () => void }) {
             </button>
             <button
               onClick={logout}
-              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium"
+              className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-xs font-medium sm:px-4"
             >
               <LogOut className="size-4" /> Sign out
             </button>
@@ -359,7 +359,7 @@ function ProjectPanel({
             placeholder="Outcome-focused description"
             className={textarea}
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             <select
               name="discipline"
               className={input}
@@ -393,7 +393,7 @@ function ProjectPanel({
             placeholder="Tags: Ecommerce, Realtime, Dashboard"
             className={input}
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             <input
               name="liveUrl"
               type="url"
@@ -407,14 +407,14 @@ function ProjectPanel({
               className={input}
             />
           </div>
-          <div className="grid grid-cols-[1fr_auto] gap-3">
+          <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
             <input
               value={imageUrl}
               onChange={(event) => setImageUrl(event.target.value)}
               placeholder="Cloudinary image URL"
               className={input}
             />
-            <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-3 text-xs font-medium">
+            <label className="inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border px-3 text-xs font-medium">
               <Upload className="size-4" /> Upload
               <input
                 type="file"
@@ -466,12 +466,36 @@ function BlogPanel({
   setError: (value: string) => void
 }) {
   const [saving, setSaving] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
+
+  async function upload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (!file) return
+    const form = new FormData()
+    form.append('file', file)
+    setSaving(true)
+    try {
+      const response = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: form
+      })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error)
+      setImageUrl(result.url)
+    } catch (value) {
+      setError(value instanceof Error ? value.message : 'Upload failed')
+    } finally {
+      setSaving(false)
+    }
+  }
+
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setSaving(true)
     const form = event.currentTarget
     const values = Object.fromEntries(new FormData(form))
-    const slug = String(values.title)
+    const slugSource = String(values.slug || values.title)
+    const slug = slugSource
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9]+/g, '-')
@@ -483,8 +507,20 @@ function BlogPanel({
       excerpt: values.excerpt,
       content: values.content,
       category: values.category,
-      publishedAt: new Date().toISOString().slice(0, 10),
-      readTime: `${Math.max(1, Math.ceil(String(values.content).split(/\s+/).length / 220))} min read`,
+      format: values.format,
+      tags: String(values.tags)
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean),
+      publishedAt: values.publishedAt || new Date().toISOString().slice(0, 10),
+      readTime:
+        values.readTime ||
+        `${Math.max(1, Math.ceil(String(values.content).split(/\s+/).length / 220))} min read`,
+      imageUrl: imageUrl || null,
+      featured: values.featured === 'on',
+      seoTitle: values.seoTitle || null,
+      seoDescription: values.seoDescription || null,
+      canonicalUrl: values.canonicalUrl || null,
       published: values.published === 'on'
     }
     try {
@@ -493,6 +529,7 @@ function BlogPanel({
         body: JSON.stringify({ entity: 'blogs', record })
       })
       form.reset()
+      setImageUrl('')
       await onSaved()
     } catch (value) {
       setError(value instanceof Error ? value.message : 'Save failed')
@@ -501,7 +538,7 @@ function BlogPanel({
     }
   }
   return (
-    <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr]">
+    <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
       <form
         onSubmit={save}
         className="h-fit rounded-2xl border border-border bg-background p-5"
@@ -517,12 +554,33 @@ function BlogPanel({
             placeholder="Article title"
             className={input}
           />
-          <input
-            name="category"
-            required
-            placeholder="Engineering"
-            className={input}
-          />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <input
+              name="slug"
+              placeholder="Custom slug (optional)"
+              className={input}
+            />
+            <input
+              name="category"
+              required
+              placeholder="Category: Engineering"
+              className={input}
+            />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <select name="format" defaultValue="Article" className={input}>
+              <option>Article</option>
+              <option>Guide</option>
+              <option>Case study</option>
+              <option>Note</option>
+            </select>
+            <input
+              name="tags"
+              required
+              placeholder="Tags: Next.js, AI, API"
+              className={input}
+            />
+          </div>
           <textarea
             name="excerpt"
             required
@@ -537,10 +595,77 @@ function BlogPanel({
             placeholder="Article body. Separate paragraphs with a blank line."
             className={textarea}
           />
-          <label className="flex items-center gap-2 text-sm">
-            <input name="published" type="checkbox" defaultChecked /> Publish
-            immediately
-          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="grid gap-1.5 text-xs text-muted-foreground">
+              Publish date
+              <input
+                name="publishedAt"
+                type="date"
+                defaultValue={new Date().toISOString().slice(0, 10)}
+                className={input}
+              />
+            </label>
+            <label className="grid gap-1.5 text-xs text-muted-foreground">
+              Read time override
+              <input
+                name="readTime"
+                placeholder="Auto calculated"
+                className={input}
+              />
+            </label>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
+            <input
+              value={imageUrl}
+              onChange={(event) => setImageUrl(event.target.value)}
+              placeholder="Cloudinary cover image URL"
+              className={input}
+            />
+            <label className="inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border border-border px-4 text-xs font-medium">
+              <Upload className="size-4" />
+              Upload cover
+              <input
+                type="file"
+                accept="image/*"
+                onChange={upload}
+                className="hidden"
+              />
+            </label>
+          </div>
+          <details className="rounded-xl border border-border bg-muted/20 p-4">
+            <summary className="cursor-pointer text-sm font-semibold">
+              Search and sharing options
+            </summary>
+            <div className="mt-4 grid gap-3">
+              <input
+                name="seoTitle"
+                placeholder="SEO title (optional)"
+                className={input}
+              />
+              <textarea
+                name="seoDescription"
+                rows={2}
+                placeholder="SEO description (optional)"
+                className={textarea}
+              />
+              <input
+                name="canonicalUrl"
+                type="url"
+                placeholder="Canonical URL (optional)"
+                className={input}
+              />
+            </div>
+          </details>
+          <div className="flex flex-wrap gap-x-5 gap-y-3 rounded-xl border border-border bg-muted/20 p-4">
+            <label className="flex items-center gap-2 text-sm">
+              <input name="published" type="checkbox" defaultChecked />
+              Publish immediately
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input name="featured" type="checkbox" />
+              Feature this article
+            </label>
+          </div>
           <button
             disabled={saving}
             className="h-11 rounded-xl bg-foreground text-sm font-semibold text-background"
@@ -553,7 +678,8 @@ function BlogPanel({
         items={items.map((item) => ({
           id: item.id,
           title: item.title,
-          meta: `${item.category} · ${item.published ? 'Published' : 'Draft'}`
+          meta: `${item.category} · ${item.format || 'Article'} · ${item.published ? 'Published' : 'Draft'}`,
+          imageUrl: item.imageUrl
         }))}
         onDelete={onDelete}
       />

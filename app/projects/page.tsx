@@ -14,18 +14,18 @@ export default async function ProjectsPage() {
   const projects = await getProjects()
   return (
     <>
-      <main className="mx-auto min-h-svh max-w-7xl px-4 pb-24 pt-28">
+      <main className="mx-auto min-h-svh max-w-7xl px-4 pb-20 pt-28 sm:px-6 sm:pb-24 lg:px-8">
         <Reveal>
           <p className="font-mono text-xs font-semibold uppercase tracking-[.28em] text-primary">
             Project archive
           </p>
-          <h1 className="mt-5 max-w-5xl text-balance text-5xl font-semibold tracking-[-.065em] sm:text-7xl lg:text-8xl">
+          <h1 className="mt-5 max-w-5xl text-balance text-[clamp(3rem,8vw,6rem)] font-semibold leading-[.94] tracking-[-.065em]">
             Work, organized around{' '}
             <span className="bg-gradient-to-r from-amber-500 via-rose-500 to-violet-500 bg-clip-text text-transparent">
               what you need to evaluate.
             </span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+          <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
             Filter by engineering discipline, work context or stack—whether
             you’re hiring for a team or looking for someone to carry a product
             build.

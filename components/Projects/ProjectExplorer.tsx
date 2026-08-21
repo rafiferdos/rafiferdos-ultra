@@ -164,7 +164,7 @@ function FilterRow<T extends string>({
   onChange: (value: T) => void
 }) {
   return (
-    <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border/70 pt-4">
+    <div className="mt-4 flex gap-2 overflow-x-auto border-t border-border/70 pt-4 [scrollbar-width:none]">
       <span className="mr-1 text-xs font-semibold">{label}</span>
       {values.map((value) => (
         <button
@@ -172,7 +172,7 @@ function FilterRow<T extends string>({
           aria-pressed={active === value}
           onClick={() => onChange(value)}
           className={cn(
-            'rounded-full border px-3 py-1.5 text-xs transition',
+            'shrink-0 rounded-full border px-3 py-1.5 text-xs transition',
             active === value
               ? 'border-foreground bg-foreground text-background'
               : 'border-border bg-background text-muted-foreground hover:text-foreground'
@@ -187,7 +187,7 @@ function FilterRow<T extends string>({
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
-    <article className="group flex min-h-[420px] flex-col overflow-hidden rounded-[1.75rem] border border-border/70 bg-card shadow-xl shadow-black/5 transition hover:-translate-y-1 hover:border-primary/25">
+    <article className="group flex min-h-[390px] flex-col overflow-hidden rounded-[1.5rem] border border-border/70 bg-card shadow-xl shadow-black/5 transition hover:-translate-y-1 hover:border-primary/25 sm:min-h-[420px] sm:rounded-[1.75rem]">
       <div
         className="relative aspect-[16/10] overflow-hidden border-b border-border/60"
         style={{
@@ -212,7 +212,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-6">
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex flex-wrap gap-2">
           <Badge primary>{project.discipline}</Badge>
           <Badge>{project.projectType}</Badge>

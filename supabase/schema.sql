@@ -22,9 +22,15 @@ create table if not exists public.blogs (
   excerpt text not null,
   content text not null,
   category text not null,
+  format text not null default 'Article',
+  tags jsonb not null default '[]'::jsonb,
   "publishedAt" date not null default current_date,
   "readTime" text not null default '5 min read',
   "imageUrl" text,
+  featured boolean not null default false,
+  "seoTitle" text,
+  "seoDescription" text,
+  "canonicalUrl" text,
   published boolean not null default false,
   created_at timestamptz not null default now()
 );
@@ -46,3 +52,9 @@ alter table public.messages enable row level security;
 alter table public.projects add column if not exists discipline text not null default 'Full stack';
 alter table public.projects add column if not exists "projectType" text not null default 'Personal project';
 alter table public.projects add column if not exists tags jsonb not null default '[]'::jsonb;
+alter table public.blogs add column if not exists format text not null default 'Article';
+alter table public.blogs add column if not exists tags jsonb not null default '[]'::jsonb;
+alter table public.blogs add column if not exists featured boolean not null default false;
+alter table public.blogs add column if not exists "seoTitle" text;
+alter table public.blogs add column if not exists "seoDescription" text;
+alter table public.blogs add column if not exists "canonicalUrl" text;
