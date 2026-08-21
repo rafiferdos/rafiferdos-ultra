@@ -1,9 +1,4 @@
-import {
-  BlogPost,
-  defaultBlogs,
-  defaultProjects,
-  Project
-} from '@/data/site-content'
+import { BlogPost, Project } from '@/data/site-content'
 import { getPrisma } from '@/lib/prisma'
 
 export type ContentEntity = 'projects' | 'blogs' | 'messages'
@@ -81,30 +76,27 @@ function blogRow(row: {
 }
 
 export async function getProjects(): Promise<Project[]> {
-  if (!contentBackendConfigured()) return defaultProjects
+  if (!contentBackendConfigured()) return []
   try {
     const rows = await getPrisma().project.findMany({
       orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }]
     })
-    return rows.length ? rows.map(projectRow) : defaultProjects
+    return rows.map(projectRow)
   } catch {
-    return defaultProjects
+    return []
   }
 }
 
 export async function getBlogs(publishedOnly = true): Promise<BlogPost[]> {
-  const fallback = defaultBlogs
-    .filter((post) => !publishedOnly || post.published)
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-  if (!contentBackendConfigured()) return fallback
+  if (!contentBackendConfigured()) return []
   try {
     const rows = await getPrisma().blogPost.findMany({
       where: publishedOnly ? { published: true } : undefined,
       orderBy: { publishedAt: 'desc' }
     })
-    return rows.length ? rows.map(blogRow) : fallback
+    return rows.map(blogRow)
   } catch {
-    return fallback
+    return []
   }
 }
 

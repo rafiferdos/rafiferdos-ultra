@@ -4,7 +4,7 @@ A Next.js portfolio with one-time viewport reveals, filterable project and writi
 
 ## Local setup
 
-1. Copy `.env.example` to `.env.local` and replace every required placeholder.
+1. Copy `.env.example` to `.env` and replace every required placeholder. Next.js also supports `.env.local`, but Prisma CLI reliably loads `.env` through `prisma.config.ts`.
 2. Install dependencies with `pnpm install`.
 3. Generate the client with `pnpm db:generate`.
 4. Create/update the PostgreSQL tables with `pnpm db:push` (quick setup) or `pnpm db:migrate` (versioned migrations).
@@ -15,13 +15,15 @@ The first successful dashboard login uses `ADMIN_EMAIL` and `ADMIN_PASSWORD` to 
 ## Environment responsibilities
 
 - `DATABASE_URL`: pooled PostgreSQL runtime connection. Required for content, enquiries and DB login.
-- `DIRECT_URL`: direct PostgreSQL connection used by Prisma CLI. Recommended for Neon, Supabase Postgres and other poolers.
+- `DIRECT_URL`: optional for Prisma Postgres—the config derives `db.prisma.io` from its pooled hostname. Add the real direct URL for Neon, Supabase or another pooler.
 - `ADMIN_*`: dashboard bootstrap identity and signed-session secret.
 - `CLOUDINARY_*`: required only for dashboard image uploads. The database stores returned image URLs, not image binaries.
 - `NEXT_PUBLIC_SITE_URL`: production canonical origin used by metadata, robots and sitemap.
 - Search verification tokens: optional, but useful when connecting Google Search Console and Bing Webmaster Tools.
 
-Without `DATABASE_URL`, the public portfolio intentionally falls back to the checked-in sample projects and articles. Dashboard writes and contact persistence remain disabled.
+Without `DATABASE_URL`, project and article collections remain empty. Dashboard writes and contact persistence are disabled.
+
+The legacy copy remains in `data/site-content.ts` only as a manual import backup; public pages never render it. Empty or unavailable databases therefore show no project/article records.
 
 ## Publishing articles
 

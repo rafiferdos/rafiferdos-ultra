@@ -26,14 +26,23 @@ type DashboardData = {
   backendConfigured: boolean
 }
 
-async function jsonRequest(url: string, init?: RequestInit) {
+async function jsonRequest<T = Record<string, unknown>>(
+  url: string,
+  init?: RequestInit
+) {
   const response = await fetch(url, {
     ...init,
     headers: { 'content-type': 'application/json', ...init?.headers }
   })
-  const data = await response.json()
-  if (!response.ok) throw new Error(data.error || 'Request failed')
-  return data
+  const raw = await response.text()
+  let data: Record<string, unknown> = {}
+  try {
+    data = raw ? JSON.parse(raw) : {}
+  } catch {
+    data = {}
+  }
+  if (!response.ok) throw new Error(String(data.error || 'Request failed'))
+  return data as T
 }
 
 export function DashboardClient({
@@ -132,7 +141,7 @@ function Studio({ onLogout }: { onLogout: () => void }) {
     setBusy(true)
     setError('')
     try {
-      setData(await jsonRequest('/api/admin/content'))
+      setData(await jsonRequest<DashboardData>('/api/admin/content'))
     } catch (value) {
       setError(value instanceof Error ? value.message : 'Unable to load')
     } finally {

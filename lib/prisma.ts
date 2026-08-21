@@ -4,8 +4,12 @@ import { PrismaClient } from '@/app/generated/prisma/client'
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient }
 
 function createClient() {
-  const connectionString = process.env.DATABASE_URL
-  if (!connectionString) throw new Error('DATABASE_URL is not configured')
+  const configuredUrl = process.env.DATABASE_URL
+  if (!configuredUrl) throw new Error('DATABASE_URL is not configured')
+  const connectionString = configuredUrl.replace(
+    /([?&])sslmode=(?:prefer|require|verify-ca)(?=&|$)/,
+    '$1sslmode=verify-full'
+  )
   return new PrismaClient({ adapter: new PrismaPg({ connectionString }) })
 }
 

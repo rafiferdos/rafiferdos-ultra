@@ -8,6 +8,7 @@ import { ArrowUpRight, Clock3 } from 'lucide-react'
 import Link from 'next/link'
 
 export function BlogGateway({ posts }: { posts: BlogPost[] }) {
+  const featuredPosts = posts.filter((post) => post.featured).slice(0, 3)
   return (
     <section id="writing" className="scroll-mt-24 py-24 sm:py-32">
       <SectionHeading
@@ -44,7 +45,7 @@ export function BlogGateway({ posts }: { posts: BlogPost[] }) {
               </Link>
             </div>
             <div className="grid gap-3">
-              {posts.slice(0, 3).map((post) => (
+              {featuredPosts.map((post) => (
                 <Link
                   key={post.id}
                   href={`/blogs/${post.slug}`}
