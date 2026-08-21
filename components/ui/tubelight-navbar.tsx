@@ -155,7 +155,8 @@ export function TubelightNavBar({ className }: { className?: string }) {
                 {isActive && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-0 -z-10 rounded-full bg-yellow-500/10"
+                    // className="absolute inset-0 -z-10 rounded-full bg-linear-30 from-yellow-500/30 to-violet-700/30 dark:from-fuchsia-500/20 dark:via-amber-500/20 dark:to-fuchsia-500/20"
+                    className="absolute inset-0 -z-10 rounded-full bg-muted/40 dark:bg-muted/20"
                     transition={{ type: 'spring', stiffness: 380, damping: 34 }}
                   />
                 )}
