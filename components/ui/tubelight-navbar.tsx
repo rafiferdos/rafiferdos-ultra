@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler'
+import { BrandLogo } from '@/components/BrandLogo'
 import GlassSurface from '@/components/ui/GlassSurface'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'motion/react'
@@ -129,13 +130,7 @@ export function TubelightNavBar({ className }: { className?: string }) {
         style={{ maxWidth: 'calc(100vw - 1.5rem)' }}
       >
         <div className="flex max-w-full items-center">
-          <Link
-            href="/"
-            aria-label="Rafi Ferdos home"
-            className="ml-1 mr-1 hidden size-9 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background sm:flex"
-          >
-            R
-          </Link>
+          <BrandLogo className="ml-0.5 mr-1 hidden sm:inline-flex [&_span]:size-9 [&_img]:size-7" />
           {items.map((item) => {
             const Icon = item.icon
             const isActive = active === item.id

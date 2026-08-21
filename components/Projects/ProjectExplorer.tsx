@@ -1,6 +1,7 @@
 'use client'
 
 import { Project } from '@/data/site-content'
+import { Reveal } from '@/components/ui/reveal'
 import { cn } from '@/lib/utils'
 import { ArrowUpRight, Github, Search, SlidersHorizontal } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -75,7 +76,7 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
 
   return (
     <div className="mt-14">
-      <div className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-xl shadow-black/5 sm:p-6">
+      <Reveal className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-xl shadow-black/5 sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <label className="relative block w-full lg:max-w-sm">
             <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -127,14 +128,20 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
             </button>
           )}
         </div>
-      </div>
+      </Reveal>
 
       <div
         aria-live="polite"
         className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3"
       >
         {filtered.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} />
+          <Reveal
+            key={project.id}
+            delay={Math.min(index * 0.07, 0.28)}
+            className="h-full"
+          >
+            <ProjectCard project={project} index={index} />
+          </Reveal>
         ))}
       </div>
       {filtered.length === 0 && (

@@ -126,12 +126,12 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
 
   return (
     <main className="min-h-svh pb-20 sm:pb-24">
-      <section className="relative isolate min-h-[560px] overflow-hidden border-b border-border/70 pt-28 sm:min-h-[620px]">
+      <section className="relative min-h-[600px] overflow-hidden border-b border-border/70 sm:min-h-[660px]">
         <GradientWaves
-          className="absolute inset-0 -z-20"
-          horizonColor="#22123f"
-          waveColor="#7c3aed"
-          crestColor="#f59e0b"
+          className="pointer-events-none absolute inset-0 z-0 opacity-95 saturate-125"
+          horizonColor="#16082f"
+          waveColor="#8b5cf6"
+          crestColor="#fbbf24"
           speed={0.16}
           amplitude={1.9}
           detail="high"
@@ -139,9 +139,9 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
           // opacity={0.76}
           parallaxStrength={0.18}
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/30 via-background/55 to-background" />
-        <div className="mx-auto flex min-h-[430px] max-w-7xl items-end px-4 pb-16 sm:min-h-[490px] sm:px-6 sm:pb-20 lg:px-8">
-          <Reveal>
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-background/5 via-background/20 to-background" />
+        <div className="relative z-10 mx-auto flex min-h-[600px] max-w-7xl items-center px-4 pb-20 pt-28 sm:min-h-[660px] sm:px-6 sm:pb-24 sm:pt-32 lg:px-8">
+          <Reveal className="max-w-5xl rounded-[2rem] border border-white/15 bg-background/58 p-5 shadow-2xl shadow-black/10 backdrop-blur-md sm:p-8 lg:bg-background/42">
             <p className="font-mono text-xs font-semibold uppercase tracking-[.28em] text-primary">
               Field notes
             </p>
@@ -151,7 +151,7 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
                 the finished product.
               </span>
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+            <p className="mt-6 max-w-2xl text-base leading-7 text-foreground/75 sm:text-lg sm:leading-8">
               Practical notes on frontend, backend, mobile, realtime systems and
               production AI.
             </p>

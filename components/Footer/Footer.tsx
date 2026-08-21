@@ -1,14 +1,12 @@
 import { AtSign, Github, Linkedin, Mail, Phone } from 'lucide-react'
-import Link from 'next/link'
+import { BrandLogo } from '@/components/BrandLogo'
 
 export function Footer() {
   return (
     <footer className="border-t border-border/70 py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 text-center sm:flex-row sm:text-left">
         <div>
-          <Link href="/" className="text-lg font-semibold tracking-[-.04em]">
-            Rafi Ferdos<span className="text-primary">.</span>
-          </Link>
+          <BrandLogo withName />
           <p className="mt-1 text-xs text-muted-foreground">
             Building useful web and mobile products—and ready for the team
             behind the next one.
