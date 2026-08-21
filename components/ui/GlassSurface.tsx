@@ -233,10 +233,15 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   }, [filterId])
 
   const getContainerStyles = (): React.CSSProperties => {
+    const resolveSize = (value: number | string) => {
+      if (typeof value === 'number') return `${value}px`
+      return value === 'auto' ? 'fit-content' : value
+    }
+
     const baseStyles: React.CSSProperties = {
       ...style,
-      width: typeof width === 'number' ? `${width}px` : width,
-      height: typeof height === 'number' ? `${height}px` : height,
+      width: resolveSize(width),
+      height: resolveSize(height),
       borderRadius: `${borderRadius}px`,
       '--glass-frost': backgroundOpacity,
       '--glass-saturation': saturation
@@ -415,7 +420,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
         </defs>
       </svg>
 
-      <div className="w-full h-full flex items-center justify-center p-2 rounded-[inherit] relative z-10">
+      <div className="relative z-10 flex size-full items-center justify-center rounded-[inherit] p-2">
         {children}
       </div>
     </div>

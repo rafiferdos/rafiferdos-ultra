@@ -55,15 +55,19 @@ export function TubelightNavBar({ className }: { className?: string }) {
       className={cn('fixed inset-x-0 top-4 z-50 px-3', className)}
     >
       <GlassSurface
-        width="auto"
-        height="auto"
+        width="fit-content"
+        height="fit-content"
         borderRadius={999}
+        borderWidth={0.08}
+        brightness={54}
+        opacity={0.9}
         blur={16}
-        backgroundOpacity={0.08}
-        saturation={1.65}
-        distortionScale={-105}
+        backgroundOpacity={0.1}
+        saturation={1.55}
+        distortionScale={-95}
         displace={0.5}
-        className="mx-auto w-fit max-w-full shadow-[0_18px_60px_-24px_rgba(0,0,0,.5)]"
+        className="mx-auto shadow-[0_18px_60px_-24px_rgba(0,0,0,.5)]"
+        style={{ maxWidth: 'calc(100vw - 1.5rem)' }}
       >
         <div className="flex max-w-full items-center">
           <Link

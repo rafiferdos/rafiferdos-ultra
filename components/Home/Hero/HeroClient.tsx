@@ -123,8 +123,8 @@ export default function HeroClient() {
 
           <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2 sm:left-8 sm:translate-x-0">
             <GlassSurface
-              width="auto"
-              height="auto"
+              width="fit-content"
+              height="fit-content"
               borderRadius={22}
               blur={14}
               backgroundOpacity={0.12}
