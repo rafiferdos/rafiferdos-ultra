@@ -128,15 +128,15 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
     <main className="min-h-svh pb-20 sm:pb-24">
       <section className="relative isolate min-h-[560px] overflow-hidden border-b border-border/70 pt-28 sm:min-h-[620px]">
         <GradientWaves
-          className="absolute inset-0 -z-20 opacity-60 dark:opacity-85"
+          className="absolute inset-0 -z-20"
           horizonColor="#22123f"
           waveColor="#7c3aed"
           crestColor="#f59e0b"
           speed={0.16}
           amplitude={1.9}
-          detail="low"
-          brightness={0.9}
-          opacity={0.76}
+          detail="high"
+          // brightness={0.9}
+          // opacity={0.76}
           parallaxStrength={0.18}
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/30 via-background/55 to-background" />
