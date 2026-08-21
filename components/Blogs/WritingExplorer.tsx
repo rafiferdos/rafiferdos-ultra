@@ -127,7 +127,7 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
   return (
     <main className="min-h-svh pb-20 sm:pb-24">
       <section className="relative min-h-[600px] overflow-hidden border-b border-border/70 sm:min-h-[660px]">
-        <GradientWaves
+        {/* <GradientWaves
           className="pointer-events-none absolute inset-0 z-0 opacity-95 saturate-125"
           horizonColor="#16082f"
           waveColor="#8b5cf6"
@@ -138,10 +138,10 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
           // brightness={0.9}
           // opacity={0.76}
           parallaxStrength={0.18}
-        />
+        /> */}
         <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-background/5 via-background/20 to-background" />
         <div className="relative z-10 mx-auto flex min-h-[600px] max-w-7xl items-center px-4 pb-20 pt-28 sm:min-h-[660px] sm:px-6 sm:pb-24 sm:pt-32 lg:px-8">
-          <Reveal className="max-w-5xl rounded-[2rem] border border-white/15 bg-background/58 p-5 shadow-2xl shadow-black/10 backdrop-blur-md sm:p-8 lg:bg-background/42">
+          <Reveal className="max-w-5xl rounded-[2rem] p-5 shadow-black/10 backdrop-blur-md sm:p-8 lg:bg-background/42">
             <p className="font-mono text-xs font-semibold uppercase tracking-[.28em] text-primary">
               Field notes
             </p>
