@@ -139,9 +139,9 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
           // opacity={0.76}
           parallaxStrength={0.18}
         /> */}
-        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-background/5 via-background/20 to-background" />
+        {/* <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-background/5 via-background/20 to-background" /> */}
         <div className="relative z-10 mx-auto flex min-h-[600px] max-w-7xl items-center px-4 pb-20 pt-28 sm:min-h-[660px] sm:px-6 sm:pb-24 sm:pt-32 lg:px-8">
-          <Reveal className="max-w-5xl rounded-[2rem] p-5 shadow-black/10 backdrop-blur-md sm:p-8 lg:bg-background/42">
+          <Reveal className="max-w-5xl rounded-[2rem] p-5 backdrop-blur-md sm:p-8">
             <p className="font-mono text-xs font-semibold uppercase tracking-[.28em] text-primary">
               Field notes
             </p>
