@@ -7,7 +7,15 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'Explore Rafi Ferdos’s frontend, backend, full-stack and mobile work by discipline, context and technology.'
+    'Explore Rafi Ferdos’s frontend, backend, full-stack and mobile work by discipline, context and technology.',
+  alternates: { canonical: '/projects' },
+  openGraph: {
+    title: 'Projects by Rafi Ferdos',
+    description:
+      'Full-stack, frontend, backend and mobile product engineering work.',
+    url: '/projects',
+    images: ['/og.png']
+  }
 }
 
 export default async function ProjectsPage() {

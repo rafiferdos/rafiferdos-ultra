@@ -6,7 +6,15 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Writing',
   description:
-    'Practical notes that show how Rafi Ferdos approaches full-stack, mobile, realtime and AI product engineering.'
+    'Practical notes that show how Rafi Ferdos approaches full-stack, mobile, realtime and AI product engineering.',
+  alternates: { canonical: '/blogs' },
+  openGraph: {
+    title: 'Engineering Writing by Rafi Ferdos',
+    description:
+      'Practical notes on Next.js, backend systems, mobile, realtime and production AI.',
+    url: '/blogs',
+    images: ['/og.png']
+  }
 }
 
 export default async function BlogsPage() {

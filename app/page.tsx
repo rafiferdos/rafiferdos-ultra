@@ -9,6 +9,7 @@ import { Footer } from '@/components/Footer/Footer'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
+import { profile, safeJsonLd, SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: {
@@ -78,9 +79,44 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const [projects, posts] = await Promise.all([getProjects(), getBlogs()])
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url: SITE_URL,
+    mainEntity: {
+      '@type': 'Person',
+      name: profile.name,
+      url: SITE_URL,
+      image: `${SITE_URL}/rafi.png`,
+      jobTitle: profile.jobTitle,
+      email: `mailto:${profile.email}`,
+      telephone: profile.phone,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Dhaka',
+        addressCountry: 'BD'
+      },
+      sameAs: [profile.github, profile.linkedin, profile.x],
+      knowsAbout: [
+        'Next.js',
+        'React',
+        'React Native',
+        'Node.js',
+        'PostgreSQL',
+        'Prisma ORM',
+        'GraphQL',
+        'Realtime systems',
+        'Ecommerce development'
+      ]
+    }
+  }
   return (
     <>
       <main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
+        />
         <Hero />
         <div className="mx-auto w-[min(92%,80rem)]">
           <WhyMe />
