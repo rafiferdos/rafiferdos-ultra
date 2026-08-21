@@ -15,14 +15,18 @@ export function SectionHeading({
   align?: 'center' | 'left'
 }) {
   return (
-    <div className={align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'}>
+    <div
+      className={
+        align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'
+      }
+    >
       <Reveal>
         <p className="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.28em] text-primary">
           {eyebrow}
         </p>
       </Reveal>
       <Reveal delay={0.06}>
-        <h2 className="text-balance text-4xl font-semibold tracking-[-0.055em] sm:text-5xl lg:text-7xl">
+        <h2 className="text-balance text-[clamp(2.4rem,7vw,4.5rem)] font-semibold leading-[.98] tracking-[-0.055em]">
           {title}{' '}
           <AuroraText colors={['#f59e0b', '#fb7185', '#8b5cf6', '#22d3ee']}>
             {accent}

@@ -47,9 +47,9 @@ export default function Contact() {
         accent="or need one built?"
         description="Share the role, product goal or delivery problem. I’ll respond with the most useful next step, whether that is an interview, a technical conversation or a scoped build."
       />
-      <div className="mt-14 grid overflow-hidden rounded-[2rem] border border-border/70 bg-card shadow-2xl shadow-black/5 lg:grid-cols-[.78fr_1.22fr]">
+      <div className="mt-14 grid overflow-hidden rounded-[1.5rem] border border-border/70 bg-card shadow-2xl shadow-black/5 sm:rounded-[2rem] lg:grid-cols-[.78fr_1.22fr]">
         <Reveal direction="right" className="h-full">
-          <div className="relative flex h-full min-h-[420px] flex-col justify-between overflow-hidden bg-white p-7 text-foreground dark:bg-zinc-950 sm:p-10">
+          <div className="relative flex h-full min-h-[360px] flex-col justify-between overflow-hidden bg-white p-5 text-foreground dark:bg-zinc-950 sm:min-h-[420px] sm:p-10">
             <div className="absolute -left-16 top-12 size-64 rounded-full bg-amber-400/15 blur-3xl" />
             <div className="absolute -bottom-20 right-0 size-72 rounded-full bg-violet-500/15 blur-3xl" />
             <BorderBeam
@@ -121,7 +121,7 @@ export default function Contact() {
         <Reveal direction="left" delay={0.08} className="h-full">
           <form
             onSubmit={handleSubmit}
-            className="grid h-full gap-5 p-7 sm:p-10"
+            className="grid h-full gap-5 p-5 sm:p-10"
             aria-label="Contact form"
           >
             <div className="grid gap-5 sm:grid-cols-2">

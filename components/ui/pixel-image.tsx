@@ -91,7 +91,10 @@ export const PixelImage = ({
   }, [rows, cols, maxAnimationDelay])
 
   return (
-    <div className="relative h-60 w-60 select-none md:h-72 md:w-72">
+    <div
+      aria-label="Portrait of Rafi Ferdos"
+      className="relative size-52 select-none sm:size-60 md:size-72"
+    >
       {pieces.map((piece, index) => (
         <div
           key={index}
@@ -107,9 +110,9 @@ export const PixelImage = ({
         >
           <img
             src={src}
-            alt={`Pixel image piece ${index + 1}`}
+            alt=""
             className={cn(
-              'z-1 rounded-[2.5rem] object-cover',
+              'z-1 size-full rounded-[2.5rem] object-cover',
               grayscaleAnimation && (showColor ? 'grayscale-0' : 'grayscale')
             )}
             style={{

@@ -71,14 +71,13 @@ export default function Projects({ projects }: { projects: Project[] }) {
         {visibleProjects.map((project, index) => (
           <Reveal key={project.id} delay={index * 0.08} className="h-full">
             <article className="group relative h-full overflow-hidden rounded-[1.8rem] border border-border/70 bg-card shadow-xl shadow-black/5">
-              {index === 0 && (
-                <BorderBeam
-                  size={120}
-                  duration={10}
-                  colorFrom={project.accent}
-                  colorTo="#8b5cf6"
-                />
-              )}
+              <BorderBeam
+                size={120}
+                duration={10 + index}
+                delay={index * 2.2}
+                colorFrom={project.accent}
+                colorTo="#8b5cf6"
+              />
               <div className="aspect-[4/3] overflow-hidden border-b border-border/60">
                 <ProjectVisual project={project} index={index} />
               </div>
@@ -142,29 +141,29 @@ export default function Projects({ projects }: { projects: Project[] }) {
         ))}
       </div>
       <Reveal className="mt-6">
-        <div className="relative min-h-[250px] overflow-hidden rounded-[2rem] border border-border/70 bg-zinc-950 text-white shadow-2xl shadow-black/10">
+        <div className="relative min-h-[250px] overflow-hidden rounded-[2rem] border border-border/70 bg-card text-foreground shadow-2xl shadow-black/10 dark:bg-zinc-950 dark:text-white">
           <SoftAurora
-            className="absolute inset-0 opacity-90"
+            className="absolute inset-0 opacity-35 dark:opacity-90"
             color1="#f59e0b"
             color2="#8b5cf6"
             brightness={1.15}
             speed={1.3}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/78 to-zinc-950/25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/88 to-white/40 dark:from-zinc-950 dark:via-zinc-950/78 dark:to-zinc-950/25" />
           <div className="relative flex min-h-[250px] flex-col items-start justify-center p-7 sm:p-10">
-            <p className="font-mono text-xs uppercase tracking-[.22em] text-amber-300">
+            <p className="font-mono text-xs uppercase tracking-[.22em] text-amber-700 dark:text-amber-300">
               Project archive
             </p>
             <h3 className="mt-4 max-w-xl text-3xl font-semibold tracking-[-.045em] sm:text-4xl">
               Find the work relevant to your team.
             </h3>
-            <p className="mt-3 max-w-xl text-sm leading-7 text-white/65">
+            <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground dark:text-white/65">
               Filter by frontend, backend, full stack or mobile—and separate
               client, professional, personal and community work.
             </p>
             <Link
               href="/projects"
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 transition hover:scale-[1.02]"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background transition hover:scale-[1.02] dark:bg-white dark:text-zinc-950"
             >
               Explore every project <ArrowUpRight className="size-4" />
             </Link>
