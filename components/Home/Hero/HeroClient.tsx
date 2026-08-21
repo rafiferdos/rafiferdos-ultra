@@ -67,7 +67,7 @@ export default function HeroClient() {
       <div className="relative mx-auto grid min-h-svh max-w-7xl grid-cols-1 place-content-center gap-6 px-4 pb-20 pt-28 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <div className="flex h-full max-w-2xl flex-col justify-center">
           <Reveal direction="none" duration={0.55}>
-            <div className="mb-6 flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-background/55 px-3 py-1.5 text-xs shadow-sm backdrop-blur-xl">
+            <div className="mb-6 flex w-fit items-center gap-2 rounded-full border border-primary/20 dark:border-primary/20 px-3 py-1.5 text-xs backdrop-blur-xl">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-70" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
