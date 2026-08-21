@@ -153,20 +153,20 @@ export default function HeroClient() {
             </div>
 
             <div className="absolute bottom-5 left-1/2 z-20 w-[min(230px,78vw)] -translate-x-1/2 sm:bottom-8 sm:left-8 sm:translate-x-0">
-              {showFluidGlass && (
+              {/* {showFluidGlass && (
                 <FluidGlass className="pointer-events-none absolute -inset-2" />
-              )}
+              )} */}
               <GlassSurface
                 width="100%"
                 height="fit-content"
                 borderRadius={22}
-                blur={18}
+                blur={180}
                 backgroundOpacity={0.48}
                 saturation={1.7}
                 distortionScale={-90}
                 opacity={0.96}
                 brightness={62}
-                className="relative min-w-0 border border-black/10 bg-white/45 shadow-[0_18px_55px_-22px_rgba(0,0,0,.38)] dark:border-white/20 dark:bg-zinc-950/35"
+                className="relative min-w-0 "
               >
                 <div className="flex items-center gap-3 px-4 py-3">
                   <div className="flex size-9 items-center justify-center rounded-full bg-primary/15 text-primary">
