@@ -148,6 +148,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
             color1="#f59e0b"
             color2="#8b5cf6"
             brightness={1.15}
+            speed={1.3}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/78 to-zinc-950/25" />
           <div className="relative flex min-h-[250px] flex-col items-start justify-center p-7 sm:p-10">
