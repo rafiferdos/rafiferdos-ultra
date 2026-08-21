@@ -11,6 +11,7 @@ import {
   LogOut,
   Plus,
   MessageSquare,
+  Pencil,
   RefreshCw,
   ShieldCheck,
   Trash2,
@@ -300,6 +301,7 @@ function ProjectPanel({
 }) {
   const [imageUrl, setImageUrl] = useState('')
   const [saving, setSaving] = useState(false)
+  const [editing, setEditing] = useState<Project | null>(null)
   async function upload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
     if (!file) return
@@ -325,7 +327,7 @@ function ProjectPanel({
     setSaving(true)
     const values = Object.fromEntries(new FormData(event.currentTarget))
     const record = {
-      id: crypto.randomUUID(),
+      id: editing?.id || crypto.randomUUID(),
       title: values.title,
       description: values.description,
       imageUrl,
@@ -342,16 +344,17 @@ function ProjectPanel({
         .map((v) => v.trim())
         .filter(Boolean),
       accent: values.accent,
-      featured: true,
-      sort_order: items.length
+      featured: values.featured === 'on',
+      sort_order: Number(values.sortOrder || items.length)
     }
     try {
       await jsonRequest('/api/admin/content', {
-        method: 'POST',
-        body: JSON.stringify({ entity: 'projects', record })
+        method: editing ? 'PATCH' : 'POST',
+        body: JSON.stringify({ entity: 'projects', id: editing?.id, record })
       })
       event.currentTarget.reset()
       setImageUrl('')
+      setEditing(null)
       await onSaved()
     } catch (value) {
       setError(value instanceof Error ? value.message : 'Save failed')
@@ -362,12 +365,15 @@ function ProjectPanel({
   return (
     <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr]">
       <form
+        key={editing?.id || 'new-project'}
         onSubmit={save}
         className="h-fit rounded-2xl border border-border bg-background p-5"
       >
         <div className="flex items-center gap-2">
           <Plus className="size-4 text-primary" />
-          <h2 className="font-semibold">Add project</h2>
+          <h2 className="font-semibold">
+            {editing ? 'Edit project' : 'Add project'}
+          </h2>
         </div>
         <div className="mt-5 grid gap-3">
           <input
@@ -375,6 +381,7 @@ function ProjectPanel({
             required
             placeholder="Project title"
             className={input}
+            defaultValue={editing?.title}
           />
           <textarea
             name="description"
@@ -382,12 +389,13 @@ function ProjectPanel({
             rows={4}
             placeholder="Outcome-focused description"
             className={textarea}
+            defaultValue={editing?.description}
           />
           <div className="grid gap-3 sm:grid-cols-2">
             <select
               name="discipline"
               className={input}
-              defaultValue="Full stack"
+              defaultValue={editing?.discipline || 'Full stack'}
             >
               <option>Full stack</option>
               <option>Frontend</option>
@@ -397,7 +405,7 @@ function ProjectPanel({
             <select
               name="projectType"
               className={input}
-              defaultValue="Personal project"
+              defaultValue={editing?.projectType || 'Personal project'}
             >
               <option>Client project</option>
               <option>Professional work</option>
@@ -410,12 +418,14 @@ function ProjectPanel({
             required
             placeholder="Stack: Next.js, TypeScript, PostgreSQL"
             className={input}
+            defaultValue={editing?.techStack.join(', ')}
           />
           <input
             name="tags"
             required
             placeholder="Tags: Ecommerce, Realtime, Dashboard"
             className={input}
+            defaultValue={editing?.tags.join(', ')}
           />
           <div className="grid gap-3 sm:grid-cols-2">
             <input
@@ -423,12 +433,14 @@ function ProjectPanel({
               type="url"
               placeholder="Live URL"
               className={input}
+              defaultValue={editing?.liveUrl}
             />
             <input
               name="githubUrl"
               type="url"
               placeholder="GitHub URL"
               className={input}
+              defaultValue={editing?.githubUrl}
             />
           </div>
           <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
@@ -453,16 +465,54 @@ function ProjectPanel({
             <input
               name="accent"
               type="color"
-              defaultValue="#f59e0b"
+              defaultValue={editing?.accent || '#f59e0b'}
               className="size-9 rounded border-0 bg-transparent"
             />
           </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="flex items-center gap-2 rounded-xl border border-border bg-muted/20 p-3 text-sm">
+              <input
+                name="featured"
+                type="checkbox"
+                defaultChecked={editing?.featured ?? true}
+              />{' '}
+              Featured
+            </label>
+            <label className="grid gap-1 text-xs text-muted-foreground">
+              Sort order
+              <input
+                name="sortOrder"
+                type="number"
+                defaultValue={
+                  editing
+                    ? Math.max(
+                        0,
+                        items.findIndex((item) => item.id === editing.id)
+                      )
+                    : items.length
+                }
+                className={input}
+              />
+            </label>
+          </div>
           <button
             disabled={saving}
             className="h-11 rounded-xl bg-foreground text-sm font-semibold text-background"
           >
-            {saving ? 'Saving…' : 'Publish project'}
+            {saving ? 'Saving…' : editing ? 'Save project' : 'Publish project'}
           </button>
+          {editing && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditing(null)
+                setImageUrl('')
+              }}
+              className="h-10 rounded-xl border border-border text-sm"
+            >
+              Cancel edit
+            </button>
+          )}
         </div>
       </form>
       <ItemList
@@ -473,6 +523,14 @@ function ProjectPanel({
           imageUrl: item.imageUrl
         }))}
         onDelete={onDelete}
+        onEdit={(id) => {
+          const item = items.find((value) => value.id === id)
+          if (item) {
+            setEditing(item)
+            setImageUrl(item.imageUrl || '')
+            window.scrollTo({ top: 180, behavior: 'smooth' })
+          }
+        }}
       />
     </div>
   )
@@ -492,6 +550,7 @@ function BlogPanel({
   const [saving, setSaving] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
   const [draftContent, setDraftContent] = useState('')
+  const [editing, setEditing] = useState<BlogPost | null>(null)
 
   async function upload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
@@ -526,7 +585,7 @@ function BlogPanel({
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '')
     const record = {
-      id: crypto.randomUUID(),
+      id: editing?.id || crypto.randomUUID(),
       slug,
       title: values.title,
       excerpt: values.excerpt,
@@ -550,12 +609,13 @@ function BlogPanel({
     }
     try {
       await jsonRequest('/api/admin/content', {
-        method: 'POST',
-        body: JSON.stringify({ entity: 'blogs', record })
+        method: editing ? 'PATCH' : 'POST',
+        body: JSON.stringify({ entity: 'blogs', id: editing?.id, record })
       })
       form.reset()
       setImageUrl('')
       setDraftContent('')
+      setEditing(null)
       await onSaved()
     } catch (value) {
       setError(value instanceof Error ? value.message : 'Save failed')
@@ -566,12 +626,15 @@ function BlogPanel({
   return (
     <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
       <form
+        key={editing?.id || 'new-article'}
         onSubmit={save}
         className="h-fit rounded-2xl border border-border bg-background p-5"
       >
         <div className="flex items-center gap-2">
           <Plus className="size-4 text-primary" />
-          <h2 className="font-semibold">Write article</h2>
+          <h2 className="font-semibold">
+            {editing ? 'Edit article' : 'Write article'}
+          </h2>
         </div>
         <div className="mt-5 grid gap-3">
           <input
@@ -579,22 +642,29 @@ function BlogPanel({
             required
             placeholder="Article title"
             className={input}
+            defaultValue={editing?.title}
           />
           <div className="grid gap-3 sm:grid-cols-2">
             <input
               name="slug"
               placeholder="Custom slug (optional)"
               className={input}
+              defaultValue={editing?.slug}
             />
             <input
               name="category"
               required
               placeholder="Category: Engineering"
               className={input}
+              defaultValue={editing?.category}
             />
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <select name="format" defaultValue="Article" className={input}>
+            <select
+              name="format"
+              defaultValue={editing?.format || 'Article'}
+              className={input}
+            >
               <option>Article</option>
               <option>Guide</option>
               <option>Case study</option>
@@ -605,6 +675,7 @@ function BlogPanel({
               required
               placeholder="Tags: Next.js, AI, API"
               className={input}
+              defaultValue={editing?.tags?.join(', ')}
             />
           </div>
           <textarea
@@ -613,6 +684,7 @@ function BlogPanel({
             rows={3}
             placeholder="Short introduction"
             className={textarea}
+            defaultValue={editing?.excerpt}
           />
           <textarea
             name="content"
@@ -646,7 +718,10 @@ function BlogPanel({
               <input
                 name="publishedAt"
                 type="date"
-                defaultValue={new Date().toISOString().slice(0, 10)}
+                defaultValue={
+                  editing?.publishedAt.slice(0, 10) ||
+                  new Date().toISOString().slice(0, 10)
+                }
                 className={input}
               />
             </label>
@@ -656,6 +731,7 @@ function BlogPanel({
                 name="readTime"
                 placeholder="Auto calculated"
                 className={input}
+                defaultValue={editing?.readTime}
               />
             </label>
           </div>
@@ -686,28 +762,39 @@ function BlogPanel({
                 name="seoTitle"
                 placeholder="SEO title (optional)"
                 className={input}
+                defaultValue={editing?.seoTitle}
               />
               <textarea
                 name="seoDescription"
                 rows={2}
                 placeholder="SEO description (optional)"
                 className={textarea}
+                defaultValue={editing?.seoDescription}
               />
               <input
                 name="canonicalUrl"
                 type="url"
                 placeholder="Canonical URL (optional)"
                 className={input}
+                defaultValue={editing?.canonicalUrl}
               />
             </div>
           </details>
           <div className="flex flex-wrap gap-x-5 gap-y-3 rounded-xl border border-border bg-muted/20 p-4">
             <label className="flex items-center gap-2 text-sm">
-              <input name="published" type="checkbox" defaultChecked />
+              <input
+                name="published"
+                type="checkbox"
+                defaultChecked={editing?.published ?? true}
+              />
               Publish immediately
             </label>
             <label className="flex items-center gap-2 text-sm">
-              <input name="featured" type="checkbox" />
+              <input
+                name="featured"
+                type="checkbox"
+                defaultChecked={editing?.featured ?? false}
+              />
               Feature this article
             </label>
           </div>
@@ -715,8 +802,21 @@ function BlogPanel({
             disabled={saving}
             className="h-11 rounded-xl bg-foreground text-sm font-semibold text-background"
           >
-            {saving ? 'Saving…' : 'Publish article'}
+            {saving ? 'Saving…' : editing ? 'Save article' : 'Publish article'}
           </button>
+          {editing && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditing(null)
+                setImageUrl('')
+                setDraftContent('')
+              }}
+              className="h-10 rounded-xl border border-border text-sm"
+            >
+              Cancel edit
+            </button>
+          )}
         </div>
       </form>
       <ItemList
@@ -727,6 +827,15 @@ function BlogPanel({
           imageUrl: item.imageUrl
         }))}
         onDelete={onDelete}
+        onEdit={(id) => {
+          const item = items.find((value) => value.id === id)
+          if (item) {
+            setEditing(item)
+            setImageUrl(item.imageUrl || '')
+            setDraftContent(item.content)
+            window.scrollTo({ top: 180, behavior: 'smooth' })
+          }
+        }}
       />
     </div>
   )
@@ -815,10 +924,12 @@ function MessagePanel({
 
 function ItemList({
   items,
-  onDelete
+  onDelete,
+  onEdit
 }: {
   items: { id: string; title: string; meta: string; imageUrl?: string }[]
   onDelete: (id: string) => void
+  onEdit?: (id: string) => void
 }) {
   return (
     <div className="space-y-3">
@@ -844,6 +955,15 @@ function ItemList({
               {item.meta}
             </p>
           </div>
+          {onEdit && (
+            <button
+              onClick={() => onEdit(item.id)}
+              aria-label={`Edit ${item.title}`}
+              className="rounded-full border border-border p-2.5 text-muted-foreground transition hover:text-primary"
+            >
+              <Pencil className="size-4" />
+            </button>
+          )}
           <button
             onClick={() => onDelete(item.id)}
             aria-label={`Delete ${item.title}`}
