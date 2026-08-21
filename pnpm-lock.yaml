@@ -55,6 +55,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      ogl:
+        specifier: ^1.0.11
+        version: 1.0.11
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -3218,6 +3221,12 @@ packages:
       }
     engines: { node: '>= 0.4' }
 
+  ogl@1.0.11:
+    resolution:
+      {
+        integrity: sha512-kUpC154AFfxi16pmZUK4jk3J+8zxwTWGPo03EoYA8QPbzikHoaC82n6pNTbd+oEaJonaE8aPWBlX7ad9zrqLsA==
+      }
+
   optionator@0.9.4:
     resolution:
       {
@@ -5973,6 +5982,8 @@ snapshots:
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.2
+
+  ogl@1.0.11: {}
 
   optionator@0.9.4:
     dependencies:

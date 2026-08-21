@@ -1,4 +1,5 @@
 import Contact from '@/components/Home/Contact/Contact'
+import { BlogGateway } from '@/components/Home/BlogGateway/BlogGateway'
 import Experience from '@/components/Home/Experience/Experience'
 import Hero from '@/components/Home/Hero/Hero'
 import Projects from '@/components/Home/Projects/Projects'
@@ -6,7 +7,7 @@ import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
 import { Footer } from '@/components/Footer/Footer'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
-import { getProjects } from '@/lib/content-store'
+import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
     template: '%s | Rafi Ferdos'
   },
   description:
-    'Rafi Ferdos is a full-stack developer with 3+ years building production web and mobile products, leading small teams, and shipping for foreign clients.',
+    'Rafi Ferdos is a full-stack developer with 3+ years building production web and mobile products for product teams and international clients.',
   keywords: [
     'Rafi Ferdos',
     'MERN developer',
@@ -76,7 +77,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  const projects = await getProjects()
+  const [projects, posts] = await Promise.all([getProjects(), getBlogs()])
   return (
     <>
       <main>
@@ -86,6 +87,7 @@ export default async function Home() {
           <TechStack />
           <Experience />
           <Projects projects={projects} />
+          <BlogGateway posts={posts} />
           <Contact />
         </div>
         <ScrollToTop />
