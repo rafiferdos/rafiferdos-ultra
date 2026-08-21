@@ -65,6 +65,12 @@ export async function getProjects(): Promise<Project[]> {
 export async function getBlogs(publishedOnly = true): Promise<BlogPost[]> {
   const fallback = defaultBlogs
     .filter((post) => !publishedOnly || post.published)
+    .map((post) => ({
+      ...post,
+      format: post.format || 'Article',
+      tags: post.tags?.length ? post.tags : [post.category],
+      featured: post.featured ?? false
+    }))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
   if (!contentBackendConfigured()) return fallback
   try {
@@ -74,7 +80,14 @@ export async function getBlogs(publishedOnly = true): Promise<BlogPost[]> {
       {},
       `?select=*&order=publishedAt.desc${filter}`
     )
-    return rows.length ? rows : fallback
+    return rows.length
+      ? rows.map((post) => ({
+          ...post,
+          format: post.format || 'Article',
+          tags: post.tags || [],
+          featured: post.featured || false
+        }))
+      : fallback
   } catch {
     return fallback
   }
