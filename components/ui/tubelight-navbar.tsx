@@ -125,7 +125,7 @@ export function TubelightNavBar({ className }: { className?: string }) {
         saturation={1.55}
         distortionScale={-95}
         displace={0.5}
-        className="mx-auto shadow-[0_18px_60px_-24px_rgba(0,0,0,.5)] border"
+        className="mx-auto shadow-[0_18px_60px_-24px_rgba(0,0,0,.5)] dark:border"
         style={{ maxWidth: 'calc(100vw - 1.5rem)' }}
       >
         <div className="flex max-w-full items-center">
