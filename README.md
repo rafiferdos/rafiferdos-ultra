@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rafi Ferdos — portfolio studio
 
-## Getting Started
+A Next.js portfolio with one-time viewport reveals, filterable project and writing archives, Markdown-style code articles, PostgreSQL content, Cloudinary media uploads, contact enquiries and a private dashboard at `/dashboard/rafi`.
 
-First, run the development server:
+## Local setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. Copy `.env.example` to `.env.local` and replace every required placeholder.
+2. Install dependencies with `pnpm install`.
+3. Generate the client with `pnpm db:generate`.
+4. Create/update the PostgreSQL tables with `pnpm db:push` (quick setup) or `pnpm db:migrate` (versioned migrations).
+5. Start the site with `pnpm dev`.
+
+The first successful dashboard login uses `ADMIN_EMAIL` and `ADMIN_PASSWORD` to create one bcrypt-hashed `Admin` row. After that, authentication reads the database account. Keep the bootstrap password and `ADMIN_SESSION_SECRET` private and rotate them if they are ever exposed.
+
+## Environment responsibilities
+
+- `DATABASE_URL`: pooled PostgreSQL runtime connection. Required for content, enquiries and DB login.
+- `DIRECT_URL`: direct PostgreSQL connection used by Prisma CLI. Recommended for Neon, Supabase Postgres and other poolers.
+- `ADMIN_*`: dashboard bootstrap identity and signed-session secret.
+- `CLOUDINARY_*`: required only for dashboard image uploads. The database stores returned image URLs, not image binaries.
+- `NEXT_PUBLIC_SITE_URL`: production canonical origin used by metadata, robots and sitemap.
+- Search verification tokens: optional, but useful when connecting Google Search Console and Bing Webmaster Tools.
+
+Without `DATABASE_URL`, the public portfolio intentionally falls back to the checked-in sample projects and articles. Dashboard writes and contact persistence remain disabled.
+
+## Publishing articles
+
+The dashboard editor supports paragraphs separated by blank lines, `##`/`###` headings and fenced code blocks such as:
+
+````md
+```ts
+const product = await ship({ quality: 'production' })
 ```
+````
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Code is rendered as escaped text, so article content cannot inject executable HTML.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Search launch checklist
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+After deployment, submit `/sitemap.xml` in Google Search Console, request indexing for the homepage, project archive and strongest articles, and validate JSON-LD with Google Rich Results Test. Technical SEO makes the pages understandable and indexable; ranking still depends on useful content, competition, reputation and relevant links.

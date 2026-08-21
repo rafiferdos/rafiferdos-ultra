@@ -4,59 +4,89 @@ import {
   defaultProjects,
   Project
 } from '@/data/site-content'
+import { getPrisma } from '@/lib/prisma'
 
-type Entity = 'projects' | 'blogs' | 'messages'
-
-export function contentBackendConfigured() {
-  return Boolean(
-    process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
-  )
+export type ContentEntity = 'projects' | 'blogs' | 'messages'
+export type ContactMessage = {
+  id: string
+  name: string
+  email: string
+  subject: string
+  message: string
+  status: string
+  createdAt: string
 }
 
-async function supabase<T>(
-  table: Entity,
-  init: RequestInit = {},
-  query = ''
-): Promise<T> {
-  if (!contentBackendConfigured())
-    throw new Error('Content backend is not configured')
-  const response = await fetch(
-    `${process.env.SUPABASE_URL}/rest/v1/${table}${query}`,
-    {
-      ...init,
-      headers: {
-        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-        'content-type': 'application/json',
-        prefer: 'return=representation',
-        ...init.headers
-      },
-      cache: 'no-store'
-    }
+export function contentBackendConfigured() {
+  return Boolean(process.env.DATABASE_URL)
+}
+const clean = (value: unknown) =>
+  Object.fromEntries(
+    Object.entries((value || {}) as Record<string, unknown>).filter(
+      ([, item]) => item !== undefined
+    )
   )
-  if (!response.ok)
-    throw new Error(`Content request failed: ${response.status}`)
-  if (response.status === 204) return undefined as T
-  return response.json() as Promise<T>
+
+function projectRow(row: {
+  id: string
+  title: string
+  description: string
+  imageUrl: string | null
+  liveUrl: string | null
+  githubUrl: string | null
+  techStack: string[]
+  discipline: string
+  projectType: string
+  tags: string[]
+  accent: string
+  featured: boolean
+}): Project {
+  return {
+    ...row,
+    imageUrl: row.imageUrl || undefined,
+    liveUrl: row.liveUrl || undefined,
+    githubUrl: row.githubUrl || undefined,
+    discipline: row.discipline as Project['discipline'],
+    projectType: row.projectType as Project['projectType']
+  }
+}
+
+function blogRow(row: {
+  id: string
+  slug: string
+  title: string
+  excerpt: string
+  content: string
+  category: string
+  format: string
+  tags: string[]
+  publishedAt: Date
+  readTime: string
+  imageUrl: string | null
+  featured: boolean
+  seoTitle: string | null
+  seoDescription: string | null
+  canonicalUrl: string | null
+  published: boolean
+}): BlogPost {
+  return {
+    ...row,
+    format: row.format as BlogPost['format'],
+    publishedAt: row.publishedAt.toISOString(),
+    imageUrl: row.imageUrl || undefined,
+    seoTitle: row.seoTitle || undefined,
+    seoDescription: row.seoDescription || undefined,
+    canonicalUrl: row.canonicalUrl || undefined
+  }
 }
 
 export async function getProjects(): Promise<Project[]> {
   if (!contentBackendConfigured()) return defaultProjects
   try {
-    const rows = await supabase<Project[]>(
-      'projects',
-      {},
-      '?select=*&order=sort_order.asc'
-    )
-    return rows.length
-      ? rows.map((row) => ({
-          ...row,
-          techStack: row.techStack || [],
-          discipline: row.discipline || 'Full stack',
-          projectType: row.projectType || 'Personal project',
-          tags: row.tags || []
-        }))
-      : defaultProjects
+    const rows = await getPrisma().project.findMany({
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }]
+    })
+    return rows.length ? rows.map(projectRow) : defaultProjects
   } catch {
     return defaultProjects
   }
@@ -65,60 +95,83 @@ export async function getProjects(): Promise<Project[]> {
 export async function getBlogs(publishedOnly = true): Promise<BlogPost[]> {
   const fallback = defaultBlogs
     .filter((post) => !publishedOnly || post.published)
-    .map((post) => ({
-      ...post,
-      format: post.format || 'Article',
-      tags: post.tags?.length ? post.tags : [post.category],
-      featured: post.featured ?? false
-    }))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
   if (!contentBackendConfigured()) return fallback
   try {
-    const filter = publishedOnly ? '&published=eq.true' : ''
-    const rows = await supabase<BlogPost[]>(
-      'blogs',
-      {},
-      `?select=*&order=publishedAt.desc${filter}`
-    )
-    return rows.length
-      ? rows.map((post) => ({
-          ...post,
-          format: post.format || 'Article',
-          tags: post.tags || [],
-          featured: post.featured || false
-        }))
-      : fallback
+    const rows = await getPrisma().blogPost.findMany({
+      where: publishedOnly ? { published: true } : undefined,
+      orderBy: { publishedAt: 'desc' }
+    })
+    return rows.length ? rows.map(blogRow) : fallback
   } catch {
     return fallback
   }
 }
 
+export async function getMessages(): Promise<ContactMessage[]> {
+  if (!contentBackendConfigured()) return []
+  const rows = await getPrisma().message.findMany({
+    orderBy: { createdAt: 'desc' }
+  })
+  return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }))
+}
+
 export async function insertRecord(
-  entity: Entity,
+  entity: ContentEntity,
   record: Record<string, unknown>
 ) {
-  return supabase<Record<string, unknown>[]>(entity, {
-    method: 'POST',
-    body: JSON.stringify(record)
-  })
+  const data = clean(record)
+  if (entity === 'projects') {
+    const { sort_order, sortOrder, ...rest } = data
+    return getPrisma().project.create({
+      data: {
+        ...rest,
+        sortOrder: Number(sort_order ?? sortOrder ?? 0)
+      } as never
+    })
+  }
+  if (entity === 'blogs')
+    return getPrisma().blogPost.create({
+      data: {
+        ...data,
+        publishedAt: new Date(String(data.publishedAt || Date.now()))
+      } as never
+    })
+  return getPrisma().message.create({ data: data as never })
 }
 
 export async function updateRecord(
-  entity: Entity,
+  entity: ContentEntity,
   id: string,
   record: Record<string, unknown>
 ) {
-  return supabase<Record<string, unknown>[]>(
-    entity,
-    { method: 'PATCH', body: JSON.stringify(record) },
-    `?id=eq.${encodeURIComponent(id)}`
-  )
+  const data = clean(record)
+  if (entity === 'projects') {
+    const { sort_order, ...rest } = data
+    return getPrisma().project.update({
+      where: { id },
+      data: {
+        ...rest,
+        ...(sort_order === undefined ? {} : { sortOrder: Number(sort_order) })
+      } as never
+    })
+  }
+  if (entity === 'blogs')
+    return getPrisma().blogPost.update({
+      where: { id },
+      data: {
+        ...data,
+        ...(data.publishedAt
+          ? { publishedAt: new Date(String(data.publishedAt)) }
+          : {})
+      } as never
+    })
+  return getPrisma().message.update({ where: { id }, data: data as never })
 }
 
-export async function deleteRecord(entity: Entity, id: string) {
-  return supabase<void>(
-    entity,
-    { method: 'DELETE' },
-    `?id=eq.${encodeURIComponent(id)}`
-  )
+export async function deleteRecord(entity: ContentEntity, id: string) {
+  if (entity === 'projects')
+    return getPrisma().project.delete({ where: { id } })
+  if (entity === 'blogs') return getPrisma().blogPost.delete({ where: { id } })
+  return getPrisma().message.delete({ where: { id } })
 }

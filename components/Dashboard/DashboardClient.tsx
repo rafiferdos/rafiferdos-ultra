@@ -1,12 +1,16 @@
 'use client'
 
 import { BlogPost, Project } from '@/data/site-content'
+import { BrandLogo } from '@/components/BrandLogo'
+import { ArticleBody } from '@/components/Blogs/ArticleBody'
+import type { ContactMessage } from '@/lib/content-store'
 import {
   BookOpen,
   Cloud,
   FolderKanban,
   LogOut,
   Plus,
+  MessageSquare,
   RefreshCw,
   ShieldCheck,
   Trash2,
@@ -17,6 +21,7 @@ import { FormEvent, useCallback, useEffect, useState } from 'react'
 type DashboardData = {
   projects: Project[]
   blogs: BlogPost[]
+  messages: ContactMessage[]
   backendConfigured: boolean
 }
 
@@ -66,6 +71,7 @@ export function DashboardClient({
           onSubmit={login}
           className="relative w-full max-w-md rounded-[2rem] border border-border/70 bg-card/80 p-7 shadow-2xl backdrop-blur-2xl sm:p-9"
         >
+          <BrandLogo className="mb-6" withName />
           <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/12 text-primary">
             <ShieldCheck className="size-6" />
           </div>
@@ -116,7 +122,7 @@ export function DashboardClient({
 }
 
 function Studio({ onLogout }: { onLogout: () => void }) {
-  const [tab, setTab] = useState<'projects' | 'blogs'>('projects')
+  const [tab, setTab] = useState<'projects' | 'blogs' | 'messages'>('projects')
   const [data, setData] = useState<DashboardData | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -136,7 +142,7 @@ function Studio({ onLogout }: { onLogout: () => void }) {
     load()
   }, [load])
 
-  async function remove(entity: 'projects' | 'blogs', id: string) {
+  async function remove(entity: 'projects' | 'blogs' | 'messages', id: string) {
     if (!confirm('Delete this item permanently?')) return
     try {
       await jsonRequest('/api/admin/content', {
@@ -157,13 +163,16 @@ function Studio({ onLogout }: { onLogout: () => void }) {
     <main className="min-h-svh bg-muted/20">
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4">
-          <div>
-            <p className="text-base font-semibold tracking-tight">
-              Rafi · Studio
-            </p>
-            <p className="hidden text-[10px] uppercase tracking-[.2em] text-muted-foreground sm:block">
-              Portfolio control plane
-            </p>
+          <div className="flex items-center gap-3">
+            <BrandLogo className="[&_span]:size-9 [&_img]:size-7" />
+            <div>
+              <p className="text-base font-semibold tracking-tight">
+                Rafi · Studio
+              </p>
+              <p className="hidden text-[10px] uppercase tracking-[.2em] text-muted-foreground sm:block">
+                Portfolio control plane
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -183,7 +192,7 @@ function Studio({ onLogout }: { onLogout: () => void }) {
         </div>
       </header>
       <div className="mx-auto max-w-7xl px-4 py-8">
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <Stat
             icon={FolderKanban}
             value={data?.projects.length ?? '—'}
@@ -197,17 +206,25 @@ function Studio({ onLogout }: { onLogout: () => void }) {
           <Stat
             icon={Cloud}
             value={data?.backendConfigured ? 'Live' : 'Preview'}
-            label="Content backend"
+            label="PostgreSQL backend"
+          />
+          <Stat
+            icon={MessageSquare}
+            value={
+              data?.messages?.filter((item) => item.status === 'new').length ??
+              '—'
+            }
+            label="New enquiries"
           />
         </div>
         {!data?.backendConfigured && (
           <div className="mt-5 rounded-2xl border border-amber-500/20 bg-amber-500/8 p-4 text-sm text-amber-800 dark:text-amber-200">
-            Supabase is not connected. You can preview the dashboard and
-            fallback content; connect the environment keys to publish edits.
+            PostgreSQL is not connected. Fallback content stays visible, but
+            publishing, enquiries and database login require DATABASE_URL.
           </div>
         )}
-        <div className="mt-8 flex gap-2 rounded-full border border-border bg-background p-1.5 w-fit">
-          {(['projects', 'blogs'] as const).map((item) => (
+        <div className="mt-8 flex max-w-full gap-2 overflow-x-auto rounded-full border border-border bg-background p-1.5 sm:w-fit [scrollbar-width:none]">
+          {(['projects', 'blogs', 'messages'] as const).map((item) => (
             <button
               key={item}
               onClick={() => setTab(item)}
@@ -225,11 +242,18 @@ function Studio({ onLogout }: { onLogout: () => void }) {
             onDelete={(id) => remove('projects', id)}
             setError={setError}
           />
-        ) : (
+        ) : tab === 'blogs' ? (
           <BlogPanel
             items={data?.blogs || []}
             onSaved={load}
             onDelete={(id) => remove('blogs', id)}
+            setError={setError}
+          />
+        ) : (
+          <MessagePanel
+            items={data?.messages || []}
+            onSaved={load}
+            onDelete={(id) => remove('messages', id)}
             setError={setError}
           />
         )}
@@ -467,6 +491,7 @@ function BlogPanel({
 }) {
   const [saving, setSaving] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
+  const [draftContent, setDraftContent] = useState('')
 
   async function upload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
@@ -530,6 +555,7 @@ function BlogPanel({
       })
       form.reset()
       setImageUrl('')
+      setDraftContent('')
       await onSaved()
     } catch (value) {
       setError(value instanceof Error ? value.message : 'Save failed')
@@ -592,9 +618,28 @@ function BlogPanel({
             name="content"
             required
             rows={10}
-            placeholder="Article body. Separate paragraphs with a blank line."
+            value={draftContent}
+            onChange={(event) => setDraftContent(event.target.value)}
+            placeholder={
+              'Markdown-style body. Use ## for headings and fenced code blocks: ```ts ... ```'
+            }
             className={textarea}
           />
+          <details className="rounded-xl border border-border bg-muted/20 p-4">
+            <summary className="cursor-pointer text-sm font-semibold">
+              Live article preview
+            </summary>
+            <div className="mt-5 max-h-[34rem] overflow-y-auto rounded-xl border border-border bg-background p-4">
+              {draftContent ? (
+                <ArticleBody content={draftContent} animated={false} />
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Write the article to preview paragraphs, headings and
+                  syntax-safe code blocks.
+                </p>
+              )}
+            </div>
+          </details>
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="grid gap-1.5 text-xs text-muted-foreground">
               Publish date
@@ -683,6 +728,87 @@ function BlogPanel({
         }))}
         onDelete={onDelete}
       />
+    </div>
+  )
+}
+
+function MessagePanel({
+  items,
+  onSaved,
+  onDelete,
+  setError
+}: {
+  items: ContactMessage[]
+  onSaved: () => Promise<void>
+  onDelete: (id: string) => void
+  setError: (value: string) => void
+}) {
+  async function setStatus(id: string, status: string) {
+    try {
+      await jsonRequest('/api/admin/content', {
+        method: 'PATCH',
+        body: JSON.stringify({ entity: 'messages', id, record: { status } })
+      })
+      await onSaved()
+    } catch (value) {
+      setError(value instanceof Error ? value.message : 'Update failed')
+    }
+  }
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      {items.map((item) => (
+        <article
+          key={item.id}
+          className="min-w-0 rounded-2xl border border-border bg-background p-5 shadow-sm"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-semibold">{item.subject}</p>
+              <a
+                href={`mailto:${item.email}`}
+                className="mt-1 block truncate text-xs text-primary hover:underline"
+              >
+                {item.name} · {item.email}
+              </a>
+            </div>
+            <span
+              className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider ${item.status === 'new' ? 'border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300' : 'border-border text-muted-foreground'}`}
+            >
+              {item.status}
+            </span>
+          </div>
+          <p className="mt-4 whitespace-pre-wrap text-sm leading-7 text-muted-foreground">
+            {item.message}
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-border pt-4">
+            <button
+              onClick={() =>
+                setStatus(item.id, item.status === 'new' ? 'read' : 'new')
+              }
+              className="rounded-full border border-border px-3 py-1.5 text-xs font-medium"
+            >
+              Mark {item.status === 'new' ? 'read' : 'new'}
+            </button>
+            <time className="mr-auto text-[10px] text-muted-foreground">
+              {new Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(
+                new Date(item.createdAt)
+              )}
+            </time>
+            <button
+              onClick={() => onDelete(item.id)}
+              aria-label={`Delete message from ${item.name}`}
+              className="rounded-full border border-border p-2 text-muted-foreground hover:text-rose-500"
+            >
+              <Trash2 className="size-4" />
+            </button>
+          </div>
+        </article>
+      ))}
+      {!items.length && (
+        <div className="rounded-2xl border border-dashed border-border p-12 text-center text-sm text-muted-foreground lg:col-span-2">
+          No enquiries yet.
+        </div>
+      )}
     </div>
   )
 }

@@ -12,12 +12,21 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
+    rules: {
+      // React Bits / Magic UI components intentionally use these animation patterns.
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/static-components': 'off'
+    }
+  },
+  {
     ignores: [
       'node_modules/**',
       '.next/**',
       'out/**',
       'build/**',
-      'next-env.d.ts'
+      'next-env.d.ts',
+      'app/generated/**'
     ]
   }
 ]

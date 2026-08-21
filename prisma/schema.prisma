@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String   @default("Rafi Ferdos")
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+  liveUrl     String?
+  githubUrl   String?
+  techStack   String[]
+  discipline  String
+  projectType String
+  tags        String[]
+  accent      String   @default("#f59e0b")
+  featured    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BlogPost {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  excerpt        String
+  content        String
+  category       String
+  format         String   @default("Article")
+  tags           String[]
+  publishedAt    DateTime @default(now())
+  readTime       String
+  imageUrl       String?
+  featured       Boolean  @default(false)
+  seoTitle       String?
+  seoDescription String?
+  canonicalUrl   String?
+  published      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSettings {
+  id             String   @id @default("primary")
+  siteName       String   @default("Rafi Ferdos")
+  headline       String   @default("Full-stack product engineer")
+  description    String
+  email          String
+  phone          String
+  location       String
+  linkedinUrl    String
+  xUrl           String
+  githubUrl      String
+  resumeUrl      String
+  seoTitle       String
+  seoDescription String
+  seoKeywords    String[]
+  updatedAt      DateTime @updatedAt
+}
