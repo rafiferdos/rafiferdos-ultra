@@ -1,464 +1,106 @@
 'use client'
-import { AnimatedBeam } from '@/components/ui/animated-beam'
-import { AnimatedList } from '@/components/ui/animated-list'
-import { BentoCard, BentoGrid } from '@/components/ui/bento-grid'
-import { OrbitingCircles } from '@/components/ui/orbiting-circles'
-import {
-  AnimatedSpan,
-  Terminal,
-  TypingAnimation
-} from '@/components/ui/terminal'
-import { cn } from '@/lib/utils'
-import {
-  Code,
-  Database,
-  FileJson,
-  Globe,
-  Layers,
-  Layout,
-  MonitorSmartphone,
-  Server,
-  Smartphone,
-  Zap
-} from 'lucide-react'
-import { useRef, useState } from 'react'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { HyperText } from '@/components/ui/hyper-text'
 
-// Register GSAP plugins at module level (runs once)
-gsap.registerPlugin(ScrollTrigger)
+import { SectionHeading } from '@/components/Home/SectionHeading'
+import { BorderBeam } from '@/components/ui/border-beam'
+import { MagicCard } from '@/components/ui/magic-card'
+import { Reveal } from '@/components/ui/reveal'
+import { Strands } from '@/components/ui/strands'
+import { GitPullRequest, Network, Smartphone, TrendingUp } from 'lucide-react'
 
-// --- Background Components ---
-
-const CrossPlatformBackground = () => {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]">
-      <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-        React
-      </span>
-
-      {/* Inner Orbit */}
-      <OrbitingCircles
-        className="border-none bg-transparent"
-        duration={20}
-        radius={80}
-        iconSize={40}
-      >
-        <img
-          src="https://cdn.simpleicons.org/nextdotjs/000000/ffffff"
-          alt="Next.js"
-          className="size-8 dark:invert"
-        />
-        <img
-          src="https://cdn.simpleicons.org/typescript/3178C6"
-          alt="TypeScript"
-          className="size-8"
-        />
-        <img
-          src="https://cdn.simpleicons.org/prisma/2D3748/white"
-          alt="Prisma"
-          className="size-8 dark:invert"
-        />
-      </OrbitingCircles>
-
-      {/* Outer Orbit */}
-      <OrbitingCircles
-        className="border-none bg-transparent"
-        radius={150}
-        duration={30}
-        reverse
-        iconSize={50}
-      >
-        <img
-          src="https://cdn.simpleicons.org/react/58C4DC"
-          alt="React Native"
-          className="size-10"
-        />
-        <img
-          src="https://cdn.simpleicons.org/graphql/E10098"
-          alt="GraphQL"
-          className="size-10"
-        />
-        <img
-          src="https://cdn.simpleicons.org/mongodb/47A248"
-          alt="MongoDB"
-          className="size-10"
-        />
-      </OrbitingCircles>
-    </div>
-  )
-}
-
-const PerformanceList = () => {
-  interface Item {
-    name: string
-    description: string
-    icon: string
-    color: string
-    time: string
-  }
-
-  let notifications = [
-    {
-      name: 'Build Complete',
-      description: 'Next.js app built in 2s',
-      time: '15m ago',
-      icon: '🚀',
-      color: '#00C9A7'
-    },
-    {
-      name: 'Optimization',
-      description: 'Image size reduced by 80%',
-      time: '10m ago',
-      icon: '📉',
-      color: '#FFB800'
-    },
-    {
-      name: 'Performance',
-      description: 'Lighthouse score: 100',
-      time: '5m ago',
-      icon: '💯',
-      color: '#FF3D71'
-    },
-    {
-      name: 'Deployment',
-      description: 'Deployed to Vercel edge',
-      time: '2m ago',
-      icon: '🌍',
-      color: '#1E86FF'
-    }
-  ]
-
-  notifications = Array.from({ length: 10 }, () => notifications).flat()
-
-  const Notification = ({ name, description, icon, color, time }: Item) => {
-    return (
-      <figure
-        className={cn(
-          'relative mx-auto min-h-fit w-full max-w-[400px] cursor-pointer overflow-hidden rounded-2xl p-4',
-          // animation styles
-          'transition-all duration-200 ease-in-out hover:scale-[103%]',
-          // light styles
-          'bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]',
-          // dark styles
-          'transform-gpu dark:bg-transparent dark:backdrop-blur-md dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]'
-        )}
-      >
-        <div className="flex flex-row items-center gap-3">
-          <div
-            className="flex size-10 items-center justify-center rounded-2xl"
-            style={{
-              backgroundColor: color
-            }}
-          >
-            <span className="text-lg">{icon}</span>
-          </div>
-          <div className="flex flex-col overflow-hidden">
-            <figcaption className="flex flex-row items-center whitespace-pre text-lg font-medium dark:text-white ">
-              <span className="text-sm sm:text-lg">{name}</span>
-              <span className="mx-1">·</span>
-              <span className="text-xs text-gray-500">{time}</span>
-            </figcaption>
-            <p className="text-sm font-normal dark:text-white/60">
-              {description}
-            </p>
-          </div>
-        </div>
-      </figure>
-    )
-  }
-
-  return (
-    <div className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]">
-      <AnimatedList>
-        {notifications.map((item, idx) => (
-          <Notification {...item} key={idx} />
-        ))}
-      </AnimatedList>
-    </div>
-  )
-}
-
-const ArchitectureBeam = () => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const div1Ref = useRef<HTMLDivElement>(null)
-  const div2Ref = useRef<HTMLDivElement>(null)
-  const div3Ref = useRef<HTMLDivElement>(null)
-  const div4Ref = useRef<HTMLDivElement>(null)
-  const div5Ref = useRef<HTMLDivElement>(null)
-  const div6Ref = useRef<HTMLDivElement>(null)
-  const div7Ref = useRef<HTMLDivElement>(null)
-
-  return (
-    <div
-      className="absolute inset-0 flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]"
-      ref={containerRef}
-    >
-      <div className="flex size-full flex-col items-stretch justify-between gap-10 p-10">
-        <div className="flex flex-row items-center justify-between">
-          <div
-            ref={div1Ref}
-            className="z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] dark:text-black"
-          >
-            <Database />
-          </div>
-          <div
-            ref={div5Ref}
-            className="z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] dark:text-black"
-          >
-            <Server />
-          </div>
-        </div>
-        <div className="flex flex-row items-center justify-between">
-          <div
-            ref={div2Ref}
-            className="z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] dark:text-black"
-          >
-            <FileJson />
-          </div>
-          <div
-            ref={div4Ref}
-            className="z-10 flex size-16 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] dark:text-black"
-          >
-            <Globe className="size-6" />
-          </div>
-          <div
-            ref={div6Ref}
-            className="z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] dark:text-black"
-          >
-            <Layout />
-          </div>
-        </div>
-        <div className="flex flex-row items-center justify-between">
-          <div
-            ref={div3Ref}
-            className="z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] dark:text-black"
-          >
-            <Code />
-          </div>
-          <div
-            ref={div7Ref}
-            className="z-10 flex size-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)] dark:text-black"
-          >
-            <Smartphone />
-          </div>
-        </div>
-      </div>
-
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div1Ref}
-        toRef={div4Ref}
-        curvature={-75}
-        endYOffset={-10}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div2Ref}
-        toRef={div4Ref}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div3Ref}
-        toRef={div4Ref}
-        curvature={75}
-        endYOffset={10}
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div5Ref}
-        toRef={div4Ref}
-        curvature={-75}
-        endYOffset={-10}
-        reverse
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div6Ref}
-        toRef={div4Ref}
-        reverse
-      />
-      <AnimatedBeam
-        containerRef={containerRef}
-        fromRef={div7Ref}
-        toRef={div4Ref}
-        curvature={75}
-        endYOffset={10}
-        reverse
-      />
-    </div>
-  )
-}
-
-const FullCycleTerminal = () => {
-  const [terminalKey, setTerminalKey] = useState(0)
-
-  return (
-    <div className="absolute inset-0 z-10 flex h-full w-full items-center justify-end p-4 lg:p-10 [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]">
-      <Terminal
-        key={terminalKey}
-        onTerminalComplete={() => {
-          setTimeout(() => {
-            setTerminalKey((prev) => prev + 1)
-          }, 2000)
-        }}
-        className="h-full max-h-[250px] w-full max-w-[350px] border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-950"
-      >
-        <TypingAnimation>
-          &gt; git checkout -b feature/full-stack
-        </TypingAnimation>
-        <AnimatedSpan delay={1500} className="text-green-500">
-          <span>✔ Switched to a new branch</span>
-        </AnimatedSpan>
-        <TypingAnimation delay={2000}>
-          &gt; npm install react-native
-        </TypingAnimation>
-        <AnimatedSpan delay={3500} className="text-blue-500">
-          <span>ℹ added 58 packages in 3s</span>
-        </AnimatedSpan>
-        <TypingAnimation delay={4000}>&gt; npx prisma generate</TypingAnimation>
-        <AnimatedSpan delay={5500} className="text-green-500">
-          <span>✔ Prisma Client just became smarter</span>
-        </AnimatedSpan>
-        <TypingAnimation delay={6000}>
-          &gt; docker build -t app .
-        </TypingAnimation>
-        <AnimatedSpan delay={7500} className="text-blue-500">
-          <span>ℹ Building image: [=&gt;] 100%</span>
-        </AnimatedSpan>
-      </Terminal>
-    </div>
-  )
-}
-
-// --- Main Component ---
-
-const features = [
+const reasons = [
   {
-    Icon: MonitorSmartphone,
-    name: 'Cross-Platform Mastery',
+    icon: TrendingUp,
+    title: 'I earn bigger ownership',
     description:
-      'Why fragment your team? I deliver unified experiences across Web (Next.js) and Mobile (React Native). One codebase mindset, native performance, and consistent branding on iOS, Android, and the Web.',
-    href: '#contact',
-    cta: 'See cross-platform work',
-    className: 'col-span-3 lg:col-span-2',
-    background: <CrossPlatformBackground />
+      'At Sparktech I grew from frontend to full stack in 3 months, React Native in 7, and earned two merit raises within 10 months.'
   },
   {
-    Icon: Zap,
-    name: 'High-Performance Engineering',
+    icon: Smartphone,
+    title: 'I ship beyond the browser',
     description:
-      'I build apps that fly. By optimizing rendering cycles, managing state efficiently, and leveraging server-side capabilities, I ensure your application feels instant and responsive.',
-    href: '#contact',
-    cta: 'Check performance',
-    className: 'col-span-3 lg:col-span-1',
-    background: <PerformanceList />
+      'I delivered two production ecommerce mobile apps end-to-end while keeping the web, API and mobile experience aligned.'
   },
   {
-    Icon: Layers,
-    name: 'Scalable Architecture',
+    icon: Network,
+    title: 'I simplify complex systems',
     description:
-      'Future-proof your product. I design clean, modular, and type-safe (TypeScript) architectures that make scaling up and adding new features painless and bug-free.',
-    href: '#contact',
-    cta: 'View architecture',
-    className: 'col-span-3 lg:col-span-1',
-    background: <ArchitectureBeam />
+      'I moved product integrations from REST to GraphQL and built Socket.io chat and notifications for concurrent users.'
   },
   {
-    Icon: Code,
-    name: 'Full-Cycle Development',
+    icon: GitPullRequest,
+    title: 'I raise the team baseline',
     description:
-      'From database schema design in MongoDB to pixel-perfect UI implementation. I handle the entire lifecycle, ensuring that the backend logic perfectly supports the frontend user experience.',
-    href: '#contact',
-    cta: 'Hire a pro',
-    className: 'col-span-3 lg:col-span-2',
-    background: <FullCycleTerminal />
+      'I led foreign-client delivery, completed 35+ code reviews and previously took ownership of a dedicated club web team.'
   }
 ]
 
 export function WhyMe() {
-  const containerRef = useRef<HTMLElement>(null)
-
-  useGSAP(
-    () => {
-      // 1. GSAP.SET - Set initial hidden states with transforms
-      //    CSS handles opacity/visibility, GSAP handles transforms
-      gsap.set('.whyme-title', { y: 60 })
-      gsap.set('.whyme-desc', { y: 40 })
-      gsap.set('.whyme-card', { y: 80, scale: 0.95 })
-
-      // 2. SCROLL REVEAL - Title (autoAlpha = opacity + visibility)
-      gsap.to('.whyme-title', {
-        y: 0,
-        autoAlpha: 1, // Sets opacity:1 AND visibility:visible
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.whyme-title',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        }
-      })
-
-      // 3. SCROLL REVEAL - Description
-      gsap.to('.whyme-desc', {
-        y: 0,
-        autoAlpha: 1,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.whyme-desc',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        }
-      })
-
-      // 4. SCROLL REVEAL - Cards (each with its own trigger)
-      const cards = gsap.utils.toArray<Element>('.whyme-card')
-      cards.forEach((card, i) => {
-        gsap.to(card, {
-          y: 0,
-          autoAlpha: 1,
-          scale: 1,
-          duration: 0.8,
-          delay: i * 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 90%',
-            toggleActions: 'play none none reverse'
-          }
-        })
-      })
-    },
-    { scope: containerRef }
-  )
-
   return (
-    <section id="whyme" ref={containerRef} className="py-24">
-      <div className="mb-12 text-center">
-        {/* CSS in globals.css hides these by default - GSAP reveals on scroll */}
-        <h2 className="whyme-title text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-          <HyperText duration={1500} delay={200} startOnView>
-            Why Me?
-          </HyperText>
-        </h2>
-        <p className="whyme-desc mx-auto mt-4 max-w-[700px] text-muted-foreground">
-          I bring a unique blend of technical skills and creative
-          problem-solving to every project.
-        </p>
+    <section id="whyme" className="scroll-mt-24 py-24 sm:py-32">
+      <SectionHeading
+        eyebrow="01 · Why me"
+        title="Proven by progression."
+        accent="Not promises."
+        description="The strongest signal in my résumé is the pattern: I’m trusted with a narrow problem, then earn ownership of the product around it."
+      />
+      <div className="mt-14 grid gap-5 lg:grid-cols-[.92fr_1.08fr]">
+        <Reveal direction="right" className="min-h-[480px]">
+          <div className="relative h-full min-h-[480px] overflow-hidden rounded-[2rem] border border-border/70 bg-zinc-950 shadow-2xl shadow-black/10">
+            <Strands className="absolute inset-0" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(9,9,11,.05)_45%,rgba(9,9,11,.92)_100%)]" />
+            <BorderBeam
+              size={180}
+              duration={12}
+              colorFrom="#f59e0b"
+              colorTo="#8b5cf6"
+            />
+            <div className="absolute inset-x-0 bottom-0 p-7 sm:p-9">
+              <p className="font-mono text-xs uppercase tracking-[.24em] text-amber-300">
+                Frontend → full stack → mobile
+              </p>
+              <h3 className="mt-3 max-w-md text-3xl font-semibold tracking-[-.04em] text-white sm:text-4xl">
+                My range came from shipped responsibility.
+              </h3>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-white/60">
+                Three years of expanding from interfaces into APIs, data,
+                realtime systems, mobile delivery and technical leadership—not
+                collecting technologies in isolation.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {reasons.map((reason, index) => {
+            const Icon = reason.icon
+            return (
+              <Reveal
+                key={reason.title}
+                delay={index * 0.07}
+                className="h-full"
+              >
+                <MagicCard
+                  className="h-full min-h-[230px] rounded-[1.75rem]"
+                  gradientColor="rgba(245, 158, 11, .13)"
+                  gradientFrom="#f59e0b"
+                  gradientTo="#8b5cf6"
+                >
+                  <div className="flex h-full flex-col p-6 sm:p-7">
+                    <div className="flex size-11 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+                      <Icon className="size-5" />
+                    </div>
+                    <h3 className="mt-8 text-xl font-semibold tracking-[-.025em]">
+                      {reason.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                      {reason.description}
+                    </p>
+                  </div>
+                </MagicCard>
+              </Reveal>
+            )
+          })}
+        </div>
       </div>
-      <BentoGrid>
-        {features.map((feature, idx) => (
-          <BentoCard
-            key={idx}
-            {...feature}
-            className={cn(feature.className, 'whyme-card')}
-          />
-        ))}
-      </BentoGrid>
     </section>
   )
 }

@@ -4,12 +4,12 @@ import HeroClient from './HeroClient'
 
 const Hero = () => {
   return (
-    <>
+    <div className="relative overflow-hidden">
       <ClientResolver>
         <HeroClient />
       </ClientResolver>
-      <LightRays />
-    </>
+      <LightRays className="-z-0 opacity-70" count={5} speed={18} />
+    </div>
   )
 }
 

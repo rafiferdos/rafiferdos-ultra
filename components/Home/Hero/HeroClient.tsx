@@ -1,172 +1,159 @@
 'use client'
+
+import GlassSurface from '@/components/ui/GlassSurface'
 import { Highlighter } from '@/components/ui/highlighter'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { LineShadowText } from '@/components/ui/line-shadow-text'
 import { MorphingText } from '@/components/ui/morphing-text'
 import { PixelImage } from '@/components/ui/pixel-image'
 import { RainbowButton } from '@/components/ui/rainbow-button'
+import { Reveal } from '@/components/ui/reveal'
 import { Ripple } from '@/components/ui/ripple'
 import { DotLottiePlayer } from '@dotlottie/react-player'
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ArrowUpRight, CheckCircle2, MapPin } from 'lucide-react'
 import Link from 'next/link'
-import { useRef } from 'react'
 
-gsap.registerPlugin(ScrollTrigger)
+const roles = [
+  'Full Stack Developer',
+  'Next.js Developer',
+  'React Native Developer',
+  'Product Engineer'
+]
+
+const resumeUrl =
+  'https://drive.google.com/file/d/1wFjb1ZqswXkKHIQQwq2_qaqCiauGnX24/view'
 
 export default function HeroClient() {
-  const containerRef = useRef<HTMLElement>(null)
-
-  const texts = [
-    'Software Developer',
-    'MERN Stack Developer',
-    'Next.js Developer',
-    'React Native Developer',
-    'App Developer'
-  ]
-
-  useGSAP(
-    () => {
-      // Entrance animations
-      const tl = gsap.timeline()
-
-      tl.from('.hero-title-reveal', {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: 'power3.out'
-      })
-        .from(
-          '.hero-text-reveal',
-          {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          },
-          '-=0.5'
-        )
-        .from(
-          '.hero-desc-reveal',
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out'
-          },
-          '-=0.6'
-        )
-        .from(
-          '.hero-btn-reveal',
-          {
-            scale: 0.8,
-            opacity: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'back.out(1.7)'
-          },
-          '-=0.6'
-        )
-
-      // Rocket Launch Animation using ScrollTrigger
-      gsap.to('.rocket-container', {
-        y: -window.innerHeight - 200,
-        ease: 'power1.in',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1 // Smooth scrubbing
-          // markers: true
-        }
-      })
-    },
-    { scope: containerRef }
-  )
-
   return (
-    // Main grid container
     <section
       id="hero"
-      ref={containerRef}
-      className="w-full max-w-7xl mx-auto grid grid-cols-2 lg:gap-24 gap-5 place-content-center px-4 min-h-[calc(100vh-12rem)] relative"
+      className="relative mx-auto grid min-h-svh max-w-7xl grid-cols-2 place-content-center gap-8 px-4 pb-20 pt-28 lg:gap-20"
     >
-      {/* Left column with text content */}
-      <div className="col-span-2 lg:col-span-1 space-y-3 flex flex-col justify-center max-w-2xl h-full">
-        <div className="hero-title-reveal">
-          <h1 className="text-3xl leading-none tracking-tighter text-balance sm:text-4xl md:text-5xl lg:text-7xl">
+      <div className="col-span-2 flex h-full max-w-2xl flex-col justify-center lg:col-span-1">
+        <Reveal direction="none" duration={0.55}>
+          <div className="mb-6 flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-background/55 px-3 py-1.5 text-xs shadow-sm backdrop-blur-xl">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-70" />
+              <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+            </span>
+            Available for select product work
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <h1 className="text-balance text-4xl leading-none tracking-[-0.055em] sm:text-5xl md:text-6xl lg:text-7xl">
             It&apos;s me{' '}
-            <LineShadowText className="italic text-8xl font-agale">
+            <LineShadowText className="font-agale text-[1.3em] italic">
               Rafi
             </LineShadowText>
           </h1>
-        </div>
+        </Reveal>
 
-        <div className="hero-text-reveal text-3xl flex items-baseline gap-2 justify-start">
-          <span className="leading-none">I&apos;m a</span>
-          <MorphingText className="leading-none" texts={texts} />
-        </div>
-
-        <div className="hero-desc-reveal leading-relaxed">
-          I&apos;m a passionate MERN Stack Developer with a knack for{' '}
-          <Highlighter action="underline" color="#FF9800">
-            crafting dynamic
-          </Highlighter>{' '}
-          and responsive web applications. With expertise in Next.js, React,
-          Node.js, Express, and MongoDB, I bring ideas to life through code.
-          Explore my portfolio to see my projects and{' '}
-          <Highlighter action="highlight" color="#87CEFA">
-            skills in action.
-          </Highlighter>
-        </div>
-
-        <div className="flex items-center justify-center w-fit gap-2">
-          <div className="hero-btn-reveal">
-            <Link href={'/resume.pdf'}>
-              {' '}
-              {/* Assuming resume link, keeping consistent */}
-              <RainbowButton
-                className="rounded-full h-10 px-12"
-                variant={'outline'}
-              >
-                Resume
-              </RainbowButton>
-            </Link>
+        <Reveal delay={0.11}>
+          <div className="mt-5 flex flex-col gap-2 text-2xl tracking-[-0.04em] sm:flex-row sm:items-baseline sm:text-3xl">
+            <span className="shrink-0 leading-none">I&apos;m a</span>
+            <MorphingText
+              className="min-w-0 text-left text-2xl leading-none text-primary sm:text-3xl"
+              texts={roles}
+            />
           </div>
-          <div className="hero-btn-reveal">
-            <Link href={'#contact'}>
-              <InteractiveHoverButton className="text-sm h-10.5 px-8">
-                Contact Me
+        </Reveal>
+
+        <Reveal delay={0.17}>
+          <p className="mt-7 max-w-xl text-pretty text-base leading-8 text-muted-foreground sm:text-lg">
+            A full-stack developer with 3+ years across web, backend and React
+            Native. I&apos;ve{' '}
+            <Highlighter action="underline" color="#f59e0b">
+              shipped two production ecommerce apps
+            </Highlighter>
+            , led delivery for foreign clients, and built GraphQL and realtime
+            systems that stay clean under pressure.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.22}>
+          <div className="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-sm text-foreground/70">
+            {['Frontend → full stack', 'Web + mobile', 'Dhaka · Remote'].map(
+              (item) => (
+                <span key={item} className="inline-flex items-center gap-2">
+                  <CheckCircle2 className="size-4 text-primary" />
+                  {item}
+                </span>
+              )
+            )}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.28}>
+          <div className="mt-9 flex w-fit flex-wrap items-center gap-3">
+            <RainbowButton
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full px-7"
+            >
+              <a href={resumeUrl} target="_blank" rel="noreferrer">
+                Résumé <ArrowUpRight className="size-4" />
+              </a>
+            </RainbowButton>
+            <Link href="#contact">
+              <InteractiveHoverButton className="h-11 px-7 text-sm">
+                Contact me
               </InteractiveHoverButton>
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
 
-      {/* Right column image */}
-      <div className="col-span-2 lg:col-span-1 h-full">
-        <div className="relative max-h-[500px] w-full flex items-center justify-center">
-          <Ripple className="[mask-image:none]" />
-          <div className="z-10">
+      <Reveal
+        delay={0.13}
+        direction="left"
+        className="col-span-2 h-full lg:col-span-1"
+      >
+        <div className="relative mx-auto flex min-h-[440px] w-full max-w-[520px] items-center justify-center lg:min-h-[560px]">
+          <Ripple className="[mask-image:none] opacity-70" />
+          <div className="relative z-10">
             <PixelImage
               src="https://github.com/rafiferdos.png"
               grid="8x8"
-              pixelFadeInDuration={1000}
-              colorRevealDelay={1300}
+              pixelFadeInDuration={900}
+              colorRevealDelay={900}
             />
           </div>
-        </div>
-      </div>
 
-      {/* Rocket Animation */}
-      <div className="rocket-container absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+          <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2 sm:left-8 sm:translate-x-0">
+            <GlassSurface
+              width="auto"
+              height="auto"
+              borderRadius={22}
+              blur={14}
+              backgroundOpacity={0.12}
+              saturation={1.45}
+              distortionScale={-90}
+              className="min-w-[210px]"
+            >
+              <div className="flex items-center gap-3 px-4 py-3">
+                <div className="flex size-9 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <MapPin className="size-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold">Dhaka, Bangladesh</p>
+                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                    Shipping for teams worldwide
+                  </p>
+                </div>
+              </div>
+            </GlassSurface>
+          </div>
+        </div>
+      </Reveal>
+
+      <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 hidden -translate-x-1/2 lg:block">
         <DotLottiePlayer
           src="/rocket-launch.lottie"
           autoplay
           loop
-          style={{ width: '100px', height: '100px' }}
+          style={{ width: '78px', height: '78px' }}
         />
       </div>
     </section>
