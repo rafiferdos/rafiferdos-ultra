@@ -4,10 +4,17 @@ import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler'
 import GlassSurface from '@/components/ui/GlassSurface'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'motion/react'
-import { BookOpen, BriefcaseBusiness, Home, Mail, Sparkles } from 'lucide-react'
+import {
+  BookOpen,
+  BriefcaseBusiness,
+  FolderKanban,
+  Home,
+  Mail,
+  Sparkles
+} from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 
 const items = [
   { name: 'Home', href: '/#hero', id: 'hero', icon: Home },
@@ -19,35 +26,87 @@ const items = [
     icon: BriefcaseBusiness
   },
   { name: 'Contact', href: '/#contact', id: 'contact', icon: Mail },
+  {
+    name: 'Projects',
+    href: '/projects',
+    id: 'projects-page',
+    icon: FolderKanban
+  },
   { name: 'Writing', href: '/blogs', id: 'blogs', icon: BookOpen }
 ]
 
 export function TubelightNavBar({ className }: { className?: string }) {
   const pathname = usePathname()
   const [active, setActive] = useState(
-    pathname.startsWith('/blogs') ? 'blogs' : 'hero'
+    pathname.startsWith('/blogs')
+      ? 'blogs'
+      : pathname.startsWith('/projects')
+        ? 'projects-page'
+        : 'hero'
   )
 
   useEffect(() => {
     if (pathname !== '/') {
-      setActive(pathname.startsWith('/blogs') ? 'blogs' : 'hero')
+      setActive(
+        pathname.startsWith('/blogs')
+          ? 'blogs'
+          : pathname.startsWith('/projects')
+            ? 'projects-page'
+            : 'hero'
+      )
       return
     }
-    const sections = items
-      .map((item) => document.getElementById(item.id))
-      .filter(Boolean) as HTMLElement[]
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        if (visible) setActive(visible.target.id)
-      },
-      { rootMargin: '-38% 0px -48% 0px', threshold: [0, 0.15, 0.5] }
-    )
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
+    let frame = 0
+    const updateActiveSection = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        if (window.scrollY < 96) {
+          setActive('hero')
+          return
+        }
+        const anchorLine = 112
+        const sections = items
+          .filter((item) => item.href.startsWith('/#'))
+          .map((item) => document.getElementById(item.id))
+          .filter(Boolean) as HTMLElement[]
+        const current = sections.reduce<HTMLElement | null>(
+          (match, section) => {
+            return section.getBoundingClientRect().top <= anchorLine
+              ? section
+              : match
+          },
+          null
+        )
+        setActive(current?.id || 'hero')
+      })
+    }
+    updateActiveSection()
+    window.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('resize', updateActiveSection)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('resize', updateActiveSection)
+    }
   }, [pathname])
+
+  function handleNavClick(
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+    id: string
+  ) {
+    if (pathname !== '/' || !href.startsWith('/#')) {
+      setActive(id)
+      return
+    }
+    const target = document.getElementById(id)
+    if (!target) return
+    event.preventDefault()
+    const top = target.getBoundingClientRect().top + window.scrollY - 96
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+    window.history.replaceState(null, '', id === 'hero' ? '/' : `/#${id}`)
+    setActive(id)
+  }
 
   return (
     <nav
@@ -84,7 +143,7 @@ export function TubelightNavBar({ className }: { className?: string }) {
               <Link
                 key={item.id}
                 href={item.href}
-                onClick={() => setActive(item.id)}
+                onClick={(event) => handleNavClick(event, item.href, item.id)}
                 className={cn(
                   'relative flex h-9 items-center justify-center gap-2 rounded-full px-2.5 text-xs font-medium transition sm:px-3',
                   isActive

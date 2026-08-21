@@ -11,7 +11,9 @@ import { Reveal } from '@/components/ui/reveal'
 import { Ripple } from '@/components/ui/ripple'
 import { DotLottiePlayer } from '@dotlottie/react-player'
 import { ArrowUpRight, CheckCircle2, MapPin } from 'lucide-react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import Link from 'next/link'
+import { useRef } from 'react'
 
 const roles = [
   'Full Stack Developer',
@@ -24,11 +26,28 @@ const resumeUrl =
   'https://drive.google.com/file/d/1wFjb1ZqswXkKHIQQwq2_qaqCiauGnX24/view'
 
 export default function HeroClient() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const reduceMotion = useReducedMotion()
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start']
+  })
+  const rocketY = useTransform(scrollYProgress, [0, 0.42, 1], [0, -520, -900])
+  const rocketX = useTransform(scrollYProgress, [0, 0.42, 1], [0, 36, 90])
+  const rocketRotate = useTransform(scrollYProgress, [0, 0.5], [0, 14])
+  const rocketOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.34, 0.58],
+    [1, 1, 0]
+  )
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
-      className="relative mx-auto grid min-h-svh max-w-7xl grid-cols-2 place-content-center gap-8 px-4 pb-20 pt-28 lg:gap-20"
+      className="relative mx-auto grid min-h-svh max-w-7xl scroll-mt-28 grid-cols-2 place-content-center gap-8 overflow-hidden px-4 pb-20 pt-28 lg:gap-20"
     >
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_30%,rgba(245,158,11,.09),transparent_28%),radial-gradient(circle_at_82%_35%,rgba(139,92,246,.08),transparent_30%)]" />
       <div className="col-span-2 flex h-full max-w-2xl flex-col justify-center lg:col-span-1">
         <Reveal direction="none" duration={0.55}>
           <div className="mb-6 flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-background/55 px-3 py-1.5 text-xs shadow-sm backdrop-blur-xl">
@@ -36,7 +55,7 @@ export default function HeroClient() {
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-70" />
               <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
             </span>
-            Available for select product work
+            Open to product roles · selected client work
           </div>
         </Reveal>
 
@@ -61,19 +80,19 @@ export default function HeroClient() {
 
         <Reveal delay={0.17}>
           <p className="mt-7 max-w-xl text-pretty text-base leading-8 text-muted-foreground sm:text-lg">
-            A full-stack developer with 3+ years across web, backend and React
-            Native. I&apos;ve{' '}
+            I build web and mobile products people can use confidently and teams
+            can maintain. I&apos;ve{' '}
             <Highlighter action="underline" color="#f59e0b">
               shipped two production ecommerce apps
             </Highlighter>
-            , led delivery for foreign clients, and built GraphQL and realtime
-            systems that stay clean under pressure.
+            , led delivery for international clients, and grown from frontend
+            into backend, mobile and technical leadership.
           </p>
         </Reveal>
 
         <Reveal delay={0.22}>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-sm text-foreground/70">
-            {['Frontend → full stack', 'Web + mobile', 'Dhaka · Remote'].map(
+            {['3+ years in production', 'Web + mobile', 'Dhaka · Remote'].map(
               (item) => (
                 <span key={item} className="inline-flex items-center gap-2">
                   <CheckCircle2 className="size-4 text-primary" />
@@ -98,7 +117,7 @@ export default function HeroClient() {
             </RainbowButton>
             <Link href="#contact">
               <InteractiveHoverButton className="h-11 px-7 text-sm">
-                Contact me
+                Discuss a role or build
               </InteractiveHoverButton>
             </Link>
           </div>
@@ -126,11 +145,13 @@ export default function HeroClient() {
               width="fit-content"
               height="fit-content"
               borderRadius={22}
-              blur={14}
-              backgroundOpacity={0.12}
-              saturation={1.45}
+              blur={18}
+              backgroundOpacity={0.34}
+              saturation={1.8}
               distortionScale={-90}
-              className="min-w-[210px]"
+              opacity={0.96}
+              brightness={62}
+              className="min-w-[222px] border border-white/30 shadow-[0_18px_55px_-22px_rgba(0,0,0,.45)]"
             >
               <div className="flex items-center gap-3 px-4 py-3">
                 <div className="flex size-9 items-center justify-center rounded-full bg-primary/15 text-primary">
@@ -139,7 +160,7 @@ export default function HeroClient() {
                 <div>
                   <p className="text-xs font-semibold">Dhaka, Bangladesh</p>
                   <p className="mt-0.5 text-[10px] text-muted-foreground">
-                    Shipping for teams worldwide
+                    Available locally and worldwide
                   </p>
                 </div>
               </div>
@@ -148,14 +169,27 @@ export default function HeroClient() {
         </div>
       </Reveal>
 
-      <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 hidden -translate-x-1/2 lg:block">
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-3 left-1/2 z-10 hidden -translate-x-1/2 lg:block"
+        style={
+          reduceMotion
+            ? undefined
+            : {
+                y: rocketY,
+                x: rocketX,
+                rotate: rocketRotate,
+                opacity: rocketOpacity
+              }
+        }
+      >
         <DotLottiePlayer
           src="/rocket-launch.lottie"
           autoplay
           loop
           style={{ width: '78px', height: '78px' }}
         />
-      </div>
+      </motion.div>
     </section>
   )
 }

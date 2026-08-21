@@ -3,6 +3,10 @@
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:where(.dark, .dark *));
 
+html {
+  scroll-padding-top: 6rem;
+}
+
 :root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
@@ -260,8 +264,16 @@ body {
   min-width: 320px;
   overflow-x: clip;
   background-image:
-    radial-gradient(circle at 15% -10%, color-mix(in oklch, var(--primary) 11%, transparent), transparent 30rem),
-    radial-gradient(circle at 90% 20%, color-mix(in oklch, var(--color-2) 7%, transparent), transparent 32rem);
+    radial-gradient(
+      circle at 15% -10%,
+      color-mix(in oklch, var(--primary) 11%, transparent),
+      transparent 30rem
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      color-mix(in oklch, var(--color-2) 7%, transparent),
+      transparent 32rem
+    );
 }
 
 ::selection {
@@ -291,8 +303,12 @@ body {
   z-index: 2147483646;
 }
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
