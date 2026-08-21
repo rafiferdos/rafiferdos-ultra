@@ -1,5 +1,6 @@
 'use client'
 
+import BorderGlow from '@/components/BorderGlow'
 // ... (imports)
 import { AuroraText } from '@/components/ui/aurora-text'
 import { GsapReveal } from '@/components/ui/gsap-reveal'
@@ -76,12 +77,17 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
     <div className="project-card-reveal invisible h-full">
       {' '}
       {/* Wrapped in div for clean GSAP targeting */}
-      <MagicCard
+      <BorderGlow
         className="group relative h-[420px] w-full overflow-hidden rounded-2xl"
-        gradientSize={250}
-        gradientFrom="#9E7AFF"
-        gradientTo="#FE8BBB"
-        gradientOpacity={0.9}
+        edgeSensitivity={30}
+        glowColor="40 80 80"
+        backgroundColor="#120F17"
+        borderRadius={28}
+        glowRadius={40}
+        glowIntensity={1}
+        coneSpread={25}
+        animated={false}
+        colors={['#c084fc', '#f472b6', '#38bdf8']}
       >
         {/* Screenshot Container with Scroll Effect */}
         <div className="relative h-[280px] w-full overflow-hidden">
@@ -143,7 +149,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
             )}
           </div>
         </div>
-      </MagicCard>
+      </BorderGlow>
     </div>
   )
 }
