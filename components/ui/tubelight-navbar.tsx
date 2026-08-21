@@ -1,173 +1,122 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler'
+import GlassSurface from '@/components/ui/GlassSurface'
 import { cn } from '@/lib/utils'
-import { AnimatedThemeToggler } from './animated-theme-toggler'
-import GlassSurface from './GlassSurface'
+import { AnimatePresence, motion } from 'motion/react'
+import { BookOpen, BriefcaseBusiness, Home, Mail, Sparkles } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-// Icons
-import { Home, User, Cpu, Briefcase } from 'lucide-react'
+const items = [
+  { name: 'Home', href: '/#hero', id: 'hero', icon: Home },
+  { name: 'Why me', href: '/#whyme', id: 'whyme', icon: Sparkles },
+  {
+    name: 'Experience',
+    href: '/#experience',
+    id: 'experience',
+    icon: BriefcaseBusiness
+  },
+  { name: 'Contact', href: '/#contact', id: 'contact', icon: Mail },
+  { name: 'Writing', href: '/blogs', id: 'blogs', icon: BookOpen }
+]
 
-// GSAP
-import gsap from 'gsap'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
-
-gsap.registerPlugin(ScrollToPlugin)
-
-interface NavItem {
-  name: string
-  url: string
-  Icon: React.ElementType
-}
-
-interface TubelightNavBarProps {
-  className?: string
-  defaultActive?: string
-}
-
-export function TubelightNavBar({
-  className,
-  defaultActive = 'Home'
-}: TubelightNavBarProps) {
-  const [activeTab, setActiveTab] = useState(defaultActive)
-
-  const items: NavItem[] = [
-    { name: 'Home', url: '#hero', Icon: Home },
-    { name: 'About', url: '#whyme', Icon: User },
-    { name: 'Tech', url: '#techstack', Icon: Cpu },
-    { name: 'Projects', url: '#projects', Icon: Briefcase }
-  ]
+export function TubelightNavBar({ className }: { className?: string }) {
+  const pathname = usePathname()
+  const [active, setActive] = useState(
+    pathname.startsWith('/blogs') ? 'blogs' : 'hero'
+  )
 
   useEffect(() => {
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const activeItem = items.find(
-            (item) => item.url === `#${entry.target.id}`
-          )
-          if (activeItem) {
-            setActiveTab(activeItem.name)
-          }
-        }
-      })
+    if (pathname !== '/') {
+      setActive(pathname.startsWith('/blogs') ? 'blogs' : 'hero')
+      return
     }
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      rootMargin: '-45% 0px -45% 0px',
-      threshold: 0
-    })
-
-    items.forEach((item) => {
-      const element = document.querySelector(item.url)
-      if (element) {
-        observer.observe(element)
-      }
-    })
-
+    const sections = items
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean) as HTMLElement[]
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        if (visible) setActive(visible.target.id)
+      },
+      { rootMargin: '-38% 0px -48% 0px', threshold: [0, 0.15, 0.5] }
+    )
+    sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const handleWindowScroll = () => {
-      if (window.scrollY < 100) {
-        setActiveTab('Home')
-      }
-    }
-
-    window.addEventListener('scroll', handleWindowScroll)
-    return () => window.removeEventListener('scroll', handleWindowScroll)
-  }, [])
-
-  const handleNavClick = (name: string, url: string) => {
-    setActiveTab(name)
-    const target = document.querySelector(url)
-    if (target) {
-      gsap.to(window, {
-        scrollTo: { y: target as Element, offsetY: 0 },
-        duration: 1.2,
-        ease: 'power4.inOut'
-      })
-    }
-  }
+  }, [pathname])
 
   return (
-    <div
-      className={cn(
-        'fixed bottom-0 left-1/2 -translate-x-1/2 z-50 mb-6',
-        className
-      )}
+    <nav
+      aria-label="Primary navigation"
+      className={cn('fixed inset-x-0 top-4 z-50 px-3', className)}
     >
       <GlassSurface
-        height="auto"
         width="auto"
-        borderRadius={50}
-        opacity={0.9}
-        backgroundOpacity={0}
-        blur={10}
-        distortionScale={-110}
-        displace={1}
-        mixBlendMode="difference"
+        height="auto"
+        borderRadius={999}
+        blur={16}
+        backgroundOpacity={0.08}
+        saturation={1.65}
+        distortionScale={-105}
+        displace={0.5}
+        className="mx-auto w-fit max-w-full shadow-[0_18px_60px_-24px_rgba(0,0,0,.5)]"
       >
-        <div className="flex items-center px-2">
-          {' '}
-          {/* Wrapper for flex alignment if needed, though map returns elements */}
+        <div className="flex max-w-full items-center">
+          <Link
+            href="/"
+            aria-label="Rafi Ferdos home"
+            className="ml-1 mr-1 hidden size-9 items-center justify-center rounded-full bg-foreground text-sm font-bold text-background sm:flex"
+          >
+            R
+          </Link>
           {items.map((item) => {
-            const Icon = item.Icon
-            const isActive = activeTab === item.name
-
+            const Icon = item.icon
+            const isActive = active === item.id
             return (
-              <button
-                key={item.name}
-                onClick={() => handleNavClick(item.name, item.url)}
+              <Link
+                key={item.id}
+                href={item.href}
+                onClick={() => setActive(item.id)}
                 className={cn(
-                  'relative cursor-pointer flex items-center justify-center gap-2 rounded-full transition-all duration-300',
+                  'relative flex h-9 items-center justify-center gap-2 rounded-full px-2.5 text-xs font-medium transition sm:px-3',
                   isActive
-                    ? 'px-5 py-2 text-[#FFCC00] drop-shadow-[0_0_8px_rgba(255,204,0,0.5)]'
-                    : 'px-3 py-2 text-foreground/60 hover:text-foreground/80'
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
                 )}
-                aria-label={item.name}
+                aria-current={isActive ? 'page' : undefined}
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.span
-                        initial={{ width: 0, opacity: 0 }}
-                        animate={{ width: 'auto', opacity: 1 }}
-                        exit={{ width: 0, opacity: 0 }}
-                        className="overflow-hidden whitespace-nowrap text-sm font-semibold"
-                      >
-                        {item.name}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-                </span>
-
                 {isActive && (
-                  <motion.div
-                    layoutId="lamp"
-                    className="absolute inset-0 w-full bg-[#FFCC00]/5 rounded-full -z-10"
-                    initial={false}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 30
-                    }}
-                  >
-                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#FFCC00] rounded-t-full">
-                      <div className="absolute w-12 h-6 bg-[#FFCC00]/20 rounded-full blur-md -top-2 -left-2" />
-                      <div className="absolute w-8 h-6 bg-[#FFCC00]/20 rounded-full blur-md -top-1" />
-                      <div className="absolute w-4 h-4 bg-[#FFCC00]/20 rounded-full blur-sm top-0 left-2" />
-                    </div>
-                  </motion.div>
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-0 -z-10 rounded-full border border-border bg-muted shadow-sm"
+                    transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+                  />
                 )}
-              </button>
+                <Icon className="size-4" />
+                <AnimatePresence initial={false}>
+                  {isActive && (
+                    <motion.span
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: 'auto' }}
+                      exit={{ opacity: 0, width: 0 }}
+                      className="hidden overflow-hidden whitespace-nowrap sm:inline-block"
+                    >
+                      {item.name}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </Link>
             )
           })}
-          <AnimatedThemeToggler className="pr-2 ml-2" />
+          <div className="ml-1 border-l border-border pl-1">
+            <AnimatedThemeToggler className="size-9 rounded-full" />
+          </div>
         </div>
       </GlassSurface>
-    </div>
+    </nav>
   )
 }

@@ -251,8 +251,21 @@
   font-family: 'Agale', Arial, sans-serif;
 }
 
-* {
-  cursor: none !important;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: clip;
+  background-image:
+    radial-gradient(circle at 15% -10%, color-mix(in oklch, var(--primary) 11%, transparent), transparent 30rem),
+    radial-gradient(circle at 90% 20%, color-mix(in oklch, var(--color-2) 7%, transparent), transparent 32rem);
+}
+
+::selection {
+  background: color-mix(in oklch, var(--primary) 34%, transparent);
 }
 
 @layer base {
@@ -277,10 +290,12 @@
 ::view-transition-new(root) {
   z-index: 2147483646;
 }
-/* GSAP Scroll Reveal - Initial Hidden States */
-.whyme-title,
-.whyme-desc,
-.whyme-card {
-  opacity: 0;
-  visibility: hidden;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

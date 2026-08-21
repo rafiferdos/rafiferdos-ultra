@@ -1,38 +1,16 @@
 'use client'
 
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
-import { ReactNode, useLayoutEffect } from 'react'
-
-gsap.registerPlugin(ScrollTrigger)
+import { ReactNode, useEffect } from 'react'
 
 export const SmoothScrollProvider = ({ children }: { children: ReactNode }) => {
-  useLayoutEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.5,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      // direction: 'vertical',
-      // gestureDirection: 'vertical',
-      smoothWheel: true,
-      touchMultiplier: 2
-    })
-
-    lenis.on('scroll', ScrollTrigger.update)
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000)
-    })
-
-    gsap.ticker.lagSmoothing(0)
-
-    return () => {
-      lenis.destroy()
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000)
-      })
-    }
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const lenis = new Lenis({ duration: 1.05, smoothWheel: true, touchMultiplier: 1.35, easing: (time) => 1 - Math.pow(1 - time, 4) })
+    let frame = 0
+    const update = (time: number) => { lenis.raf(time); frame = requestAnimationFrame(update) }
+    frame = requestAnimationFrame(update)
+    return () => { cancelAnimationFrame(frame); lenis.destroy() }
   }, [])
-
-  return <>{children}</>
+  return children
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useId } from 'react'
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react'
 
 export interface GlassSurfaceProps {
   children?: React.ReactNode
@@ -48,11 +48,24 @@ const useDarkMode = () => {
     if (typeof window === 'undefined') return
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    setIsDark(mediaQuery.matches)
-
-    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches)
-    mediaQuery.addEventListener('change', handler)
-    return () => mediaQuery.removeEventListener('change', handler)
+    const update = () => {
+      const root = document.documentElement
+      setIsDark(
+        root.classList.contains('dark') ||
+          (!root.classList.contains('light') && mediaQuery.matches)
+      )
+    }
+    const observer = new MutationObserver(update)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+    mediaQuery.addEventListener('change', update)
+    update()
+    return () => {
+      observer.disconnect()
+      mediaQuery.removeEventListener('change', update)
+    }
   }, [])
 
   return isDark
@@ -94,7 +107,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
 
   const isDarkMode = useDarkMode()
 
-  const generateDisplacementMap = () => {
+  const generateDisplacementMap = useCallback(() => {
     const rect = containerRef.current?.getBoundingClientRect()
     const actualWidth = rect?.width || 400
     const actualHeight = rect?.height || 200
@@ -120,11 +133,20 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     `
 
     return `data:image/svg+xml,${encodeURIComponent(svgContent)}`
-  }
+  }, [
+    blueGradId,
+    blur,
+    borderRadius,
+    borderWidth,
+    brightness,
+    mixBlendMode,
+    opacity,
+    redGradId
+  ])
 
-  const updateDisplacementMap = () => {
+  const updateDisplacementMap = useCallback(() => {
     feImageRef.current?.setAttribute('href', generateDisplacementMap())
-  }
+  }, [generateDisplacementMap])
 
   useEffect(() => {
     updateDisplacementMap()
@@ -156,40 +178,26 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     blueOffset,
     xChannel,
     yChannel,
-    mixBlendMode
+    mixBlendMode,
+    updateDisplacementMap
   ])
 
   useEffect(() => {
     if (!containerRef.current) return
 
-    const resizeObserver = new ResizeObserver(() => {
-      setTimeout(updateDisplacementMap, 0)
-    })
+    const resizeObserver = new ResizeObserver(updateDisplacementMap)
 
     resizeObserver.observe(containerRef.current)
 
     return () => {
       resizeObserver.disconnect()
     }
-  }, [])
+  }, [updateDisplacementMap])
 
   useEffect(() => {
-    if (!containerRef.current) return
-
-    const resizeObserver = new ResizeObserver(() => {
-      setTimeout(updateDisplacementMap, 0)
-    })
-
-    resizeObserver.observe(containerRef.current)
-
-    return () => {
-      resizeObserver.disconnect()
-    }
-  }, [])
-
-  useEffect(() => {
-    setTimeout(updateDisplacementMap, 0)
-  }, [width, height])
+    const frame = requestAnimationFrame(updateDisplacementMap)
+    return () => cancelAnimationFrame(frame)
+  }, [height, updateDisplacementMap, width])
 
   // Feature detection state
   const [glassSupport, setGlassSupport] = useState({

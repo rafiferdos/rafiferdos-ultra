@@ -1,78 +1,15 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import IconCircleArrowUp from '@/components/icons/ArrowUp'
-import gsap from 'gsap'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { AnimatePresence, motion } from 'motion/react'
+import { ArrowUp } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export function ScrollToTop() {
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const isVisible = useRef(false)
-
+  const [visible, setVisible] = useState(false)
   useEffect(() => {
-    gsap.registerPlugin(ScrollToPlugin)
-    const context = gsap.context(() => {
-      // Initial state
-      gsap.set(buttonRef.current, { y: 20, opacity: 0, display: 'none' })
-    }, buttonRef)
-
-    const handleScroll = () => {
-      const shouldShow = window.scrollY > 300
-
-      if (shouldShow && !isVisible.current) {
-        isVisible.current = true
-        gsap.to(buttonRef.current, {
-          y: 0,
-          opacity: 1,
-          duration: 0.4,
-          ease: 'power2.out',
-          display: 'block',
-          overwrite: true
-        })
-      } else if (!shouldShow && isVisible.current) {
-        isVisible.current = false
-        gsap.to(buttonRef.current, {
-          y: 20,
-          opacity: 0,
-          duration: 0.4,
-          ease: 'power2.in',
-          display: 'none',
-          overwrite: true
-        })
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      context.revert()
-    }
+    const update = () => setVisible(window.scrollY > 560)
+    update(); window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
   }, [])
-
-  const scrollToTop = () => {
-    gsap.to(window, {
-      scrollTo: { y: 0, autoKill: false },
-      duration: 1.5,
-      ease: 'power4.inOut'
-    })
-  }
-
-  return (
-    <button
-      ref={buttonRef}
-      onClick={scrollToTop}
-      className="fixed bottom-8 right-8 z-50 hidden opacity-0 rounded-full backdrop-blur-md bg-white/5 hover:bg-white/10 border border-white/10 shadow-lg transition-all duration-300"
-      aria-label="Scroll to top"
-    >
-      <IconCircleArrowUp
-        size="48"
-        style={{
-          // @ts-ignore
-          '--nc-gradient-1-color-1': 'transparent',
-          // @ts-ignore
-          '--nc-gradient-1-color-2': 'transparent'
-        }}
-      />
-    </button>
-  )
+  return <AnimatePresence>{visible && <motion.button initial={{ opacity: 0, y: 12, scale: .9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: .9 }} transition={{ duration: .25 }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed bottom-5 right-5 z-40 flex size-11 items-center justify-center rounded-full border border-border bg-background/80 shadow-xl backdrop-blur-xl transition hover:border-primary/50 hover:text-primary" aria-label="Scroll to top"><ArrowUp className="size-4" /></motion.button>}</AnimatePresence>
 }
