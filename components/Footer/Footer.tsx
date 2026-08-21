@@ -1,4 +1,4 @@
-import { Github, Mail } from 'lucide-react'
+import { AtSign, Github, Linkedin, Mail, Phone } from 'lucide-react'
 import Link from 'next/link'
 
 export function Footer() {
@@ -10,7 +10,8 @@ export function Footer() {
             Rafi Ferdos<span className="text-primary">.</span>
           </Link>
           <p className="mt-1 text-xs text-muted-foreground">
-            Web, mobile and realtime products—owned end to end.
+            Building useful web and mobile products—and ready for the team
+            behind the next one.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -22,6 +23,31 @@ export function Footer() {
             className="rounded-full border border-border p-2.5 transition hover:text-primary"
           >
             <Github className="size-4" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/rafiferdos"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn"
+            className="rounded-full border border-border p-2.5 transition hover:text-primary"
+          >
+            <Linkedin className="size-4" />
+          </a>
+          <a
+            href="https://x.com/rafiferdos"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="X"
+            className="rounded-full border border-border p-2.5 transition hover:text-primary"
+          >
+            <AtSign className="size-4" />
+          </a>
+          <a
+            href="tel:+8801921479294"
+            aria-label="Phone"
+            className="rounded-full border border-border p-2.5 transition hover:text-primary"
+          >
+            <Phone className="size-4" />
           </a>
           <a
             href="mailto:rafiferdos@gmail.com"

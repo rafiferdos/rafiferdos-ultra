@@ -9,7 +9,7 @@ import { ArrowUpRight, Check, MapPin } from 'lucide-react'
 export default function Experience() {
   return (
     <section id="experience" className="scroll-mt-24 py-24 sm:py-32">
-      <SectionHeading eyebrow="03 · Experience" title="A career built by" accent="expanding ownership." description="From leading a club web team to shipping full-stack and mobile products for foreign clients—each role widened the problems I could own." />
+      <SectionHeading eyebrow="03 · Experience" title="A career built by" accent="expanding ownership." description="From leading a club web team to shipping full-stack and mobile products for international clients—each role widened the problems I could own and the teams I could support." />
       <div className="relative mx-auto mt-16 max-w-6xl">
         <div className="absolute bottom-0 left-[19px] top-2 w-px bg-gradient-to-b from-primary via-violet-500/70 to-transparent md:left-1/2" />
         <div className="space-y-10 md:space-y-16">
