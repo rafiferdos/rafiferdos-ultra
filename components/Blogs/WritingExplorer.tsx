@@ -1,7 +1,15 @@
 'use client'
 
-import GradientWaves from '@/components/GradientWaves'
 import { Reveal } from '@/components/ui/reveal'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { BlogPost } from '@/data/site-content'
 import { cn } from '@/lib/utils'
 import {
@@ -34,6 +42,8 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
   const [tag, setTag] = useState('All')
   const [year, setYear] = useState('All')
   const [length, setLength] = useState('Any length')
+  const [difficulty, setDifficulty] = useState('All')
+  const [language, setLanguage] = useState('All')
   const [featuredOnly, setFeaturedOnly] = useState(false)
   const [sort, setSort] = useState<SortMode>('newest')
   const [view, setView] = useState<ViewMode>('grid')
@@ -77,6 +87,8 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
           post.excerpt,
           post.category,
           post.format || 'Article',
+          post.difficulty || 'Intermediate',
+          post.language || 'English',
           ...tagsFor(post)
         ]
           .join(' ')
@@ -92,6 +104,9 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
           (format === 'All' || (post.format || 'Article') === format) &&
           (tag === 'All' || tagsFor(post).includes(tag)) &&
           (year === 'All' || post.publishedAt.startsWith(year)) &&
+          (difficulty === 'All' ||
+            (post.difficulty || 'Intermediate') === difficulty) &&
+          (language === 'All' || (post.language || 'English') === language) &&
           matchesLength &&
           (!featuredOnly || post.featured)
         )
@@ -103,7 +118,19 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
           return minutes(a.readTime) - minutes(b.readTime)
         return b.publishedAt.localeCompare(a.publishedAt)
       })
-  }, [category, featuredOnly, format, length, posts, query, sort, tag, year])
+  }, [
+    category,
+    difficulty,
+    featuredOnly,
+    format,
+    language,
+    length,
+    posts,
+    query,
+    sort,
+    tag,
+    year
+  ])
 
   const hasFilters =
     query ||
@@ -112,6 +139,8 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
     tag !== 'All' ||
     year !== 'All' ||
     length !== 'Any length' ||
+    difficulty !== 'All' ||
+    language !== 'All' ||
     featuredOnly
 
   function reset() {
@@ -121,6 +150,8 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
     setTag('All')
     setYear('All')
     setLength('Any length')
+    setDifficulty('All')
+    setLanguage('All')
     setFeaturedOnly(false)
   }
 
@@ -165,23 +196,27 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
             <label className="relative block">
               <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <span className="sr-only">Search articles</span>
-              <input
+              <Input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search topics, tags or titles"
-                className="h-11 w-full rounded-full border border-border bg-background pl-11 pr-4 text-sm outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10"
+                className="h-11 w-full rounded-full bg-background pl-11 pr-4"
               />
             </label>
-            <select
+            <Select
               value={sort}
-              onChange={(event) => setSort(event.target.value as SortMode)}
-              className="h-11 rounded-full border border-border bg-background px-4 text-sm outline-none focus:border-primary/50"
+              onValueChange={(value) => setSort(value as SortMode)}
             >
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-              <option value="title">Title A–Z</option>
-              <option value="quickest">Quickest reads</option>
-            </select>
+              <SelectTrigger className="h-11 w-full rounded-full bg-background md:w-44">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest first</SelectItem>
+                <SelectItem value="oldest">Oldest first</SelectItem>
+                <SelectItem value="title">Title A–Z</SelectItem>
+                <SelectItem value="quickest">Quickest reads</SelectItem>
+              </SelectContent>
+            </Select>
             <div className="flex rounded-full border border-border bg-background p-1">
               <ViewButton
                 active={view === 'grid'}
@@ -218,7 +253,7 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
             ))}
           </div>
 
-          <div className="mt-4 grid gap-3 border-t border-border/70 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-4 grid gap-3 border-t border-border/70 pt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             <FilterSelect
               label="Format"
               value={format}
@@ -242,6 +277,18 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
               value={length}
               values={['Any length', 'Quick reads', 'Deep dives']}
               onChange={setLength}
+            />
+            <FilterSelect
+              label="Difficulty"
+              value={difficulty}
+              values={['All', 'Beginner', 'Intermediate', 'Advanced']}
+              onChange={setDifficulty}
+            />
+            <FilterSelect
+              label="Language"
+              value={language}
+              values={['All', 'English', 'Bangla']}
+              onChange={setLanguage}
             />
           </div>
         </div>
@@ -330,7 +377,7 @@ function ArticleCard({
         {post.imageUrl && (
           <img
             src={post.imageUrl}
-            alt=""
+            alt={post.coverAlt || ''}
             className={cn(
               'shrink-0 rounded-2xl object-cover',
               view === 'grid'
@@ -354,6 +401,12 @@ function ArticleCard({
                   Featured
                 </span>
               )}
+              <span className="rounded-full border border-border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground">
+                {post.difficulty || 'Intermediate'}
+              </span>
+              <span className="rounded-full border border-border px-2.5 py-1 font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground">
+                {post.language || 'English'}
+              </span>
             </div>
             <h2
               className={cn(
@@ -435,17 +488,22 @@ function FilterSelect({
   onChange: (value: string) => void
 }) {
   return (
-    <label className="grid gap-1.5 text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
-      {label}
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="h-10 min-w-0 rounded-xl border border-border bg-background px-3 text-xs font-normal normal-case tracking-normal text-foreground outline-none focus:border-primary/50"
-      >
-        {values.map((item) => (
-          <option key={item}>{item}</option>
-        ))}
-      </select>
-    </label>
+    <div className="grid gap-1.5">
+      <Label className="text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
+        {label}
+      </Label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="h-10 min-w-0 w-full rounded-xl bg-background text-xs font-normal normal-case tracking-normal">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {values.map((item) => (
+            <SelectItem key={item} value={item}>
+              {item}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   )
 }

@@ -13,6 +13,12 @@ export type Project = {
   id: string
   title: string
   description: string
+  subtitle?: string
+  role?: string
+  year?: number
+  status?: string
+  caseStudyUrl?: string
+  outcomes?: string[]
   imageUrl?: string
   liveUrl?: string
   githubUrl?: string
@@ -34,12 +40,17 @@ export type BlogPost = {
   title: string
   excerpt: string
   content: string
+  contentJson?: unknown
   category: string
   format?: 'Article' | 'Guide' | 'Case study' | 'Note'
   tags?: string[]
   publishedAt: string
   readTime: string
   imageUrl?: string
+  coverAlt?: string
+  series?: string
+  difficulty?: string
+  language?: string
   featured?: boolean
   seoTitle?: string
   seoDescription?: string

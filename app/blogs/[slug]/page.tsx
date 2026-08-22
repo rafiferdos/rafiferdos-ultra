@@ -1,5 +1,6 @@
 import { Footer } from '@/components/Footer/Footer'
 import { ArticleBody } from '@/components/Blogs/ArticleBody'
+import { RichArticleBody } from '@/components/Blogs/RichArticleBody'
 import { Reveal } from '@/components/ui/reveal'
 import { SITE_URL, profile, safeJsonLd } from '@/lib/site'
 import { getBlogs } from '@/lib/content-store'
@@ -105,13 +106,17 @@ export default async function BlogPostPage({
           <Reveal>
             <img
               src={post.imageUrl}
-              alt={`${post.title} cover`}
+              alt={post.coverAlt || `${post.title} cover`}
               className="mt-10 aspect-[16/8] w-full rounded-[1.5rem] object-cover sm:mt-14"
             />
           </Reveal>
         )}
         <article className="mt-12 border-t border-border pt-10 sm:mt-16 sm:pt-12">
-          <ArticleBody content={post.content} />
+          {post.contentJson ? (
+            <RichArticleBody value={post.contentJson} fallback={post.content} />
+          ) : (
+            <ArticleBody content={post.content} />
+          )}
         </article>
       </main>
       <Footer />

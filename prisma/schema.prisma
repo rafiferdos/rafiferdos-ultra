@@ -17,21 +17,27 @@ model Admin {
 }
 
 model Project {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  imageUrl    String?
-  liveUrl     String?
-  githubUrl   String?
-  techStack   String[]
-  discipline  String
-  projectType String
-  tags        String[]
-  accent      String   @default("#f59e0b")
-  featured    Boolean  @default(true)
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  subtitle     String?
+  role         String?
+  year         Int?
+  status       String   @default("Published")
+  caseStudyUrl String?
+  outcomes     String[] @default([])
+  imageUrl     String?
+  liveUrl      String?
+  githubUrl    String?
+  techStack    String[]
+  discipline   String
+  projectType  String
+  tags         String[]
+  accent       String   @default("#f59e0b")
+  featured     Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model BlogPost {
@@ -40,12 +46,17 @@ model BlogPost {
   title          String
   excerpt        String
   content        String
+  contentJson    Json?
   category       String
   format         String   @default("Article")
   tags           String[]
   publishedAt    DateTime @default(now())
   readTime       String
   imageUrl       String?
+  coverAlt       String?
+  series         String?
+  difficulty     String?  @default("Intermediate")
+  language       String   @default("English")
   featured       Boolean  @default(false)
   seoTitle       String?
   seoDescription String?
@@ -56,14 +67,16 @@ model BlogPost {
 }
 
 model Message {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  subject   String
-  message   String
-  status    String   @default("new")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String   @id @default(cuid())
+  name              String
+  email             String
+  subject           String
+  message           String
+  status            String   @default("new")
+  notificationSent  Boolean  @default(false)
+  notificationError String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model SiteSettings {

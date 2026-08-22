@@ -2,6 +2,14 @@
 
 import { Project } from '@/data/site-content'
 import { Reveal } from '@/components/ui/reveal'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { ArrowUpRight, Github, Search, SlidersHorizontal } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -51,6 +59,10 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
       const haystack = [
         project.title,
         project.description,
+        project.subtitle || '',
+        project.role || '',
+        project.status || '',
+        ...(project.outcomes || []),
         project.discipline,
         project.projectType,
         ...project.tags,
@@ -81,11 +93,11 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
           <label className="relative block w-full lg:max-w-sm">
             <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <span className="sr-only">Search projects</span>
-            <input
+            <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search projects, stacks or outcomes"
-              className="h-12 w-full rounded-full border border-border bg-background pl-11 pr-4 text-sm outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10"
+              className="h-12 w-full rounded-full bg-background pl-11 pr-4"
             />
           </label>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -107,15 +119,18 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
         />
         <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border/70 pt-4">
           <span className="mr-1 text-xs font-semibold">Stack or tag</span>
-          <select
-            value={tag}
-            onChange={(event) => setTag(event.target.value)}
-            className="h-9 max-w-full rounded-full border border-border bg-background px-3 text-xs outline-none focus:border-primary/50"
-          >
-            {tags.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
+          <Select value={tag} onValueChange={setTag}>
+            <SelectTrigger className="h-9 w-auto max-w-full rounded-full bg-background text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {tags.map((item) => (
+                <SelectItem key={item} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           {(discipline !== 'All' ||
             projectType !== 'All' ||
             tag !== 'All' ||
@@ -223,6 +238,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <div className="flex flex-wrap gap-2">
           <Badge primary>{project.discipline}</Badge>
           <Badge>{project.projectType}</Badge>
+          {project.status && <Badge>{project.status}</Badge>}
           {project.tags.slice(0, 2).map((item) => (
             <Badge key={item}>{item}</Badge>
           ))}
@@ -230,9 +246,26 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <h2 className="mt-5 text-2xl font-semibold tracking-[-.035em]">
           {project.title}
         </h2>
+        {(project.role || project.year) && (
+          <p className="mt-2 text-xs font-medium text-primary">
+            {[project.role, project.year].filter(Boolean).join(' · ')}
+          </p>
+        )}
+        {project.subtitle && (
+          <p className="mt-2 text-sm font-medium text-foreground/80">
+            {project.subtitle}
+          </p>
+        )}
         <p className="mt-3 flex-1 text-sm leading-7 text-muted-foreground">
           {project.description}
         </p>
+        {project.outcomes?.length ? (
+          <ul className="mt-4 space-y-1.5 text-xs leading-5 text-muted-foreground">
+            {project.outcomes.slice(0, 2).map((outcome) => (
+              <li key={outcome}>↗ {outcome}</li>
+            ))}
+          </ul>
+        ) : null}
         <div className="mt-6 flex items-center justify-between gap-3 border-t border-border/60 pt-5">
           <p className="truncate font-mono text-[10px] text-muted-foreground">
             {project.techStack.join(' · ')}
@@ -257,6 +290,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 }
                 rel="noreferrer"
                 aria-label={`Open ${project.title}`}
+                className="rounded-full border border-border p-2.5 hover:text-primary"
+              >
+                <ArrowUpRight className="size-4" />
+              </a>
+            )}
+            {project.caseStudyUrl && (
+              <a
+                href={project.caseStudyUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Read ${project.title} case study`}
                 className="rounded-full border border-border p-2.5 hover:text-primary"
               >
                 <ArrowUpRight className="size-4" />
