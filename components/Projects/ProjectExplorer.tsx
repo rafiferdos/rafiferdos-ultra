@@ -11,7 +11,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { ArrowUpRight, Github, Search, SlidersHorizontal } from 'lucide-react'
+import { ArrowUpRight, Github, Layers3, RotateCcw, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 const disciplines = [
@@ -88,60 +88,77 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
 
   return (
     <div className="mt-14">
-      <Reveal className="rounded-[1.75rem] border border-border/70 bg-card p-5 shadow-xl shadow-black/5 sm:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <label className="relative block w-full lg:max-w-sm">
-            <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+      <Reveal className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-card/80 p-4 shadow-[0_24px_80px_-42px_rgba(0,0,0,.45)] backdrop-blur-xl sm:p-6">
+        <div className="pointer-events-none absolute -right-20 -top-24 size-64 rounded-full bg-primary/10 blur-3xl" />
+        <div className="relative z-10">
+          <div className="flex flex-wrap items-end justify-between gap-3 px-1">
+            <div>
+              <p className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-primary">
+                <Layers3 className="size-3.5" /> Project finder
+              </p>
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                Narrow the archive without losing context.
+              </p>
+            </div>
+            <div className="rounded-full border border-border/70 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[.12em] text-muted-foreground shadow-sm">
+              <span className="font-semibold text-foreground">
+                {filtered.length}
+              </span>{' '}
+              / {projects.length} matches
+            </div>
+          </div>
+          <label className="relative mt-5 block w-full">
+            <span className="absolute left-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Search className="size-3.5" />
+            </span>
             <span className="sr-only">Search projects</span>
             <Input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search projects, stacks or outcomes"
-              className="h-12 w-full rounded-full bg-background pl-11 pr-4"
+              placeholder="Search by project, technology, role or outcome…"
+              className="h-12 w-full rounded-2xl border-border/70 bg-background/75 pl-12 pr-4 shadow-inner shadow-black/[.025]"
             />
           </label>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <SlidersHorizontal className="size-4" />
-            {filtered.length} of {projects.length} projects
+          <FilterRow
+            label="Discipline"
+            values={disciplines}
+            active={discipline}
+            onChange={setDiscipline}
+          />
+          <FilterRow
+            label="Work type"
+            values={projectTypes}
+            active={projectType}
+            onChange={setProjectType}
+          />
+          <div className="mt-3 grid gap-2 border-t border-border/60 pt-3 sm:grid-cols-[7.5rem_minmax(0,1fr)_auto] sm:items-center">
+            <span className="px-1 font-mono text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
+              Stack or tag
+            </span>
+            <Select value={tag} onValueChange={setTag}>
+              <SelectTrigger className="h-10 w-full rounded-xl border-border/70 bg-background/75 text-xs sm:max-w-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {tags.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {(discipline !== 'All' ||
+              projectType !== 'All' ||
+              tag !== 'All' ||
+              query) && (
+              <button
+                onClick={reset}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-border/70 bg-background/65 px-3 text-xs font-semibold text-muted-foreground transition hover:border-primary/30 hover:text-foreground"
+              >
+                <RotateCcw className="size-3.5" /> Reset
+              </button>
+            )}
           </div>
-        </div>
-        <FilterRow
-          label="Discipline"
-          values={disciplines}
-          active={discipline}
-          onChange={setDiscipline}
-        />
-        <FilterRow
-          label="Work type"
-          values={projectTypes}
-          active={projectType}
-          onChange={setProjectType}
-        />
-        <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border/70 pt-4">
-          <span className="mr-1 text-xs font-semibold">Stack or tag</span>
-          <Select value={tag} onValueChange={setTag}>
-            <SelectTrigger className="h-9 w-auto max-w-full rounded-full bg-background text-xs">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {tags.map((item) => (
-                <SelectItem key={item} value={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {(discipline !== 'All' ||
-            projectType !== 'All' ||
-            tag !== 'All' ||
-            query) && (
-            <button
-              onClick={reset}
-              className="ml-auto text-xs font-semibold text-primary hover:underline"
-            >
-              Reset filters
-            </button>
-          )}
         </div>
       </Reveal>
 
@@ -186,23 +203,27 @@ function FilterRow<T extends string>({
   onChange: (value: T) => void
 }) {
   return (
-    <div className="mt-4 flex gap-2 overflow-x-auto border-t border-border/70 pt-4 [scrollbar-width:none]">
-      <span className="mr-1 text-xs font-semibold">{label}</span>
-      {values.map((value) => (
-        <button
-          key={value}
-          aria-pressed={active === value}
-          onClick={() => onChange(value)}
-          className={cn(
-            'shrink-0 rounded-full border px-3 py-1.5 text-xs transition',
-            active === value
-              ? 'border-foreground bg-foreground text-background'
-              : 'border-border bg-background text-muted-foreground hover:text-foreground'
-          )}
-        >
-          {value}
-        </button>
-      ))}
+    <div className="mt-3 grid gap-2 border-t border-border/60 pt-3 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:items-center">
+      <span className="px-1 font-mono text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
+        {label}
+      </span>
+      <div className="flex gap-1.5 overflow-x-auto rounded-2xl bg-muted/40 p-1.5 [scrollbar-width:none]">
+        {values.map((value) => (
+          <button
+            key={value}
+            aria-pressed={active === value}
+            onClick={() => onChange(value)}
+            className={cn(
+              'shrink-0 rounded-xl border border-transparent px-3 py-2 text-xs font-medium transition',
+              active === value
+                ? 'border-border/70 bg-background text-foreground shadow-sm'
+                : 'text-muted-foreground hover:bg-background/55 hover:text-foreground'
+            )}
+          >
+            {value}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

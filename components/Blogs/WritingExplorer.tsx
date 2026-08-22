@@ -14,9 +14,11 @@ import { BlogPost } from '@/data/site-content'
 import { cn } from '@/lib/utils'
 import {
   ArrowUpRight,
+  BookOpenText,
   Clock3,
   Grid2X2,
   List,
+  RotateCcw,
   Search,
   SlidersHorizontal,
   Sparkles
@@ -191,143 +193,171 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
-        <div className="rounded-[1.6rem] border border-border/70 bg-card/90 p-4 shadow-xl shadow-black/5 backdrop-blur-xl sm:p-5">
-          <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_auto]">
-            <label className="relative block">
-              <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <span className="sr-only">Search articles</span>
-              <Input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search topics, tags or titles"
-                className="h-11 w-full rounded-full bg-background pl-11 pr-4"
-              />
-            </label>
-            <Select
-              value={sort}
-              onValueChange={(value) => setSort(value as SortMode)}
-            >
-              <SelectTrigger className="h-11 w-full rounded-full bg-background md:w-44">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="newest">Newest first</SelectItem>
-                <SelectItem value="oldest">Oldest first</SelectItem>
-                <SelectItem value="title">Title A–Z</SelectItem>
-                <SelectItem value="quickest">Quickest reads</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="flex rounded-full border border-border bg-background p-1">
-              <ViewButton
-                active={view === 'grid'}
-                onClick={() => setView('grid')}
-                label="Grid view"
-              >
-                <Grid2X2 className="size-4" />
-              </ViewButton>
-              <ViewButton
-                active={view === 'list'}
-                onClick={() => setView('list')}
-                label="List view"
-              >
-                <List className="size-4" />
-              </ViewButton>
+        <div className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-card/80 p-4 shadow-[0_24px_80px_-42px_rgba(0,0,0,.45)] backdrop-blur-xl sm:p-6">
+          <div className="pointer-events-none absolute -left-20 -top-24 size-64 rounded-full bg-violet-500/10 blur-3xl" />
+          <div className="relative z-10">
+            <div className="flex flex-wrap items-end justify-between gap-3 px-1">
+              <div>
+                <p className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-primary">
+                  <BookOpenText className="size-3.5" /> Writing library
+                </p>
+                <p className="mt-1.5 text-sm text-muted-foreground">
+                  Find the depth, topic and format you need.
+                </p>
+              </div>
+              <div className="rounded-full border border-border/70 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[.12em] text-muted-foreground shadow-sm">
+                <span className="font-semibold text-foreground">
+                  {filtered.length}
+                </span>{' '}
+                / {posts.length} articles
+              </div>
             </div>
-          </div>
 
-          <div className="mt-4 flex gap-2 overflow-x-auto border-t border-border/70 pt-4 [scrollbar-width:none]">
-            {categories.map((item) => (
+            <div className="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto]">
+              <label className="relative block">
+                <span className="absolute left-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Search className="size-3.5" />
+                </span>
+                <span className="sr-only">Search articles</span>
+                <Input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Search by title, topic, technology or keyword…"
+                  className="h-12 w-full rounded-2xl border-border/70 bg-background/75 pl-12 pr-4 shadow-inner shadow-black/[.025]"
+                />
+              </label>
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 sm:grid-cols-[12rem_auto]">
+                <Select
+                  value={sort}
+                  onValueChange={(value) => setSort(value as SortMode)}
+                >
+                  <SelectTrigger className="h-12 w-full rounded-2xl border-border/70 bg-background/75">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest first</SelectItem>
+                    <SelectItem value="oldest">Oldest first</SelectItem>
+                    <SelectItem value="title">Title A–Z</SelectItem>
+                    <SelectItem value="quickest">Quickest reads</SelectItem>
+                  </SelectContent>
+                </Select>
+                <div className="flex h-12 rounded-2xl border border-border/70 bg-background/75 p-1.5 shadow-sm">
+                  <ViewButton
+                    active={view === 'grid'}
+                    onClick={() => setView('grid')}
+                    label="Grid view"
+                  >
+                    <Grid2X2 className="size-4" />
+                  </ViewButton>
+                  <ViewButton
+                    active={view === 'list'}
+                    onClick={() => setView('list')}
+                    label="List view"
+                  >
+                    <List className="size-4" />
+                  </ViewButton>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-2 border-t border-border/60 pt-4 sm:grid-cols-[7rem_minmax(0,1fr)] sm:items-center">
+              <span className="px-1 font-mono text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
+                Category
+              </span>
+              <div className="flex gap-1.5 overflow-x-auto rounded-2xl bg-muted/40 p-1.5 [scrollbar-width:none]">
+                {categories.map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => setCategory(item)}
+                    aria-pressed={category === item}
+                    className={cn(
+                      'shrink-0 rounded-xl border border-transparent px-3 py-2 text-xs font-medium transition',
+                      category === item
+                        ? 'border-border/70 bg-background text-foreground shadow-sm'
+                        : 'text-muted-foreground hover:bg-background/55 hover:text-foreground'
+                    )}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-[1.4rem] border border-border/50 bg-muted/25 p-3">
+              <div className="mb-3 flex items-center gap-2 px-1 font-mono text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
+                <SlidersHorizontal className="size-3.5" /> Refine results
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+                <FilterSelect
+                  label="Format"
+                  value={format}
+                  values={formats}
+                  onChange={setFormat}
+                />
+                <FilterSelect
+                  label="Tag"
+                  value={tag}
+                  values={tags}
+                  onChange={setTag}
+                />
+                <FilterSelect
+                  label="Year"
+                  value={year}
+                  values={years}
+                  onChange={setYear}
+                />
+                <FilterSelect
+                  label="Length"
+                  value={length}
+                  values={['Any length', 'Quick reads', 'Deep dives']}
+                  onChange={setLength}
+                />
+                <FilterSelect
+                  label="Difficulty"
+                  value={difficulty}
+                  values={['All', 'Beginner', 'Intermediate', 'Advanced']}
+                  onChange={setDifficulty}
+                />
+                <FilterSelect
+                  label="Language"
+                  value={language}
+                  values={['All', 'English', 'Bangla']}
+                  onChange={setLanguage}
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4">
               <button
-                key={item}
-                onClick={() => setCategory(item)}
-                aria-pressed={category === item}
+                type="button"
+                onClick={() => setFeaturedOnly((value) => !value)}
+                aria-pressed={featuredOnly}
                 className={cn(
-                  'shrink-0 rounded-full border px-3 py-1.5 text-xs transition',
-                  category === item
-                    ? 'border-foreground bg-foreground text-background'
-                    : 'border-border bg-background text-muted-foreground hover:text-foreground'
+                  'inline-flex h-10 items-center gap-2 rounded-xl border px-3 text-xs font-semibold transition',
+                  featuredOnly
+                    ? 'border-primary/35 bg-primary/10 text-foreground shadow-sm'
+                    : 'border-border/70 bg-background/65 text-muted-foreground hover:text-foreground'
                 )}
               >
-                {item}
+                <Sparkles className="size-3.5 text-primary" />
+                Featured only
               </button>
-            ))}
-          </div>
-
-          <div className="mt-4 grid gap-3 border-t border-border/70 pt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            <FilterSelect
-              label="Format"
-              value={format}
-              values={formats}
-              onChange={setFormat}
-            />
-            <FilterSelect
-              label="Tag"
-              value={tag}
-              values={tags}
-              onChange={setTag}
-            />
-            <FilterSelect
-              label="Year"
-              value={year}
-              values={years}
-              onChange={setYear}
-            />
-            <FilterSelect
-              label="Length"
-              value={length}
-              values={['Any length', 'Quick reads', 'Deep dives']}
-              onChange={setLength}
-            />
-            <FilterSelect
-              label="Difficulty"
-              value={difficulty}
-              values={['All', 'Beginner', 'Intermediate', 'Advanced']}
-              onChange={setDifficulty}
-            />
-            <FilterSelect
-              label="Language"
-              value={language}
-              values={['All', 'English', 'Bangla']}
-              onChange={setLanguage}
-            />
-          </div>
-        </div>
-
-        <div className="mt-7 flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
-          <span className="inline-flex items-center gap-2">
-            <SlidersHorizontal className="size-4" />
-            Showing {filtered.length} of {posts.length} articles
-          </span>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setFeaturedOnly((value) => !value)}
-              aria-pressed={featuredOnly}
-              className={cn(
-                'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition',
-                featuredOnly
-                  ? 'border-primary/40 bg-primary/10 text-foreground'
-                  : 'border-border bg-background hover:text-foreground'
+              {hasFilters && (
+                <button
+                  onClick={reset}
+                  className="inline-flex h-10 items-center gap-2 rounded-xl border border-border/70 bg-background/65 px-3 text-xs font-semibold text-muted-foreground transition hover:border-primary/30 hover:text-foreground"
+                >
+                  <RotateCcw className="size-3.5" /> Reset all
+                </button>
               )}
-            >
-              <Sparkles className="size-3.5 text-primary" />
-              Featured only
-            </button>
-            {hasFilters && (
-              <button
-                onClick={reset}
-                className="font-semibold text-primary hover:underline"
-              >
-                Clear filters
-              </button>
-            )}
+            </div>
           </div>
         </div>
 
         <div
           aria-live="polite"
           className={cn(
-            'mt-7 grid gap-5',
+            'mt-8 grid gap-5',
             view === 'grid' ? 'md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'
           )}
         >
@@ -488,12 +518,12 @@ function FilterSelect({
   onChange: (value: string) => void
 }) {
   return (
-    <div className="grid gap-1.5">
+    <div className="grid gap-1.5 rounded-xl border border-border/50 bg-background/55 p-2.5 shadow-sm shadow-black/[.02]">
       <Label className="text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
         {label}
       </Label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="h-10 min-w-0 w-full rounded-xl bg-background text-xs font-normal normal-case tracking-normal">
+        <SelectTrigger className="h-9 min-w-0 w-full rounded-lg border-border/60 bg-muted/35 text-xs font-normal normal-case tracking-normal">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
