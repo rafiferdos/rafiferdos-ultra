@@ -65,7 +65,7 @@ export default function HeroClient() {
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_30%,rgba(245,158,11,.10),transparent_30%),radial-gradient(circle_at_84%_34%,rgba(139,92,246,.09),transparent_32%)]" />
       <div className="relative mx-auto grid min-h-svh max-w-7xl grid-cols-1 place-content-center gap-6 px-4 pb-20 pt-28 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
-        <div className="flex h-full max-w-2xl flex-col justify-center">
+        <div className="order-2 flex h-full max-w-2xl flex-col justify-center lg:order-1">
           <Reveal direction="none" duration={0.55}>
             <div className="mb-6 flex w-fit items-center gap-2 rounded-full border border-primary/20 dark:border-primary/20 px-3 py-1.5 text-xs backdrop-blur-xl">
               <span className="relative flex size-2">
@@ -140,7 +140,11 @@ export default function HeroClient() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.13} direction="left" className="h-full">
+        <Reveal
+          delay={0.13}
+          direction="left"
+          className="order-1 h-full lg:order-2"
+        >
           <div className="relative mx-auto flex min-h-[350px] w-full max-w-[520px] items-center justify-center sm:min-h-[440px] lg:min-h-[560px]">
             <Ripple className="[mask-image:none] opacity-45 dark:opacity-70" />
             <div className="relative z-10">
