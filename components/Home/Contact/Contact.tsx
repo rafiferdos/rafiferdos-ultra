@@ -2,7 +2,13 @@
 
 import { SectionHeading } from '@/components/Home/SectionHeading'
 import { BorderBeam } from '@/components/ui/border-beam'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Reveal } from '@/components/ui/reveal'
+import { Textarea } from '@/components/ui/textarea'
+import { apiClient, getApiError } from '@/lib/http/client'
+import { useMutation } from '@tanstack/react-query'
 import {
   ArrowUpRight,
   AtSign,
@@ -13,30 +19,24 @@ import {
   Phone,
   Send
 } from 'lucide-react'
-import { FormEvent, useState } from 'react'
+import { FormEvent } from 'react'
 
 export default function Contact() {
-  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>(
-    'idle'
-  )
+  const sendMessage = useMutation({
+    mutationFn: async (payload: Record<string, FormDataEntryValue>) => {
+      const { data } = await apiClient.post<{
+        ok: true
+        emailDelivered: boolean
+      }>('/contact', payload)
+      return data
+    }
+  })
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setState('sending')
     const form = event.currentTarget
     const payload = Object.fromEntries(new FormData(form))
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      if (!response.ok) throw new Error('Unable to send')
-      form.reset()
-      setState('sent')
-    } catch {
-      setState('error')
-    }
+    sendMessage.mutate(payload, { onSuccess: () => form.reset() })
   }
 
   return (
@@ -125,47 +125,51 @@ export default function Contact() {
             aria-label="Contact form"
           >
             <div className="grid gap-5 sm:grid-cols-2">
-              <label className="grid gap-2 text-sm font-medium">
-                Name
-                <input
+              <div className="grid gap-2">
+                <Label htmlFor="contact-name">Name</Label>
+                <Input
+                  id="contact-name"
                   required
                   name="name"
                   autoComplete="name"
-                  className="h-12 rounded-xl border border-border bg-background px-4 outline-none transition focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+                  className="h-12 rounded-xl"
                   placeholder="Your name"
                 />
-              </label>
-              <label className="grid gap-2 text-sm font-medium">
-                Email
-                <input
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="contact-email">Email</Label>
+                <Input
+                  id="contact-email"
                   required
                   name="email"
                   type="email"
                   autoComplete="email"
-                  className="h-12 rounded-xl border border-border bg-background px-4 outline-none transition focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+                  className="h-12 rounded-xl"
                   placeholder="you@company.com"
                 />
-              </label>
+              </div>
             </div>
-            <label className="grid gap-2 text-sm font-medium">
-              Role or product
-              <input
+            <div className="grid gap-2">
+              <Label htmlFor="contact-subject">Role or product</Label>
+              <Input
+                id="contact-subject"
                 required
                 name="subject"
-                className="h-12 rounded-xl border border-border bg-background px-4 outline-none transition focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+                className="h-12 rounded-xl"
                 placeholder="Full-stack role, product, website, mobile app…"
               />
-            </label>
-            <label className="grid gap-2 text-sm font-medium">
-              Useful context
-              <textarea
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="contact-message">Useful context</Label>
+              <Textarea
+                id="contact-message"
                 required
                 name="message"
                 rows={6}
-                className="resize-none rounded-xl border border-border bg-background p-4 outline-none transition focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+                className="resize-none rounded-xl p-4"
                 placeholder="The role or goal, current context, and what a good next step looks like."
               />
-            </label>
+            </div>
             <input
               name="website"
               className="hidden"
@@ -177,28 +181,30 @@ export default function Contact() {
               <p className="text-xs text-muted-foreground">
                 Usually replies within 1–2 business days.
               </p>
-              <button
-                disabled={state === 'sending'}
-                className="inline-flex h-11 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-semibold text-background transition hover:scale-[1.02] disabled:opacity-60"
+              <Button
+                disabled={sendMessage.isPending}
+                className="h-11 rounded-full px-6"
               >
-                {state === 'sending' ? (
+                {sendMessage.isPending ? (
                   <LoaderCircle className="size-4 animate-spin" />
                 ) : (
                   <Send className="size-4" />
                 )}
-                {state === 'sending' ? 'Sending…' : 'Send message'}
-              </button>
+                {sendMessage.isPending ? 'Sending…' : 'Send message'}
+              </Button>
             </div>
             <div aria-live="polite" className="min-h-5 text-sm">
-              {state === 'sent' && (
+              {sendMessage.isSuccess && (
                 <p className="text-emerald-600">
                   Message received. I’ll get back to you soon.
                 </p>
               )}
-              {state === 'error' && (
+              {sendMessage.isError && (
                 <p className="text-rose-500">
-                  The form backend is not connected yet. Please email me
-                  directly.
+                  {getApiError(
+                    sendMessage.error,
+                    'The message could not be sent. Please email me directly.'
+                  )}
                 </p>
               )}
             </div>
