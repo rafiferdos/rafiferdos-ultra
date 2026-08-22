@@ -9,6 +9,7 @@ import {
   updateRecord
 } from '@/lib/content-store'
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import {
   blogRecordSchema,
   messagePatchSchema,
@@ -37,6 +38,19 @@ function invalid(details?: unknown) {
     { error: 'The submitted content is invalid.', details },
     { status: 400 }
   )
+}
+function refreshPublicContent(entity: 'projects' | 'blogs' | 'messages') {
+  if (entity === 'projects') {
+    revalidatePath('/')
+    revalidatePath('/projects')
+    revalidatePath('/sitemap.xml')
+  }
+  if (entity === 'blogs') {
+    revalidatePath('/')
+    revalidatePath('/blogs')
+    revalidatePath('/blogs/[slug]', 'page')
+    revalidatePath('/sitemap.xml')
+  }
 }
 
 export async function GET() {
@@ -73,7 +87,9 @@ export async function POST(request: Request) {
   ).safeParse(record)
   if (!parsed.success) return invalid(parsed.error.flatten())
   try {
-    return NextResponse.json({ data: await insertRecord(entity, parsed.data) })
+    const data = await insertRecord(entity, parsed.data)
+    refreshPublicContent(entity)
+    return NextResponse.json({ data })
   } catch (error) {
     console.error('Content create failed', error)
     return NextResponse.json(
@@ -107,9 +123,9 @@ export async function PATCH(request: Request) {
   ).safeParse(record)
   if (!parsed.success) return invalid(parsed.error.flatten())
   try {
-    return NextResponse.json({
-      data: await updateRecord(entity, String(id), parsed.data)
-    })
+    const data = await updateRecord(entity, String(id), parsed.data)
+    refreshPublicContent(entity)
+    return NextResponse.json({ data })
   } catch (error) {
     console.error('Content update failed', error)
     return NextResponse.json(
@@ -133,6 +149,7 @@ export async function DELETE(request: Request) {
   if (!validEntity(entity) || !id) return invalid()
   try {
     await deleteRecord(entity, String(id))
+    refreshPublicContent(entity)
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Content delete failed', error)

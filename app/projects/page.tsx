@@ -4,6 +4,8 @@ import { Reveal } from '@/components/ui/reveal'
 import { getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Projects',
   description:
