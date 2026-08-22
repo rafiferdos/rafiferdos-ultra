@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 /* Tailwind v4 plugin + custom dark variant */
 @plugin "tailwindcss-animate";
+
+@plugin 'tailwind-scrollbar-hide';
 @custom-variant dark (&:where(.dark, .dark *));
 
 html {
@@ -47,6 +49,8 @@ html {
   --color-3: oklch(69.6% 0.165 251);
   --color-4: oklch(80.2% 0.134 225);
   --color-5: oklch(90.7% 0.231 133);
+  --highlight: oklch(0.852 0.199 91.936);
+  --brand: oklch(0.623 0.214 259.815);
 }
 
 /* Explicit light class to ensure variables are re-applied when next-themes sets class="light" */
@@ -124,6 +128,8 @@ html {
   --color-3: oklch(69.6% 0.165 251);
   --color-4: oklch(80.2% 0.134 225);
   --color-5: oklch(90.7% 0.231 133);
+  --highlight: oklch(0.852 0.199 91.936);
+  --brand: oklch(0.707 0.165 254.624);
 }
 
 @theme inline {
@@ -218,6 +224,8 @@ html {
     }
   }
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
+  --color-brand: var(--brand);
+  --color-highlight: var(--highlight);
   @keyframes aurora {
     0% {
       background-position: 0% 50%;

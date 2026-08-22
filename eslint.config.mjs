@@ -20,6 +20,14 @@ const eslintConfig = [
     }
   },
   {
+    // Registry components mirror upstream shadcn/Plate implementations.
+    files: ['components/editor/**/*.tsx', 'components/ui/**/*.tsx'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      'react/display-name': 'off'
+    }
+  },
+  {
     ignores: [
       'node_modules/**',
       '.next/**',
