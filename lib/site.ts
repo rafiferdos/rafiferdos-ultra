@@ -12,7 +12,7 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/rafiferdos',
   x: 'https://x.com/rafiferdos',
   resume:
-    'https://drive.google.com/file/d/1wFjb1ZqswXkKHIQQwq2_qaqCiauGnX24/view'
+    'https://drive.google.com/file/d/1i49Png-oTg1SxyLAPlsrZG6NgNfhA7AI/view?usp=drive_link'
 }
 
 export function safeJsonLd(value: unknown) {

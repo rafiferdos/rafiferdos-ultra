@@ -114,7 +114,7 @@ export default function Experience() {
       </div>
       <Reveal delay={0.1} className="mx-auto mt-14 w-fit">
         <a
-          href="https://drive.google.com/file/d/1wFjb1ZqswXkKHIQQwq2_qaqCiauGnX24/view"
+          href="https://drive.google.com/file/d/1i49Png-oTg1SxyLAPlsrZG6NgNfhA7AI/view?usp=drive_link"
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-medium transition hover:border-primary/50 hover:text-primary"

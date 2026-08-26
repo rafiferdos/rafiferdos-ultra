@@ -28,7 +28,7 @@ const roles = [
 ]
 
 const resumeUrl =
-  'https://drive.google.com/file/d/1wFjb1ZqswXkKHIQQwq2_qaqCiauGnX24/view'
+  'https://drive.google.com/file/d/1i49Png-oTg1SxyLAPlsrZG6NgNfhA7AI/view?usp=drive_link'
 
 export default function HeroClient() {
   const sectionRef = useRef<HTMLElement>(null)
