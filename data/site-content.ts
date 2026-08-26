@@ -62,7 +62,7 @@ export const experiences: Experience[] = [
   {
     company: 'Sparktech Agency · BDCallingIT',
     role: 'Software Developer',
-    period: 'Jul 2025 — Jun 2026',
+    period: 'Jul 2025 — Jul 2026',
     location: 'Dhaka, Bangladesh',
     summary:
       'Grew from a frontend hire into a full-stack and React Native engineer, shipping production commerce products across web and mobile.',
@@ -81,7 +81,7 @@ export const experiences: Experience[] = [
   {
     company: 'ZenDevz',
     role: 'Full Stack Developer',
-    period: 'Nov 2024 — Feb 2025',
+    period: 'Oct 2024 — Jan 2025',
     location: 'Dhaka, Bangladesh',
     summary:
       'Owned international client delivery from requirements through architecture and deployment while leading engineering quality for a small team.',
@@ -100,7 +100,7 @@ export const experiences: Experience[] = [
   {
     company: 'DIU Robotics Club',
     role: 'Web Developer Executive',
-    period: 'Jan 2023 — Dec 2024',
+    period: 'May 2022 — Dec 2024',
     location: 'Dhaka, Bangladesh',
     summary:
       'Advanced into an executive role, took ownership of the club platform, and led a dedicated web team through feature delivery and operational improvements.',
