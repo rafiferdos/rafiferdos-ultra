@@ -11,7 +11,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { ArrowUpRight, Github, Layers3, RotateCcw, Search } from 'lucide-react'
+import { ArrowUpRight, Layers3, RotateCcw, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 const disciplines = [
@@ -97,7 +97,7 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
                 <Layers3 className="size-3.5" /> Project finder
               </p>
               <p className="mt-1.5 text-sm text-muted-foreground">
-                Narrow the archive without losing context.
+                Filter by role, work type or technology.
               </p>
             </div>
             <div className="rounded-full border border-border/70 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[.12em] text-muted-foreground shadow-sm">
@@ -257,8 +257,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       </div>
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex flex-wrap gap-2">
-          <Badge primary>{project.discipline}</Badge>
-          <Badge>{project.projectType}</Badge>
+          <Badge primary>{project.projectType}</Badge>
+          <Badge>{project.discipline}</Badge>
           {project.status && <Badge>{project.status}</Badge>}
           {project.tags.slice(0, 2).map((item) => (
             <Badge key={item}>{item}</Badge>
@@ -282,55 +282,42 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </p>
         {project.outcomes?.length ? (
           <ul className="mt-4 space-y-1.5 text-xs leading-5 text-muted-foreground">
-            {project.outcomes.slice(0, 2).map((outcome) => (
+            {project.outcomes.slice(0, 3).map((outcome) => (
               <li key={outcome}>↗ {outcome}</li>
             ))}
           </ul>
         ) : null}
-        <div className="mt-6 flex items-center justify-between gap-3 border-t border-border/60 pt-5">
-          <p className="truncate font-mono text-[10px] text-muted-foreground">
+        <div className="mt-6 border-t border-border/60 pt-5">
+          <p className="font-mono text-[10px] leading-5 text-muted-foreground">
             {project.techStack.join(' · ')}
           </p>
-          <div className="flex gap-2">
+          <div className="mt-4 flex flex-wrap gap-4 text-xs font-semibold">
             {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${project.title} source`}
-                className="rounded-full border border-border p-2.5 hover:text-primary"
-              >
-                <Github className="size-4" />
-              </a>
+              <ProjectLink href={project.githubUrl} label="Source" />
             )}
             {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target={
-                  project.liveUrl.startsWith('http') ? '_blank' : undefined
-                }
-                rel="noreferrer"
-                aria-label={`Open ${project.title}`}
-                className="rounded-full border border-border p-2.5 hover:text-primary"
-              >
-                <ArrowUpRight className="size-4" />
-              </a>
+              <ProjectLink href={project.liveUrl} label="Live" />
             )}
             {project.caseStudyUrl && (
-              <a
-                href={project.caseStudyUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Read ${project.title} case study`}
-                className="rounded-full border border-border p-2.5 hover:text-primary"
-              >
-                <ArrowUpRight className="size-4" />
-              </a>
+              <ProjectLink href={project.caseStudyUrl} label="Case study" />
             )}
           </div>
         </div>
       </div>
     </article>
+  )
+}
+
+function ProjectLink({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noreferrer' : undefined}
+      className="inline-flex items-center gap-1.5 transition hover:text-primary"
+    >
+      {label} <ArrowUpRight className="size-3.5" />
+    </a>
   )
 }
 

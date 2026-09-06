@@ -123,8 +123,13 @@ export const defaultProjects: Project[] = [
     id: 'commerce-mobile-suite',
     title: 'Commerce Mobile Suite',
     description:
-      'Two production ecommerce applications spanning storefront journeys, live order state, notifications and a shared full-stack foundation.',
-    githubUrl: 'https://github.com/rafiferdos',
+      'Two ecommerce mobile apps covering storefront, order state and notifications.',
+    role: 'React Native Developer',
+    outcomes: [
+      'Built and shipped both React Native applications.',
+      'Integrated GraphQL APIs for product and order data.',
+      'Added realtime chat and notifications with Socket.IO.'
+    ],
     techStack: ['React Native', 'Expo', 'Node.js', 'GraphQL'],
     discipline: 'Mobile',
     projectType: 'Professional work',
@@ -136,8 +141,12 @@ export const defaultProjects: Project[] = [
     id: 'realtime-collaboration-layer',
     title: 'Realtime Collaboration Layer',
     description:
-      'A resilient Socket.io layer for live chat and notifications, designed around synchronized state and concurrent user activity.',
-    githubUrl: 'https://github.com/rafiferdos',
+      'Backend support for live chat and notifications in ecommerce products.',
+    role: 'Software Developer',
+    outcomes: [
+      'Built chat and notification flows with Socket.IO.',
+      'Handled synchronized state for concurrent users.'
+    ],
     techStack: ['Socket.io', 'TypeScript', 'Express', 'MongoDB'],
     discipline: 'Backend',
     projectType: 'Professional work',
@@ -149,8 +158,12 @@ export const defaultProjects: Project[] = [
     id: 'agency-growth-platform',
     title: 'Agency Growth Platform',
     description:
-      'A production-grade agency presence with a type-safe content architecture, relational data model and conversion-focused frontend.',
-    githubUrl: 'https://github.com/rafiferdos',
+      'An agency website with editable content backed by a relational database.',
+    role: 'Full-Stack Developer',
+    outcomes: [
+      'Built the frontend with Next.js and TypeScript.',
+      'Modeled and accessed content with Prisma and PostgreSQL.'
+    ],
     techStack: ['Next.js', 'Prisma', 'PostgreSQL', 'Tailwind'],
     discipline: 'Full stack',
     projectType: 'Client project',
@@ -162,8 +175,12 @@ export const defaultProjects: Project[] = [
     id: 'robotics-event-platform',
     title: 'Robotics Event Platform',
     description:
-      'A club-owned event and registration system that replaced manual coordination with a clear participant journey and maintainable operations.',
-    githubUrl: 'https://github.com/rafiferdos',
+      'A club website with an event registration flow for participants.',
+    role: 'Web Developer Executive',
+    outcomes: [
+      'Built the custom event registration system.',
+      'Owned feature delivery and bug fixes with the club web team.'
+    ],
     techStack: ['React', 'Node.js', 'MongoDB', 'REST API'],
     discipline: 'Full stack',
     projectType: 'Community project',
@@ -175,8 +192,9 @@ export const defaultProjects: Project[] = [
     id: 'graphql-product-api',
     title: 'GraphQL Product API',
     description:
-      'A focused API architecture for product screens that reduces over-fetching, clarifies data ownership and keeps client state predictable.',
-    githubUrl: 'https://github.com/rafiferdos',
+      'A personal API project for querying product data with GraphQL.',
+    role: 'Personal Project',
+    outcomes: ['Modeled product queries and API data boundaries.'],
     techStack: ['GraphQL', 'Node.js', 'TypeScript', 'PostgreSQL'],
     discipline: 'Backend',
     projectType: 'Personal project',
@@ -189,6 +207,7 @@ export const defaultProjects: Project[] = [
     title: 'Portfolio Content Studio',
     description:
       'A secure publishing workspace for projects, long-form writing and cloud-hosted media, built into this portfolio without a separate admin product.',
+    role: 'Personal Project',
     liveUrl: '/dashboard/rafi',
     githubUrl: 'https://github.com/rafiferdos',
     techStack: ['Next.js', 'Supabase', 'Cloudinary', 'TypeScript'],

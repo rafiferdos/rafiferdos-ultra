@@ -5,7 +5,7 @@ import { BorderBeam } from '@/components/ui/border-beam'
 import { Reveal } from '@/components/ui/reveal'
 import { SoftAurora } from '@/components/ui/soft-aurora'
 import { Project } from '@/data/site-content'
-import { ArrowUpRight, Github } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
 function ProjectVisual({
@@ -63,9 +63,9 @@ export default function Projects({ projects }: { projects: Project[] }) {
     <section id="projects" className="scroll-mt-24 py-24 sm:py-32">
       <SectionHeading
         eyebrow="04 · Selected work"
-        title="Work that shows"
-        accent="how I contribute."
-        description="For hiring teams: range across web, backend and mobile. For product owners: evidence that I can carry a build across the handoff gaps."
+        title="Selected projects and"
+        accent="what I built."
+        description="A few examples of my work across Next.js, backend systems and React Native."
       />
       <div className="mt-14 grid gap-5 lg:grid-cols-3">
         {visibleProjects.map((project, index) => (
@@ -82,50 +82,32 @@ export default function Projects({ projects }: { projects: Project[] }) {
                 <ProjectVisual project={project} index={index} />
               </div>
               <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="font-mono text-[10px] uppercase tracking-[.22em] text-muted-foreground">
-                      0{index + 1} · Featured build
-                    </p>
-                    <h3 className="mt-3 text-2xl font-semibold tracking-[-.04em]">
-                      {project.title}
-                    </h3>
-                  </div>
-                  <div className="flex gap-2">
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`${project.title} source`}
-                        className="rounded-full border border-border p-2.5 transition hover:border-primary/50 hover:text-primary"
-                      >
-                        <Github className="size-4" />
-                      </a>
-                    )}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`Open ${project.title}`}
-                        className="rounded-full border border-border p-2.5 transition hover:border-primary/50 hover:text-primary"
-                      >
-                        <ArrowUpRight className="size-4" />
-                      </a>
-                    )}
-                  </div>
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">
+                    {[project.role, project.projectType]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
+                  <h3 className="mt-3 text-2xl font-semibold tracking-[-.04em]">
+                    {project.title}
+                  </h3>
                 </div>
                 <p className="mt-4 text-sm leading-7 text-muted-foreground">
                   {project.description}
                 </p>
+                {project.outcomes?.length ? (
+                  <ul className="mt-4 space-y-2 text-xs leading-5 text-foreground/75">
+                    {project.outcomes.slice(0, 3).map((outcome) => (
+                      <li key={outcome} className="flex gap-2">
+                        <span className="text-primary" aria-hidden="true">
+                          ↗
+                        </span>
+                        {outcome}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-primary/25 bg-primary/10 px-2.5 py-1 font-mono text-[10px] font-semibold text-foreground">
-                    {project.discipline}
-                  </span>
-                  <span className="rounded-full border border-violet-500/20 bg-violet-500/8 px-2.5 py-1 font-mono text-[10px] text-foreground/80">
-                    {project.projectType}
-                  </span>
                   {project.techStack.slice(0, 4).map((technology) => (
                     <span
                       key={technology}
@@ -134,6 +116,20 @@ export default function Projects({ projects }: { projects: Project[] }) {
                       {technology}
                     </span>
                   ))}
+                </div>
+                <div className="mt-6 flex flex-wrap gap-4 border-t border-border/60 pt-5 text-xs font-semibold">
+                  {project.liveUrl && (
+                    <ProjectLink href={project.liveUrl} label="Live" />
+                  )}
+                  {project.caseStudyUrl && (
+                    <ProjectLink
+                      href={project.caseStudyUrl}
+                      label="Case study"
+                    />
+                  )}
+                  {project.githubUrl && (
+                    <ProjectLink href={project.githubUrl} label="Source" />
+                  )}
                 </div>
               </div>
             </article>
@@ -155,11 +151,10 @@ export default function Projects({ projects }: { projects: Project[] }) {
               Project archive
             </p>
             <h3 className="mt-4 max-w-xl text-3xl font-semibold tracking-[-.045em] sm:text-4xl">
-              Find the work relevant to your team.
+              Browse the full project archive.
             </h3>
             <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground dark:text-white/65">
-              Filter by frontend, backend, full stack or mobile—and separate
-              client, professional, personal and community work.
+              Filter projects by discipline, work type or technology.
             </p>
             <Link
               href="/projects"
@@ -171,5 +166,18 @@ export default function Projects({ projects }: { projects: Project[] }) {
         </div>
       </Reveal>
     </section>
+  )
+}
+
+function ProjectLink({ href, label }: { href: string; label: string }) {
+  return (
+    <a
+      href={href}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noreferrer' : undefined}
+      className="inline-flex items-center gap-1.5 text-foreground transition hover:text-primary"
+    >
+      {label} <ArrowUpRight className="size-3.5" />
+    </a>
   )
 }

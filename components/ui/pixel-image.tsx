@@ -82,7 +82,10 @@ export const PixelImage = ({
         ${col * (100 / cols)}% ${(row + 1) * (100 / rows)}%
       )`
 
-      const delay = Math.random() * maxAnimationDelay
+      // Keep the stagger deterministic so SSR and hydration produce identical
+      // inline styles. The multiplier is coprime with the supported grid sizes,
+      // which distributes the pieces without requiring runtime randomness.
+      const delay = (((index * 37 + 17) % total) / total) * maxAnimationDelay
       return {
         clipPath,
         delay
