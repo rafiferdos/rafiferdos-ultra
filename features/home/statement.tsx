@@ -2,12 +2,11 @@ import { StatementMotion } from '@/features/home/statement-motion'
 
 type Kind = 'em' | 'accent'
 
-// TODO: draft from plan section 2.5, waiting for Rafi's final copy. Facts match docs/resume.md; "motion" is the one claim the resume does not cover.
 const segments: { text: string; kind?: Kind }[] = [
   { text: "I'm Rafi. I build the " },
   { text: 'whole thing', kind: 'em' },
   { text: ': the API, the database, the interface and the ' },
-  { text: 'motion', kind: 'em' },
+  { text: 'mobile app', kind: 'em' },
   { text: '. Lately that means real-time chat with Socket.IO, moving clients from REST to GraphQL, and ' },
   { text: 'two ecommerce apps in React Native.', kind: 'accent' }
 ]

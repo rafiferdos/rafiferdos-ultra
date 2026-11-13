@@ -115,3 +115,10 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - **Decision (contrast):** Selected work no longer dims inactive rows with `opacity: 0.4` (1.5 to 2.5:1 at rest). Inactive titles are now the muted color, the active one mixes to accent, rows stay at opacity 1, and the row index uses the muted color instead of faint.
 - **Still flagged by axe:** the 35 Statement words, which start at opacity 0.15 until the scrub lights them. That is the intended scrub-start state and reaches full contrast; with reduced motion or the pause toggle the words are at full contrast. If you want the audit clean, raise the start to about 0.5 in `statement-motion.tsx` and `site.css`.
 - Not done: the full manual pass from plan section 9 (keyboard-only scroll, text selection and every route in both themes at 1440 and 390). I checked pieces of it per phase (reduced motion, pause, anchors, back button, both viewports, dark theme on a few sections) but not every route and theme combination.
+
+## Final pass
+
+- Statement copy now says "the interface and the mobile app" (React Native is on the resume). The TODO flag is gone, so the "final statement copy" item in Needs Rafi is only about wording preferences.
+- CLAUDE.md notes the `lib/gsap-drag.ts` exception.
+- **Tried and reverted:** unpreloading the Mona Sans italic (as its own family) and JetBrains Mono, keeping `display: swap` and the upright Mona preloaded. On a fresh production build, mobile Lighthouse got worse: home 82 to 83 (was 84), `/projects` 83 (was 85), `/blogs` 86 (was 89), and FCP went from 1.4 s to 2.3 s, because the browser finds the fonts later without the preload hints. Reverted to the previous font setup.
+- Final numbers on the committed build, mobile: home 85 and 86 on two runs (earlier runs read 84, so this page sits at the 85 line and moves by a point between runs).
