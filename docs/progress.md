@@ -13,11 +13,8 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 
 ## Needs Rafi: confirm (claims the resume does not support yet)
 
-- **Title "Full Stack AI Engineer".** Resume v5 says "Full Stack Developer" and has no AI line. The site uses your title (hero, page titles, meta, Open Graph, JSON-LD, manifest). Copy claims AI as a skill, not as shipped AI work. If you have shipped an AI feature, add it to `docs/resume.md` and it can be named.
-- **`public/og.png`** may still show the old title. It is an image, so it was not regenerated.
-- **JSON-LD `knowsAbout` and keywords** now list AI engineering, RAG and AWS (you named them, the resume does not). Docker and CI/CD are on the resume.
-- **Skills marquee: four skills you named are not on resume v5:** AI and RAG, AWS, Jest, Playwright. They are shown as skills only. Docker, CI/CD and everything else in the rows are on the resume.
 - **Skills marquee: two extras you did not name:** "Real-time systems" (resume summary and the Socket.IO bullet) and "Code review" (the 35+ code reviews bullet). Both are in the resume's own words. Say so if you want either one out.
+- Title and the skills AI and RAG, AWS, Jest and Playwright are confirmed and now in `docs/resume.md` (2026-11-13). No shipped AI project is listed anywhere, so copy must not name one.
 
 ## Phase 4 (Data), done
 

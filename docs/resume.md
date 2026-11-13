@@ -7,7 +7,7 @@ Do not add, inflate or rephrase claims beyond what is written here. Ask when som
 
 ## Contact
 
-- Title: Full Stack Developer
+- Title: Full Stack AI Engineer (Rafi's choice, 2026-11-13; the v5 PDF still says Full Stack Developer, and roles named below keep their own titles)
 - Email: rafiferdos@gmail.com
 - Location: Dhaka, Bangladesh
 - Portfolio: https://rafiferdos.vercel.app
@@ -17,11 +17,13 @@ Do not add, inflate or rephrase claims beyond what is written here. Ask when som
 
 ## Summary
 
-Full Stack Developer with 3+ years building production web and mobile applications with React, Next.js, Node.js, and React Native, including end-to-end delivery, real-time systems, code review, and international client work.
+Full Stack AI Engineer with 3+ years building production web and mobile applications with React, Next.js, Node.js, and React Native, including end-to-end delivery, real-time systems, code review, and international client work.
 
 ## Skills
 
-Next.js, TypeScript, React, React Native, Expo, Socket.IO, JavaScript (ES6+), MongoDB, Mongoose, Prisma ORM, PostgreSQL, Redux, Docker, CI/CD, GraphQL, Git, REST APIs, Node.js, Express.js, Tailwind CSS, Firebase
+Next.js, TypeScript, React, React Native, Expo, Socket.IO, JavaScript (ES6+), MongoDB, Mongoose, Prisma ORM, PostgreSQL, Redux, Docker, CI/CD, GraphQL, Git, REST APIs, Node.js, Express.js, Tailwind CSS, Firebase, AI and RAG, AWS, Jest, Playwright
+
+AI and RAG, AWS, Jest and Playwright are confirmed by Rafi (2026-11-13) but are not in the v5 PDF. They are skills and a service he offers. This file lists no shipped AI project, client or number.
 
 ## Work experience
 
