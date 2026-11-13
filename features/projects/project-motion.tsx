@@ -16,8 +16,11 @@ export function ProjectMotion({ children }: { children: React.ReactNode }) {
       const pick = (selector: string) => gsap.utils.toArray<HTMLElement>(selector, el)
 
       // Title: the .fit box clips, so the text slides up inside it.
+      // The click-through overlay (page-transition) already put the same title in place, so it does not slide again.
       gsap.set(pick('[data-project-title] .fit-text'), { visibility: 'visible' })
-      gsap.from('[data-project-title] .fit-text', { yPercent: 105, duration: duration.display, ease: 'out', delay: 0.15 })
+      if (document.documentElement.dataset.arrival !== 'title') {
+        gsap.from('[data-project-title] .fit-text', { yPercent: 105, duration: duration.display, ease: 'out', delay: 0.15 })
+      }
 
       // Small text plays once on enter.
       pick('[data-reveal]').forEach((item) => {

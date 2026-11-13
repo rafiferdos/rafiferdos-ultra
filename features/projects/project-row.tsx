@@ -24,7 +24,7 @@ export function ProjectRow({ project, index, priority }: Props) {
       <div className="work-row-grid">
         <span className="t-label text-site-muted">{pad(index)}</span>
         <div data-work-title className="work-title min-w-0">
-          <Link href={href} className="work-title-link">
+          <Link href={href} data-transition-title={project.title} className="work-title-link">
             {title}
           </Link>
           {meta && <p className="t-label mt-2 text-site-muted">{meta}</p>}

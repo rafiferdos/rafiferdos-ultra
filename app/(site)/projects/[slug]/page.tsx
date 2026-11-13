@@ -2,6 +2,7 @@ import { FitText } from '@/components/site/fit-text'
 import { RollLink } from '@/components/site/roll-link'
 import { UpCloseView, type Media } from '@/features/home/up-close'
 import { ProjectCover } from '@/features/projects/project-cover'
+import { fitFallback, titleClass } from '@/features/projects/title-style'
 import { ProjectMotion } from '@/features/projects/project-motion'
 import { getProjectByKey, getProjects } from '@/lib/content-store'
 import { SITE_URL } from '@/lib/site'
@@ -14,8 +15,6 @@ type Params = { params: Promise<{ slug: string }> }
 
 const pad = (value: number) => String(value).padStart(2, '0')
 // The title box is fixed-height, so this only has to be close: the em width of an uppercase condensed title.
-const fitFallback = (title: string) => Math.max(2, title.length * 0.5)
-const titleClass = 'font-extrabold uppercase leading-[0.9] font-stretch-[75%]'
 
 export async function generateStaticParams() {
   return (await getProjects()).map((project) => ({ slug: projectKey(project) }))
@@ -185,7 +184,7 @@ export default async function ProjectPage({ params }: Params) {
         {gallery.length > 0 && <UpCloseView media={gallery} title="(Gallery)" />}
 
         {next && (
-          <Link href={`/projects/${projectKey(next)}`} data-next data-cursor="Open" className="next-project">
+          <Link href={`/projects/${projectKey(next)}`} data-transition-title={next.title} data-next data-cursor="Open" className="next-project">
             <div className="mb-10 flex items-start justify-between gap-6">
               <p className="t-label">[Next project]</p>
               {next.imageUrl && (

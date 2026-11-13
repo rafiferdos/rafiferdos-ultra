@@ -295,12 +295,13 @@ body:has(.site-root) {
   .work-dock-sticky {
     position: sticky;
     top: 20vh;
+    width: min(100%, 48vh);
+    margin-left: auto;
   }
 
   .work-dock-box {
     position: relative;
-    height: 60vh;
-    max-width: 100%;
+    width: 100%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
     background: var(--site-surface);
@@ -624,6 +625,21 @@ body:has(.site-root) {
   inset: 0;
   z-index: 190;
   pointer-events: none;
+}
+
+.page-panel {
+  position: absolute;
+  inset: 0;
+  background: var(--site-bg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.page-title-layer {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  color: var(--site-ink);
 }
 
 .page-bar {
