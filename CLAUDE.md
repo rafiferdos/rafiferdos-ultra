@@ -1,6 +1,6 @@
 # rafiferdos-ultra
  
-Portfolio of Rafi Ferdos (Full Stack Developer). Being redesigned from scratch as a scroll-driven, typography-first site with GSAP. No WebGL. The full plan is in `docs/plan.md`. Goal: award-level motion that stays fast.
+Portfolio of Rafi Ferdos (Full Stack AI Engineer). Being redesigned from scratch as a scroll-driven, typography-first site with GSAP. No WebGL. The full plan is in `docs/plan.md`. Goal: award-level motion that stays fast.
  
 ## Stack (already installed, do not add alternatives)
  
@@ -16,7 +16,7 @@ Rule: GSAP drives all animation on public pages. Do not use framer-motion or mot
 ## Source of truth
  
 - Personal and career content comes from `docs/resume.md` (v5 Full Stack Developer resume). It wins over the database, `data/site-content.ts` and the README.
-- Position Rafi as Full Stack Developer / Software Engineer. Never as a beginner.
+- Position Rafi as Full Stack AI Engineer (his choice, 2026-11-13; `profile.jobTitle` in `lib/site.ts`). The resume still says Full Stack Developer, and roles named in it keep their own titles. Never as a beginner. Do not claim shipped AI work the resume does not list.
 - Never invent or inflate experience, metrics, dates or employers. If something is missing, leave a TODO and ask.
 - Projects and articles live in Postgres and are managed from the dashboard.
 - Design direction lives in `docs/design-brief.md`. Follow it. Do not drift to generic layouts.

@@ -1,6 +1,7 @@
 import { FitText } from '@/components/site/fit-text'
 import { RollLink } from '@/components/site/roll-link'
 import { HeroMotion } from '@/features/home/hero-motion'
+import { profile } from '@/lib/site'
 
 export function Hero() {
   return (
@@ -10,7 +11,7 @@ export function Hero() {
         className="t-label flex flex-wrap justify-between gap-x-8 gap-y-1 py-6 text-site-muted"
       >
         <span>(Portfolio / ©{new Date().getFullYear()})</span>
-        <span>Full Stack Developer</span>
+        <span>{profile.jobTitle}</span>
         <span>Dhaka, BD</span>
       </div>
 

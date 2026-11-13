@@ -11,6 +11,12 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - Final statement copy for the About section (phase 7). The draft from plan §2.5 is used and marked.
 - Cover blur for any project edited in the dashboard after 2026-11-13: new uploads clear the blur. Re-run `node prisma/scripts/backfill-media.ts` (dry run), then `--apply` after review.
 
+## Needs Rafi: confirm (claims the resume does not support yet)
+
+- **Title "Full Stack AI Engineer".** Resume v5 says "Full Stack Developer" and has no AI line. The site uses your title (hero, page titles, meta, Open Graph, JSON-LD, manifest). Copy claims AI as a skill, not as shipped AI work. If you have shipped an AI feature, add it to `docs/resume.md` and it can be named.
+- **`public/og.png`** may still show the old title. It is an image, so it was not regenerated.
+- **JSON-LD `knowsAbout` and keywords** now list AI engineering, RAG and AWS (you named them, the resume does not). Docker and CI/CD are on the resume.
+
 ## Phase 4 (Data), done
 
 - Migration `20261113000000_project_media` applied with `prisma migrate deploy` (additive: coverWidth, coverHeight, coverBlur, videoUrl, gallery).
@@ -172,3 +178,18 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - Kinetic stretch still works on the one line (6 letters up to 1.53x under the pointer). The line is clipped by its `FitText` box, so letters pushed past the right edge are cut instead of overflowing the page.
 - **No portrait in the hero:** the hero is text only. `components/ui/pixel-image.tsx` is not used on any page, so there was nothing to hand off to or move.
 - The `package.json` change in the working tree is only a `packageManager` field that pnpm 12.18.0 added; the `pnpm-lock.yaml` change is an extra document for pnpm's own self-management entry. No dependency changed, so neither is committed.
+
+## Fixing phase (plan in `docs/fixing-plan.md`)
+
+Part 1: items 6, 7, 1, 2, 3. Playwright screenshots in `docs/qa/fixing/<item>/` (gitignored). Layout checks ran on the dev server (`next dev`); animation timing needs the Chrome DevTools page, because headless Playwright throttles rAF.
+
+### Item 6: footer wordmark removed
+- The big "RAFI ferdos" in the footer is gone on every page. The footer is the link row plus a small "©{year}". No name, no title there (Rafi's call).
+- Contact itself never had a name under "Say hello"; the footer wordmark was the text under it.
+
+### Item 7: "Full Stack AI Engineer"
+- One source: `profile.jobTitle` in `lib/site.ts`. Read by the hero label, JSON-LD, manifest, root layout (title, description, Open Graph, Twitter, image alt) and the home page metadata.
+- Home `<title>` is now `Rafi Ferdos, Full Stack AI Engineer` (it used to get the site name appended twice; the page title is `absolute`).
+- Left as is on purpose: ZenDevz "Full Stack Developer" in Experience (the resume's own wording for that role).
+- CLAUDE.md and `docs/design-brief.md` positioning lines updated, so the next session does not revert it.
+- Header has no title text, and the footer must not have one, so the title shows in the hero label row and in the metadata.

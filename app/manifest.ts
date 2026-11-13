@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next'
+import { profile } from '@/lib/site'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Rafi Ferdos · Full-stack Product Engineer',
-    short_name: 'Rafi Ferdos',
-    description:
-      'Portfolio, engineering projects and practical writing by Rafi Ferdos.',
+    name: `${profile.name} · ${profile.jobTitle}`,
+    short_name: profile.name,
+    description: `Portfolio, engineering projects and practical writing by ${profile.name}.`,
     start_url: '/',
     display: 'standalone',
     background_color: '#09090b',

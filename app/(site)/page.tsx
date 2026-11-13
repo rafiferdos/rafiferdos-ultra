@@ -10,16 +10,16 @@ import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
 import { profile, safeJsonLd, SITE_URL } from '@/lib/site'
 
+const homeTitle = `${profile.name}, ${profile.jobTitle}`
+
 export const metadata: Metadata = {
-  title: {
-    default: 'Rafi Ferdos, Full Stack Developer',
-    template: '%s | Rafi Ferdos'
-  },
-  description:
-    'Rafi Ferdos is a full-stack developer with 3+ years building production web and mobile products for product teams and international clients.',
+  // absolute: the root layout's template would otherwise append the name a second time.
+  title: { absolute: homeTitle },
+  description: `${profile.name} is a ${profile.jobTitle} with 3+ years building production web and mobile applications, including international client work.`,
   keywords: [
     'Rafi Ferdos',
-    'MERN developer',
+    'Full Stack AI Engineer',
+    'AI engineer',
     'Next.js developer',
     'React developer',
     'React Native developer',
@@ -36,9 +36,8 @@ export const metadata: Metadata = {
   creator: 'Rafi Ferdos',
   publisher: 'Rafi Ferdos',
   openGraph: {
-    title: 'Rafi Ferdos, Full Stack Developer',
-    description:
-      'Full-stack web, mobile and realtime products built with Next.js, React Native, Node.js, GraphQL and Socket.io.',
+    title: homeTitle,
+    description: `${profile.jobTitle}. Web, mobile and real-time products built with Next.js, React Native, Node.js, GraphQL and Socket.IO.`,
     url: SITE_URL,
     siteName: 'Rafi Ferdos Portfolio',
     images: [
@@ -46,7 +45,7 @@ export const metadata: Metadata = {
         url: '/og.png',
         width: 1729,
         height: 910,
-        alt: 'Rafi Ferdos, Full Stack Developer'
+        alt: homeTitle
       }
     ],
     type: 'website',
@@ -54,9 +53,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rafi Ferdos, Full Stack Developer',
-    description:
-      'Production web, mobile and realtime work from full-stack developer Rafi Ferdos.',
+    title: homeTitle,
+    description: `Production web, mobile and real-time work from ${profile.jobTitle} ${profile.name}.`,
     images: ['/og.png']
   },
   alternates: {
@@ -104,7 +102,12 @@ export default async function Home() {
         'Prisma ORM',
         'GraphQL',
         'Realtime systems',
-        'Ecommerce development'
+        'Ecommerce development',
+        'AI engineering',
+        'RAG',
+        'AWS',
+        'Docker',
+        'CI/CD'
       ]
     }
   }

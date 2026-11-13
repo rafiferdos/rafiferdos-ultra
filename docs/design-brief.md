@@ -39,7 +39,7 @@ Never copy their code, images, text or branding. Re-implement every effect from 
 All personal and career content comes from docs/resume.md. Projects and articles come from the database.
 Planned sections (Opus may reorder): hero, selected work (from DB), experience, skills, about, contact.
 Routes that already exist must keep working and get the same design language: project archive, article archive, article pages, contact form (Resend), metadata, sitemap, JSON-LD. The dashboard at /dashboard/rafi is not redesigned.
-Positioning: Full Stack Developer / Software Engineer. Never a beginner.
+Positioning: Full Stack AI Engineer (set by Rafi, 2026-11-13). Never a beginner.
 
 ## Constraints
 
