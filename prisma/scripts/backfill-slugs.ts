@@ -52,6 +52,8 @@ try {
       await client.query(`UPDATE "Project" SET slug = $1 WHERE id = $2 AND slug IS NULL`, [slug, row.id])
   }
   console.log(`${apply ? 'updated' : 'would update'} ${planned} of ${rows.length}`)
+  // This script bypasses revalidateTag, so a running site keeps serving the cached project list.
+  if (apply && planned) console.log('Now save any project in the dashboard (or redeploy) so the cache refreshes.')
 } finally {
   await client.end()
 }

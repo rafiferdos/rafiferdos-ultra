@@ -151,3 +151,14 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - **Not invented:** no copy was written for any project. Empty fields stay empty.
 - **Verified so far:** `tsc` and `next build` pass; production build checked in Playwright at 1440 and 390 on two existing projects (no horizontal overflow). Screenshots in `docs/qa/project-detail/`.
 - **Not done yet:** the migration is not applied to the database, so slugs are not live, and a project with overview, challenge, solution, gallery and video has not been checked on screen. Lighthouse comparison also waits on that. `pnpm lint` cannot run here (see the polish pass note).
+
+## Final verification (2026-11-13)
+
+- `qa-work` is gone. `20261114000000_project_slug` is applied; `slug` is **nullable** (plain `ADD COLUMN "slug" TEXT` plus a unique index), as planned.
+- Slug backfill `--apply`: 3 of 3 rows updated (spotfix, ensinor, trendora). All three ids now answer 308 to `/projects/<slug>`, the slugs answer 200, an unknown key 404s. The build lists the slug URLs in `generateStaticParams`.
+- **Gotcha:** the script writes straight to the DB and does not call `revalidateTag`, so the first build after it still used the cached list (id URLs) until `.next/cache/fetch-cache` was cleared. The script now prints a reminder. On the live site, save a project in the dashboard or redeploy after running it.
+- `pnpm lint` 0 errors (19 warnings, all in dashboard `components/ui`), `tsc --noEmit` and `pnpm build` pass.
+- Lighthouse performance on the production build (saved in `docs/qa/final/`): desktop home 100, `/projects` 100, `/projects/spotfix` 100, CLS 0. Mobile home 99 (LCP 1.4 s), `/projects` 85, project page 86 (LCP 4.3 to 4.4 s, the same throttled font and JS charge as before). Earlier notes: home mobile 80 to 86, `/projects` 85, so nothing regressed; home read high this run because of the machine's bimodal FCP.
+- Selected Work hover: one frame visible, the held one (`position: fixed`, `is-held`); the other two are hidden or at opacity 0.
+- Experience hover: the accent fill covers the whole tile (436 x 420 of 437 x 422), text flips to the dark ink.
+- **Open: hero name does not span the width.** The hero is two stacked lines sized by `clamp(6rem, 18vw, 17rem)`. Widest line vs container: 1440 px 674 of 1313 (indented), 1024 px 479 of 929, 390 px 250 of 335. Only Say hello and the footer wordmark use `FitText`. Fitting "FERDOS" to the width needs about 30vw type and two lines would not fit a 900 px viewport, so this is a layout choice, not a quick fix.
