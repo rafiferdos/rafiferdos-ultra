@@ -7,7 +7,6 @@ import { useMotion } from '@/components/providers/motion-provider'
 import { CtaPill } from '@/components/site/cta-pill'
 import { LocalTime } from '@/components/site/local-time'
 import { navItems } from '@/components/site/nav'
-import { PauseMotion } from '@/components/site/pause-motion'
 import { ThemeToggle } from '@/components/site/theme-toggle'
 import { duration, gsap, useGSAP } from '@/lib/gsap'
 
@@ -120,7 +119,6 @@ export function MobileMenu() {
         </nav>
         <div data-menu-foot className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
           <ThemeToggle />
-          <PauseMotion />
           <LocalTime label="Dhaka, BD" className="t-label-s text-site-muted" />
           <CtaPill />
         </div>

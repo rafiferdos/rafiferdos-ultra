@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useRef, useState } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
+import { FitText } from '@/components/site/fit-text'
 import { createKinetic } from '@/features/motion/kinetic-letters'
 import { duration, gsap, ScrollTrigger, SplitText, stagger, useGSAP } from '@/lib/gsap'
 
@@ -81,9 +82,9 @@ export function ContactCta() {
         className="block w-full text-left text-site-accent"
       >
         <span className="sr-only">Say hello, {open ? 'close' : 'open'} the contact form</span>
-        <span aria-hidden data-cta-name className="t-display cta-name hero-line block">
+        <FitText fallback={4.89} aria-hidden data-cta-name className="t-display hero-line">
           Say hello
-        </span>
+        </FitText>
       </button>
       <p className="t-label mt-4 text-site-muted">{open ? '(Close)' : '(Click to write)'}</p>
 

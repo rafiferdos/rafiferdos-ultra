@@ -1,4 +1,3 @@
-import { PauseMotion } from '@/components/site/pause-motion'
 import { RollLink } from '@/components/site/roll-link'
 import type { Project } from '@/data/site-content'
 import { WorkMotion } from '@/features/home/work-motion'
@@ -27,7 +26,6 @@ export function SelectedWork({ projects }: { projects: Project[] }) {
         <h2 id="work-title" className="t-label">
           Selected work ({pad(count)})
         </h2>
-        <PauseMotion />
         <span className="text-site-muted">{years ?? ' '}</span>
       </header>
 
@@ -57,7 +55,7 @@ export function SelectedWork({ projects }: { projects: Project[] }) {
 
           <aside aria-hidden className="work-dock">
             <div className="work-dock-sticky">
-              <div className="work-dock-box">
+              <div data-work-box className="work-dock-box">
                 {rows.map((project) => (
                   <div key={project.id} data-work-frame className="work-frame">
                     <div data-frame-outer className="absolute inset-0 overflow-hidden">
@@ -108,7 +106,6 @@ export function SelectedWork({ projects }: { projects: Project[] }) {
         </div>
       )}
 
-      <div data-work-preview aria-hidden className="work-preview" />
     </WorkMotion>
   )
 }

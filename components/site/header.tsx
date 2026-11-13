@@ -2,7 +2,6 @@ import { CtaPill } from '@/components/site/cta-pill'
 import { LocalTime } from '@/components/site/local-time'
 import { MobileMenu } from '@/components/site/mobile-menu'
 import { navItems } from '@/components/site/nav'
-import { PauseMotion } from '@/components/site/pause-motion'
 import { RollLink } from '@/components/site/roll-link'
 import { ThemeToggle } from '@/components/site/theme-toggle'
 import { Wordmark } from '@/components/site/wordmark'
@@ -31,7 +30,6 @@ export function Header() {
 
         <div className="hidden items-center justify-end gap-6 xl:flex">
           <ThemeToggle />
-          <PauseMotion />
           <CtaPill />
         </div>
         <MobileMenu />

@@ -46,10 +46,10 @@ export function Experience() {
         <span className="text-site-muted">Dhaka, BD</span>
       </header>
 
-      <ul className="grid border-l border-site-line md:grid-cols-3">
+      <ul className="exp-list grid border-l border-site-line md:grid-cols-3">
         {roles.map((role, index) => (
           <li key={role.company} data-exp-tile className="exp-tile border-b border-r border-t border-site-line">
-            <div className="flex h-full flex-col gap-8 p-6 md:p-8">
+            <div className="exp-body flex h-full flex-col gap-8 p-6 md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <span className="t-label text-site-muted">{pad(index + 1)}</span>
                 {role.href ? (

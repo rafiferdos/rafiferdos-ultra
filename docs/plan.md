@@ -231,7 +231,7 @@ features/writing/                 ArticleRow, WritingArchive (slimmed from Writi
 
 **Motion gating:**
 - Each animated leaf calls `useGSAP(() => { const mm = gsap.matchMedia(); mm.add({ fine: '(pointer: fine)', desktop: '(min-width: 768px)' }, ctx => …) }, { scope, dependencies: [motionAllowed], revertOnUpdate: true })`.
-- `motionAllowed = !prefersReducedMotion && !paused`. When it is false, the hook bails out and everything shows in its final state.
+- `motionAllowed = !prefersReducedMotion` (the visible pause control was removed in the polish pass). When it is false, the hook bails out and everything shows in its final state.
 - The pause flag is persisted in localStorage.
 
 **One scroll source:** ScrollTrigger on Lenis is the shared progress. With no WebGL, there is no separate progress store. Per-frame values never go into React state; `quickTo` and the ticker handle them.

@@ -1,7 +1,6 @@
 import { RollLink } from '@/components/site/roll-link'
 import type { Project } from '@/data/site-content'
 import { ProjectCover } from '@/features/projects/project-cover'
-import { cloudinaryFill } from '@/lib/cloudinary'
 
 type Props = { project: Project; index: number; priority?: boolean }
 
@@ -16,7 +15,7 @@ export function ProjectRow({ project, index, priority }: Props) {
   return (
     <li
       data-work-row
-      data-preview={project.imageUrl ? cloudinaryFill(project.imageUrl, 640, 800) : undefined}
+      data-has-cover={project.imageUrl ? '' : undefined}
       data-cursor={href && project.imageUrl ? 'View' : undefined}
       className="work-row border-t border-site-line"
     >

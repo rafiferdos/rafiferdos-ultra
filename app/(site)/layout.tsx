@@ -23,7 +23,7 @@ const jetbrains = JetBrains_Mono({
 
 // Runs before first paint so hidden initial states only apply when motion is allowed.
 const motionBoot =
-  "try{var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&localStorage.getItem('motion-paused')!=='1'){d.classList.add('js-motion');if(location.pathname==='/'&&!sessionStorage.getItem('intro-seen')){d.classList.add('js-intro');setTimeout(function(){d.classList.remove('js-intro')},4000)}}}catch(e){}"
+  "try{var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('js-motion');if(location.pathname==='/'&&!sessionStorage.getItem('intro-seen')){d.classList.add('js-intro');setTimeout(function(){d.classList.remove('js-intro')},4000)}}}catch(e){}"
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (

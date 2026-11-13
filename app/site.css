@@ -158,6 +158,10 @@ body:has(.site-root) {
   overflow: hidden;
 }
 
+.marquee-row + .marquee-row {
+  border-top: 1px solid var(--site-line);
+}
+
 .marquee-group {
   display: flex;
   flex-wrap: wrap;
@@ -235,8 +239,7 @@ body:has(.site-root) {
   background: var(--site-surface);
 }
 
-.work-dock,
-.work-preview {
+.work-dock {
   display: none;
 }
 
@@ -320,18 +323,23 @@ body:has(.site-root) {
   }
 }
 
+/* The hovered row's frame leaves the dock (JS sets its size and transform). The rest of the dock goes empty meanwhile. */
 @media (min-width: 768px) and (pointer: fine) {
-  .js-motion .work .work-preview {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 60;
-    display: block;
-    width: 320px;
-    height: 400px;
-    background: var(--site-surface) center / cover no-repeat;
+  .work-frame {
+    transition: opacity 0.25s;
+  }
+
+  .work-dock-box.is-away .work-frame:not(.is-held) {
     opacity: 0;
+  }
+
+  .work-frame.is-held {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 60 !important;
+    visibility: visible !important;
     pointer-events: none;
+    transition: none;
   }
 }
 
@@ -403,25 +411,15 @@ body:has(.site-root) {
   opacity: 0.15;
 }
 
-/* Experience: the accent rule is a scaleX pseudo-element, so hover animates transform only. */
+/* Experience: hover fills the whole tile with the accent (a scaleY pseudo-element) and veils the other tiles with the page color.
+   Both are transform and opacity only, on pseudo-elements, so the tile's own scrubbed opacity is never fought. Hover devices only. */
 .exp-tile {
   position: relative;
 }
 
-.exp-tile::before {
-  content: '';
-  position: absolute;
-  inset: -1px 0 auto 0;
-  height: 1px;
-  background: var(--site-accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.exp-tile:hover::before,
-.exp-tile:focus-within::before {
-  transform: scaleX(1);
+.exp-body {
+  position: relative;
+  z-index: 1;
 }
 
 .exp-arrow {
@@ -429,10 +427,47 @@ body:has(.site-root) {
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.exp-arrow:hover,
-.exp-arrow:focus-visible {
-  color: var(--site-accent);
-  transform: translate(4px, -4px);
+@media (hover: hover) and (pointer: fine) {
+  .exp-tile::before,
+  .exp-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .exp-tile::before {
+    background: var(--site-accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .exp-tile::after {
+    z-index: 2;
+    inset: -1px;
+    background: var(--site-bg);
+    opacity: 0;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .exp-tile:is(:hover, :focus-within)::before {
+    transform: scaleY(1);
+  }
+
+  .exp-tile:is(:hover, :focus-within) .exp-body,
+  .exp-tile:is(:hover, :focus-within) .exp-body * {
+    color: var(--site-accent-ink);
+    transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .exp-list:has(.exp-tile:is(:hover, :focus-within)) .exp-tile:not(:is(:hover, :focus-within))::after {
+    opacity: 0.65;
+  }
+
+  .exp-tile:is(:hover, :focus-within) .exp-arrow {
+    transform: translate(4px, -4px);
+  }
 }
 
 .js-motion [data-exp-bullet] {
@@ -493,9 +528,19 @@ body:has(.site-root) {
   transition-property: none;
 }
 
-/* text-display has a 6rem floor that is wider than a phone; the CTA is one line, so it follows the viewport instead. */
-.cta-name {
-  font-size: min(18vw, 17rem);
+/* FitText: the container is a size container, so cqw is its own width. --fit-w (em width of the text) is set from JS;
+   the component sets a measured fallback so the reserved height is right before JS runs. */
+.fit {
+  display: block;
+  overflow: clip;
+  container-type: inline-size;
+}
+
+.fit-text {
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  font-size: calc(100cqw / var(--fit-w));
 }
 
 /* Archive pages reuse the work row without the dock, so the rows are short and show their own cover. */
