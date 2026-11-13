@@ -1,6 +1,6 @@
 'use client'
 
-import { CreatableMultiSelect } from '@/components/dashboard/creatable-multi-select'
+import { CreatableMultiSelect } from '@/components/Dashboard/creatable-multi-select'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'

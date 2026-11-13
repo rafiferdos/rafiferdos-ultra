@@ -1,26 +1,21 @@
-import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import { QueryProvider } from '@/components/providers/query-provider'
-import { TubelightNavBar } from '@/components/ui/tubelight-navbar'
-import { Toaster } from '@/components/ui/sonner'
-import { TooltipProvider } from '@/components/ui/tooltip'
 import type { Metadata } from 'next'
 import { SITE_URL, profile } from '@/lib/site'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
+// preload is off so public pages never fetch Geist; only the dashboard uses it.
 const geistSans = Geist({
   variable: '--font-geist-sans',
-  subsets: ['latin']
+  subsets: ['latin'],
+  preload: false
 })
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
-  subsets: ['latin']
+  subsets: ['latin'],
+  preload: false
 })
-
-// Note: Agale font is loaded via CSS @font-face in globals.css and is applied
-// only when using the `.font-agale` class.
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -105,15 +100,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <QueryProvider>
-            <TooltipProvider>
-              <SmoothScrollProvider>
-                <TubelightNavBar />
-                {children}
-              </SmoothScrollProvider>
-              <Toaster richColors closeButton />
-            </TooltipProvider>
-          </QueryProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

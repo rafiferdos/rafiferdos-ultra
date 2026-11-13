@@ -1,0 +1,131 @@
+/* Public site tokens. Prefixed so the dashboard's shadcn variables stay untouched. */
+
+:root {
+  --site-bg: #f3f1ec;
+  --site-surface: #e9e6df;
+  --site-ink: #141312;
+  --site-muted: #6a665f;
+  --site-faint: #86817a;
+  --site-accent: #c7340e;
+  --site-accent-ink: #ffffff;
+  --site-line: color-mix(in srgb, var(--site-ink) 12%, transparent);
+  --site-line-strong: color-mix(in srgb, var(--site-ink) 25%, transparent);
+}
+
+.dark {
+  --site-bg: #0f0e0d;
+  --site-surface: #1a1918;
+  --site-ink: #edebe6;
+  --site-muted: #8c8780;
+  --site-faint: #6e6a64;
+  --site-accent: #ff4a1c;
+  --site-accent-ink: #0f0e0d;
+}
+
+@theme inline {
+  --color-site-bg: var(--site-bg);
+  --color-site-surface: var(--site-surface);
+  --color-site-ink: var(--site-ink);
+  --color-site-muted: var(--site-muted);
+  --color-site-faint: var(--site-faint);
+  --color-site-accent: var(--site-accent);
+  --color-site-accent-ink: var(--site-accent-ink);
+  --color-site-line: var(--site-line);
+  --color-site-line-strong: var(--site-line-strong);
+
+  --font-site: var(--font-mona), ui-sans-serif, system-ui, sans-serif;
+  --font-site-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+@theme {
+  --spacing-gutter: clamp(1.25rem, 3.9vw, 3.5rem);
+  --spacing-section: clamp(5rem, 8.75vw, 8rem);
+
+  --text-display: clamp(6rem, 18vw, 17rem);
+  --text-display--line-height: 0.86;
+  --text-display--font-weight: 800;
+  --text-h1: clamp(2.6rem, 5.2vw, 4.75rem);
+  --text-h1--line-height: 1.02;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 600;
+  --text-work: clamp(2.2rem, 4.8vw, 4.4rem);
+  --text-work--line-height: 1;
+  --text-work--font-weight: 700;
+  --text-index: clamp(3rem, 6vw, 5.5rem);
+  --text-index--line-height: 1;
+  --text-index--font-weight: 800;
+  --text-h3: clamp(1.6rem, 2.6vw, 2.4rem);
+  --text-h3--line-height: 1.1;
+  --text-h3--font-weight: 700;
+  --text-lead: 1.375rem;
+  --text-lead--line-height: 1.4;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.45;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.06em;
+  --text-label-s: 0.6875rem;
+  --text-label-s--line-height: 1.4;
+  --text-label-s--letter-spacing: 0.06em;
+  --text-marquee: clamp(2.5rem, 5vw, 4.5rem);
+  --text-marquee--line-height: 1.1;
+  --text-marquee--font-weight: 250;
+}
+
+/* Roles that carry a width axis, case or family on top of the size tokens. */
+@utility t-display {
+  @apply text-display font-site uppercase;
+  font-stretch: 75%;
+}
+
+@utility t-h1 {
+  @apply text-h1 font-site;
+  font-stretch: 90%;
+}
+
+@utility t-work {
+  @apply text-work font-site;
+  font-stretch: 88%;
+}
+
+@utility t-index {
+  @apply text-index font-site text-site-faint;
+  font-stretch: 75%;
+}
+
+@utility t-h3 {
+  @apply text-h3 font-site;
+  font-stretch: 88%;
+}
+
+@utility t-label {
+  @apply text-label font-site-mono uppercase;
+}
+
+@utility t-label-s {
+  @apply text-label-s font-site-mono uppercase;
+}
+
+@utility t-marquee {
+  @apply text-marquee font-site italic;
+  font-stretch: 125%;
+}
+
+.site-root ::selection {
+  background: var(--site-accent);
+  color: var(--site-accent-ink);
+}
+
+.site-root :focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
+}
+
+/* Keeps overscroll and the area behind the page in the site colors. */
+html:has(.site-root),
+body:has(.site-root) {
+  background-color: var(--site-bg);
+  background-image: none;
+}

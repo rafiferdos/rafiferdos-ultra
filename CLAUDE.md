@@ -10,7 +10,7 @@ Portfolio of Rafi Ferdos (Full Stack Developer). Being redesigned from scratch a
 - Theme: next-themes, light and dark, one accent (vermilion, a value per theme, see `docs/plan.md` §4).
 - Data: Prisma 7 + Postgres, Cloudinary for media, Resend for email
 - Dashboard (/dashboard/rafi): PlateJS, TanStack Query, shadcn, Zod. It keeps Geist and its own layout and is not redesigned.
-- No WebGL: three, @react-three/*, maath, ogl, leva and r3f-perf are being removed (plan §8). Do not add them back. Any WebGL exception needs a written justification and Rafi's approval.
+- No WebGL: three, @react-three/*, maath, leva and r3f-perf are removed. ogl is removed in phase 5 (plan §8). Do not add them back. Any WebGL exception needs a written justification and Rafi's approval.
 Rule: GSAP drives all animation on public pages. Do not use framer-motion or motion there. They are removed once nothing imports them (plan §8).
  
 ## Source of truth
