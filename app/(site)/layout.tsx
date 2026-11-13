@@ -1,7 +1,9 @@
 import { MotionProvider } from '@/components/providers/motion-provider'
 import { QueryProvider } from '@/components/providers/query-provider'
 import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provider'
-import { TubelightNavBar } from '@/components/ui/tubelight-navbar'
+import { Cursor } from '@/components/site/cursor'
+import { SiteFooter } from '@/components/site/footer'
+import { Header } from '@/components/site/header'
 import { JetBrains_Mono, Mona_Sans } from 'next/font/google'
 
 const mona = Mona_Sans({
@@ -30,11 +32,17 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <script dangerouslySetInnerHTML={{ __html: motionBoot }} />
       <MotionProvider>
         <SmoothScrollProvider>
-          {/* Old shell until the new header lands in phase 2; Contact still uses react-query until phase 8. */}
-          <QueryProvider>
-            <TubelightNavBar />
-            {children}
-          </QueryProvider>
+          <a
+            href="#main"
+            className="t-label fixed left-gutter top-3 z-[110] -translate-y-20 bg-site-accent px-3 py-2 text-site-accent-ink focus:translate-y-0"
+          >
+            Skip to content
+          </a>
+          <Header />
+          {/* Contact still uses react-query until phase 8. */}
+          <QueryProvider>{children}</QueryProvider>
+          <SiteFooter />
+          <Cursor />
         </SmoothScrollProvider>
       </MotionProvider>
     </div>

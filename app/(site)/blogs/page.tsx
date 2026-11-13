@@ -1,5 +1,4 @@
 import { WritingExplorer } from '@/components/Blogs/WritingExplorer'
-import { Footer } from '@/components/Footer/Footer'
 import { getBlogs } from '@/lib/content-store'
 import type { Metadata } from 'next'
 
@@ -21,10 +20,5 @@ export const metadata: Metadata = {
 
 export default async function BlogsPage() {
   const posts = await getBlogs()
-  return (
-    <>
-      <WritingExplorer posts={posts} />
-      <Footer />
-    </>
-  )
+  return <WritingExplorer posts={posts} />
 }

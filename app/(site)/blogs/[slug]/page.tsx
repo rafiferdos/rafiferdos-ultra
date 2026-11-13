@@ -1,4 +1,3 @@
-import { Footer } from '@/components/Footer/Footer'
 import { ArticleBody } from '@/components/Blogs/ArticleBody'
 import { RichArticleBody } from '@/components/Blogs/RichArticleBody'
 import { Reveal } from '@/components/ui/reveal'
@@ -63,7 +62,7 @@ export default async function BlogPostPage({
   }
   return (
     <>
-      <main className="mx-auto min-h-svh max-w-4xl px-4 pb-20 pt-28 sm:px-6 sm:pb-24 lg:px-8">
+      <main id="main" className="mx-auto min-h-svh max-w-4xl px-4 pb-20 pt-28 sm:px-6 sm:pb-24 lg:px-8">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(articleJsonLd) }}
@@ -121,7 +120,6 @@ export default async function BlogPostPage({
           )}
         </article>
       </main>
-      <Footer />
     </>
   )
 }

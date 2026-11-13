@@ -129,3 +129,10 @@ body:has(.site-root) {
   background-color: var(--site-bg);
   background-image: none;
 }
+
+/* Set by the Cursor component on fine pointers only; form fields keep their own cursor. */
+.site-cursor,
+.site-cursor a,
+.site-cursor button {
+  cursor: none;
+}

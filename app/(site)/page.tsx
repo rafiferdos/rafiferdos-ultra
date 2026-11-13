@@ -5,8 +5,6 @@ import Hero from '@/components/Home/Hero/Hero'
 import Projects from '@/components/Home/Projects/Projects'
 import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
-import { Footer } from '@/components/Footer/Footer'
-import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
 import { profile, safeJsonLd, SITE_URL } from '@/lib/site'
@@ -114,7 +112,7 @@ export default async function Home() {
   }
   return (
     <>
-      <main>
+      <main id="main">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
@@ -128,9 +126,7 @@ export default async function Home() {
           <BlogGateway posts={posts} />
           <Contact />
         </div>
-        <ScrollToTop />
       </main>
-      <Footer />
     </>
   )
 }

@@ -1,4 +1,3 @@
-import { Footer } from '@/components/Footer/Footer'
 import { ProjectExplorer } from '@/components/Projects/ProjectExplorer'
 import { Reveal } from '@/components/ui/reveal'
 import { getProjects } from '@/lib/content-store'
@@ -24,7 +23,7 @@ export default async function ProjectsPage() {
   const projects = await getProjects()
   return (
     <>
-      <main className="mx-auto min-h-svh max-w-7xl px-4 pb-20 pt-28 sm:px-6 sm:pb-24 lg:px-8">
+      <main id="main" className="mx-auto min-h-svh max-w-7xl px-4 pb-20 pt-28 sm:px-6 sm:pb-24 lg:px-8">
         <Reveal>
           <p className="font-mono text-xs font-semibold uppercase tracking-[.28em] text-primary">
             Project archive
@@ -42,7 +41,6 @@ export default async function ProjectsPage() {
         </Reveal>
         <ProjectExplorer projects={projects} />
       </main>
-      <Footer />
     </>
   )
 }

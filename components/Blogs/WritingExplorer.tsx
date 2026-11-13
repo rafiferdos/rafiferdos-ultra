@@ -158,7 +158,7 @@ export function WritingExplorer({ posts }: { posts: BlogPost[] }) {
   }
 
   return (
-    <main className="min-h-svh pb-20 sm:pb-24">
+    <main id="main" className="min-h-svh pb-20 sm:pb-24">
       <section className="relative min-h-[600px] overflow-hidden border-b border-border/70 sm:min-h-[660px]">
         {/* <GradientWaves
           className="pointer-events-none absolute inset-0 z-0 opacity-95 saturate-125"
