@@ -23,6 +23,7 @@ export function FitText({ children, lines, fallback, className = '', style, ...r
     if (!box) return
     const texts = Array.from(box.querySelectorAll<HTMLElement>(':scope > .fit-text'))
     let alive = true
+    let written: number[] = []
 
     const measure = () => {
       const em = texts.map((text) => {
@@ -31,6 +32,9 @@ export function FitText({ children, lines, fallback, className = '', style, ...r
         return size > 0 && width > 0 ? width / size : 0
       })
       if (em.some((value) => !value)) return
+      // Writing a width resizes the text by a rounding error, which fires the observer again. Without a dead band that loops every frame.
+      if (em.every((value, index) => Math.abs(value - (written[index] ?? 0)) < 0.0005)) return
+      written = em
       em.forEach((value, index) => box.style.setProperty(`--fit-w${index + 1}`, String(value)))
       box.style.setProperty('--fit-w', String(em.reduce((sum, value) => sum + value, 0)))
     }

@@ -12,6 +12,15 @@
   --site-line-strong: color-mix(in srgb, var(--site-ink) 25%, transparent);
 }
 
+/* globals.css still has the old 6rem scroll-padding. Section anchors already carry scroll-mt-16 for the header, so the padding would double it. */
+html:has(.site-root) {
+  scroll-padding-top: 0;
+}
+
+.site-root [tabindex='-1'] {
+  outline: none;
+}
+
 .dark {
   --site-bg: #0f0e0d;
   --site-surface: #1a1918;

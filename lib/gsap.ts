@@ -6,6 +6,9 @@ import { useGSAP } from '@gsap/react'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, CustomEase)
 
+// Opt-in for the scroll QA scripts (sessionStorage 'st-debug'): they read ScrollTrigger.getAll().length to look for leaked triggers.
+if (typeof window !== 'undefined' && window.sessionStorage?.getItem('st-debug')) Object.assign(window, { __ST: ScrollTrigger })
+
 CustomEase.create('out', '.16,1,.3,1')
 CustomEase.create('inOut', '.76,0,.24,1')
 
