@@ -5,6 +5,7 @@ import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
 import { Hero } from '@/features/home/hero'
 import { SelectedWork } from '@/features/home/selected-work'
+import { UpClose } from '@/features/home/up-close'
 import { SkillsMarquee } from '@/features/home/skills-marquee'
 import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
@@ -119,6 +120,7 @@ export default async function Home() {
         <Hero />
         <SkillsMarquee />
         <SelectedWork projects={projects} />
+        <UpClose projects={projects} />
         <div className="mx-auto w-[min(92%,80rem)]">
           <WhyMe />
           <TechStack />

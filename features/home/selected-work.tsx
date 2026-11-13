@@ -2,11 +2,11 @@ import { PauseMotion } from '@/components/site/pause-motion'
 import { RollLink } from '@/components/site/roll-link'
 import type { Project } from '@/data/site-content'
 import { WorkMotion } from '@/features/home/work-motion'
+import { pickFeatured } from '@/features/projects/featured'
 import { ProjectCover } from '@/features/projects/project-cover'
 import { ProjectRow } from '@/features/projects/project-row'
 import { profile } from '@/lib/site'
 
-const MAX_ROWS = 6
 const pad = (value: number) => String(value).padStart(2, '0')
 
 function yearRange(projects: Project[]) {
@@ -16,14 +16,8 @@ function yearRange(projects: Project[]) {
   return first === last ? String(first) : `${first} to ${last}`
 }
 
-// Featured projects by sort order. If none are marked featured, the first rows stand in so the section is never empty by accident.
-function pickRows(projects: Project[]) {
-  const featured = projects.filter((project) => project.featured)
-  return (featured.length ? featured : projects).slice(0, MAX_ROWS)
-}
-
 export function SelectedWork({ projects }: { projects: Project[] }) {
-  const rows = pickRows(projects)
+  const rows = pickFeatured(projects)
   const count = rows.length
   const years = yearRange(rows)
 

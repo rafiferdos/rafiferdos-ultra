@@ -333,3 +333,47 @@ body:has(.site-root) {
     pointer-events: none;
   }
 }
+
+/* Up close: a native snap scroller by default; on desktop with motion it becomes a scrubbed, draggable track. */
+.upclose {
+  --upclose-h: min(62vh, 36rem);
+}
+
+.upclose-viewport {
+  overflow-x: auto;
+  padding-inline: var(--spacing-gutter);
+  scroll-padding-inline: var(--spacing-gutter);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.upclose-track {
+  display: flex;
+  width: max-content;
+  gap: 1.5rem;
+}
+
+.upclose-item {
+  flex: none;
+  width: min(85vw, calc(var(--upclose-h) * var(--ratio)));
+  scroll-snap-align: start;
+}
+
+.upclose-frame {
+  aspect-ratio: var(--ratio);
+  overflow: hidden;
+  background: var(--site-surface);
+}
+
+@media (min-width: 768px) {
+  .js-motion .upclose-viewport {
+    overflow: hidden;
+    padding-inline: 0;
+    scroll-snap-type: none;
+  }
+
+  .js-motion .upclose-track {
+    padding-inline: var(--spacing-gutter);
+    will-change: transform;
+  }
+}
