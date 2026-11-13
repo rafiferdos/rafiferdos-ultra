@@ -262,3 +262,37 @@ Part 1: items 6, 7, 1, 2, 3. Playwright screenshots in `docs/qa/fixing/<item>/` 
   CLS 0 everywhere. Accessibility 96 to 100, best practices 100, SEO 100. The project page desktop LCP is 1.0 s (was 0.8 s) and the cover image is the LCP element, which this phase did not change; I could not rebuild the old commit to compare on the same run (Turbopack rejects a linked `node_modules`). Mobile scores here read lower than the earlier notes on three pages, and the earlier ones came from a different Lighthouse runner on the same machine, so treat the 3 to 5 point gap as unconfirmed until it is run the same way.
 - Gate on the final tree: `pnpm lint` 0 errors (19 warnings in dashboard `components/ui`), `pnpm exec tsc --noEmit` clean, `pnpm build` passes.
 - The Chrome DevTools performance trace was not possible this run (MCP browser locked), so smoothness is the frame-gap measure above.
+
+### Bug fixes after the fixing phase (4 commits on `redesign`)
+Each bug was reproduced first (headed Chromium through a standalone Playwright script, because the DevTools MCP browser was locked again and headless throttles rAF), fixed, then measured again on a production build.
+
+**1. "Say hello" reveal did not finish at the bottom** (`5eb23d4`)
+- Cause: the scrub ended at `bottom 85%`. The footer is short, so at max scroll the name's bottom sits a fixed 186 px above the page end. On a tall viewport that is below 85% of the height, so the end was past max scroll and the tween never reached 1.
+- Repro: 1440x1300 left the last "o" 9.3 px low; 1024x1366 left "l" and "o" low (1.2 and 18.3 px). 1440x900, 1024x768 and 390x844 did not show it.
+- Fix: `start: 'clamp(top 95%)'`, `end: 'clamp(bottom 85%)'` in `features/home/contact-cta.tsx`.
+- Measured at max scroll, every letter identity transform, opacity 1, inside the box: 1440x900/1080/1300, 1920x1200, 1024x768/1366, 390x844/1200, all pass.
+
+**2. Navbar anchors landing in the wrong place** (`a9e1e23`)
+- Root cause (three parts):
+  1. `FitText` rewrote `--fit-w` on every ResizeObserver callback. The text changed size by a rounding error (about 7e-5 em), which fired the observer again, every frame, forever (html height flipped 7739.92 / 7739.94, 296 observer callbacks in 3 s). Lenis re-measures on a 250 ms trailing debounce, so it never ran, and Lenis kept its first measurement of the page height.
+  2. Lenis clamps every scroll to that cached `limit`. Home measured 114 px short (6546 vs 6660 at 1920x1080), and after a project page it still held the project page's height (2015), which is inside Selected Work. That is the "ends near the end of Selected Work".
+  3. Lenis `anchors: true` and Next's own hash `scrollIntoView` both scroll on a same-page link. The page jumped to the target, then back to the top and animated down.
+- Changes: `FitText` ignores width changes under 0.0005 em. `SmoothScrollProvider` has no Lenis anchors; one capture-phase handler owns same-page hash links (history entry, focus, `lenis.resize()`, scroll, one re-check on arrival). A throttled ResizeObserver on `<html>` re-measures Lenis and ScrollTrigger on real height changes. After each route change it waits for fonts and a stable height, refreshes, and places the `#hash` target. A just-landed anchor is held for 1.5 s, so a late layout change (the scrollbar returning when the mobile menu closes moved the page 113 px) moves the scroll with it; wheel, touch or keys release it. `site.css` drops the old 6rem `scroll-padding-top` on the public site (it stacked on `scroll-mt-16`, so every anchor landed at 160 px instead of 64).
+- `sessionStorage['st-debug']` exposes `window.__ST` (ScrollTrigger) and `window.__lenis` for QA scripts. Off by default.
+- Verified (production build, headed Chromium): html observer callbacks 296 to 2 in 3 s. Lenis `limit` equals the real max scroll on all 364 checks. Click test, every nav link x from top, from bottom, from a project page x 10 rounds, at 1440x900 and 1920x1080: 300 clicks, target within 2 px of its scroll-margin position (or at max scroll for Contact), 0 misses. Journey test, 10 rounds each at 1920x1080, 1440x900, 1280x800 and 390x844 (project, header or mobile menu link, three in-page anchors, services, back, forward): 364 checks, 0 bad. Trigger counts after each route change: `/` 25 (19 at 390), project page 3 or 4, `/services` 29 or 30, the same on every visit, no growth, no detached triggers.
+- Before the fix: 1920x1080 clicks to About, Experience, Writing, Contact from the bottom stopped at scrollY 2015; Contact from the top stopped 114 px short of the end.
+- Not done: the project to `/#hash` case was only measured on the three-trigger project page `/projects/spotfix`; the other project slugs use the same layout.
+
+**3. Nav text clipped at the top** (`afc2b92`)
+- Cause: `text-box: trim-both cap alphabetic` made each link's box the cap box and the roll mask (`overflow: hidden`) clipped at that box, which cut the overshoot of round letters and digits.
+- Fix: `[data-roll-link].nav-trim` gets `padding-block: 0.3em` with `margin-block: -0.3em`, each roll copy carries the same padding (the first one a matching negative margin). Layout still sees the cap box, one roll (`yPercent -100`) is exactly one copy tall, so the old label is fully hidden and the next one lands on the same rows.
+- Measured at 4x (header screenshots, pixel scan): before, every masked label had ink rows equal to the box rows (clipped top and bottom, 32 problems). After: mask box 24.02 to 39.97, ink 27.0 to 36.25, nothing touching an edge, 0 problems, in light and dark at 1440 and 1280. Hover roll lands on the same rows (accent ink 27 to 36.25). First-glyph centre is 0.37 px from the bar centre for every item (nav, Get in touch, theme toggle, time, wordmark, mobile Menu at 390), the same as before.
+- Screenshots: `docs/qa/fixing/bugs/bug3-nav-*.png`.
+
+**4. Wordmark** (`a1cec8f`)
+- The chip on the "f" is gone (plain italic). After "ferdos" there is `.wordmark-dot`: an `aria-hidden` inline-block 0.36em square in the accent color, empty so its baseline is its bottom edge (box 32.09 to 39.28 px; the link's baseline edge is 39.28), with a 0.19em round dot in `--site-accent-ink`. Contrast of accent-ink on accent: 5.35 light, 5.74 dark (`scripts/check-contrast.mjs`). Accessible name still "Rafi Ferdos, home"; the link box did not change, so centring is the same 0.37 px.
+- Left alone: `app/opengraph-image.tsx` still draws the old chip on the f. Say if the OG image should follow the new wordmark.
+- Screenshots: `docs/qa/fixing/bugs/bug4-wordmark-{light,dark}.png`.
+
+Gate before each commit: `pnpm lint` 0 errors (19 existing warnings), `pnpm exec tsc --noEmit` clean, `pnpm build` passes. Nothing pushed, no database touched.
+Side effect: `pnpm build` rewrites `.next`, so a `pnpm dev` server that was already running on port 3000 started returning 500. Restart it.
