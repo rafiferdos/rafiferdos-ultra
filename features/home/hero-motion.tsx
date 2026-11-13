@@ -60,6 +60,7 @@ export function HeroMotion({ id, className, children }: Props) {
         SplitText.create(intro, {
           type: 'lines',
           mask: 'lines',
+          aria: 'none',
           autoSplit: true,
           onSplit(self) {
             gsap.set(intro, { visibility: 'visible' })

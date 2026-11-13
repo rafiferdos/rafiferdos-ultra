@@ -113,7 +113,7 @@ export function ProjectArchive({ projects }: { projects: Project[] }) {
       ) : (
         <ul className="border-b border-site-line">
           {shown.map((project, index) => (
-            <ProjectRow key={project.id} project={project} index={index} />
+            <ProjectRow key={project.id} project={project} index={index} priority={index === 0} />
           ))}
         </ul>
       )}

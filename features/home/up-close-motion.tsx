@@ -2,7 +2,8 @@
 
 import { useRef } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
-import { Draggable, gsap, ScrollTrigger, useGSAP } from '@/lib/gsap'
+import { Draggable } from '@/lib/gsap-drag'
+import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap'
 
 const MAX_SKEW = 3
 const SKEW_PER_VELOCITY = 0.0015

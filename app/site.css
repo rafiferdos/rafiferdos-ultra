@@ -217,7 +217,12 @@ body:has(.site-root) {
 }
 
 .work-title {
-  color: color-mix(in srgb, var(--site-accent) calc(var(--w, 0) * 1%), var(--site-ink));
+  color: var(--site-ink);
+}
+
+/* Inactive titles are muted, not faded, so every row keeps readable contrast. */
+.js-motion .work .work-title {
+  color: color-mix(in srgb, var(--site-accent) calc(var(--w, 0) * 1%), var(--site-muted));
 }
 
 .work-inline-cover {
@@ -267,10 +272,6 @@ body:has(.site-root) {
 
   .js-motion .work .work-inline-cover {
     display: none;
-  }
-
-  .js-motion .work .work-row {
-    opacity: 0.4;
   }
 
   .js-motion .work .work-body {

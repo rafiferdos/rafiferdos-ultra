@@ -3,12 +3,12 @@ import type { Project } from '@/data/site-content'
 import { ProjectCover } from '@/features/projects/project-cover'
 import { cloudinaryFill } from '@/lib/cloudinary'
 
-type Props = { project: Project; index: number }
+type Props = { project: Project; index: number; priority?: boolean }
 
 const pad = (value: number) => String(value + 1).padStart(2, '0')
 
 // One list row, shared by the home work list and the archive. Motion hooks in through data attributes.
-export function ProjectRow({ project, index }: Props) {
+export function ProjectRow({ project, index, priority }: Props) {
   const href = project.caseStudyUrl || project.githubUrl
   const meta = [project.role, project.projectType].filter(Boolean).join(' & ')
   const title = <h3 className="t-work">{project.title}</h3>
@@ -21,7 +21,7 @@ export function ProjectRow({ project, index }: Props) {
       className="work-row border-t border-site-line"
     >
       <div className="work-row-grid">
-        <span className="t-label text-site-faint">{pad(index)}</span>
+        <span className="t-label text-site-muted">{pad(index)}</span>
         <div data-work-title className="work-title min-w-0">
           {href ? (
             <a href={href} target="_blank" rel="noreferrer" className="work-title-link">
@@ -46,7 +46,7 @@ export function ProjectRow({ project, index }: Props) {
           {project.year && <span>{project.year}</span>}
         </div>
         <div className="work-inline-cover">
-          <ProjectCover project={project} sizes="(min-width: 768px) 20rem, 70vw" />
+          <ProjectCover project={project} priority={priority} sizes="(min-width: 768px) 20rem, 70vw" />
         </div>
       </div>
     </li>

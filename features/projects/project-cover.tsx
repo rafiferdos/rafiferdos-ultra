@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import type { Project } from '@/data/site-content'
 
-type Props = { project: Project; sizes: string; decorative?: boolean }
+type Props = { project: Project; sizes: string; decorative?: boolean; priority?: boolean }
 
 // Fills its parent, which owns the 4:5 box. Until Rafi adds a cover the frame is a labelled placeholder.
-export function ProjectCover({ project, sizes, decorative }: Props) {
+export function ProjectCover({ project, sizes, decorative, priority }: Props) {
   const { imageUrl, coverWidth, coverHeight, coverBlur, accent, title } = project
   if (!imageUrl)
     return (
@@ -22,6 +22,7 @@ export function ProjectCover({ project, sizes, decorative }: Props) {
         src={imageUrl}
         alt={decorative ? '' : `${title} preview`}
         sizes={sizes}
+        priority={priority}
         className="size-full object-cover"
         {...size}
         {...blur}

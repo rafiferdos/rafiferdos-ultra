@@ -1,15 +1,20 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useRef, useState } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
-import { ContactForm } from '@/features/home/contact-form'
 import { createKinetic } from '@/features/motion/kinetic-letters'
 import { duration, gsap, ScrollTrigger, SplitText, stagger, useGSAP } from '@/lib/gsap'
+
+// The form (and zod with it) loads on first open, and is warmed up when the CTA gets hover or focus.
+const loadForm = () => import('@/features/home/contact-form').then((module) => module.ContactForm)
+const ContactForm = dynamic(loadForm, { ssr: false })
 
 // The big SAY HELLO letters open the form below. Same kinetic letters as the hero name.
 export function ContactCta() {
   const root = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
+  const [opened, setOpened] = useState(false)
   const { motionAllowed } = useMotion()
 
   useGSAP(
@@ -67,7 +72,12 @@ export function ContactCta() {
         aria-expanded={open}
         aria-controls="contact-form"
         data-cursor="Write"
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => {
+          setOpened(true)
+          setOpen((value) => !value)
+        }}
+        onPointerEnter={loadForm}
+        onFocus={loadForm}
         className="block w-full text-left text-site-accent"
       >
         <span className="sr-only">Say hello, {open ? 'close' : 'open'} the contact form</span>
@@ -79,7 +89,7 @@ export function ContactCta() {
 
       <div id="contact-form" className={`cta-form ${open ? 'is-open' : ''}`} inert={!open}>
         <div data-cta-form className="min-h-0 overflow-hidden">
-          <ContactForm />
+          {opened && <ContactForm />}
         </div>
       </div>
     </div>

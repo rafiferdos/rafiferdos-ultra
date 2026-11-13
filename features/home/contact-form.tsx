@@ -68,6 +68,7 @@ export function ContactForm() {
             name={field}
             type={field === 'email' ? 'email' : 'text'}
             autoComplete={field}
+            autoFocus={field === 'name'}
             aria-invalid={Boolean(errors[field])}
             aria-describedby={errors[field] ? `contact-${field}-error` : undefined}
             className={fieldClass}

@@ -34,10 +34,9 @@ export function WorkMotion({ id, className, children }: Props) {
 
         // --w drives color-mix() in CSS, so the active color follows the theme without any inline color.
         const setActive = (index: number) => {
-          rows.forEach((row, i) => {
+          titles.forEach((title, i) => {
             const on = i === index
-            gsap.to(row, { opacity: on ? 1 : 0.4, duration: 0.5, ease: 'out', overwrite: 'auto' })
-            gsap.to(titles[i], {
+            gsap.to(title, {
               '--w': on ? 100 : 0,
               x: on ? ACTIVE_SHIFT : 0,
               duration: 0.5,

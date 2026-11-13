@@ -43,6 +43,7 @@ export function ExperienceMotion({ id, className, children }: Props) {
           SplitText.create(bullet, {
             type: 'lines',
             mask: 'lines',
+            aria: 'none',
             autoSplit: true,
             onSplit(self) {
               gsap.set(bullet, { visibility: 'visible' })
