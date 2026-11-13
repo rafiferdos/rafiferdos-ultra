@@ -19,10 +19,16 @@ export type GalleryItem = {
 
 export type Project = {
   id: string
+  slug?: string
+  updatedAt?: string
   title: string
   description: string
   subtitle?: string
   role?: string
+  client?: string
+  overview?: string
+  challenge?: string
+  solution?: string
   year?: number
   status?: string
   caseStudyUrl?: string
