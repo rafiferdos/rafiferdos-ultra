@@ -1,41 +1,38 @@
-import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provider'
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import { QueryProvider } from '@/components/providers/query-provider'
-import { TubelightNavBar } from '@/components/ui/tubelight-navbar'
-import { Toaster } from '@/components/ui/sonner'
-import { TooltipProvider } from '@/components/ui/tooltip'
 import type { Metadata } from 'next'
-import { SITE_URL, profile } from '@/lib/site'
+import { OG_IMAGE, SITE_URL, profile } from '@/lib/site'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
+// preload is off so public pages never fetch Geist; only the dashboard uses it.
 const geistSans = Geist({
   variable: '--font-geist-sans',
-  subsets: ['latin']
+  subsets: ['latin'],
+  preload: false
 })
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
-  subsets: ['latin']
+  subsets: ['latin'],
+  preload: false
 })
 
-// Note: Agale font is loaded via CSS @font-face in globals.css and is applied
-// only when using the `.font-agale` class.
+const fullTitle = `${profile.name} · ${profile.jobTitle}`
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Rafi Ferdos · Full Stack Product Engineer',
+    default: fullTitle,
     template: '%s · Rafi Ferdos'
   },
-  description:
-    'Full-stack developer in Bangladesh building polished web, mobile, ecommerce and realtime products with Next.js, React Native, Node.js and PostgreSQL.',
+  description: `${profile.jobTitle} in Dhaka, Bangladesh. Web and mobile products built end to end with Next.js, React Native, Node.js and PostgreSQL.`,
   applicationName: 'Rafi Ferdos Portfolio',
   authors: [{ name: profile.name, url: SITE_URL }],
   creator: profile.name,
   publisher: profile.name,
   category: 'technology',
   keywords: [
+    'Full Stack AI Engineer',
     'hire full stack developer Bangladesh',
     'Next.js developer for hire',
     'React Native developer Bangladesh',
@@ -51,24 +48,16 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Rafi Ferdos',
     locale: 'en_US',
-    title: 'Rafi Ferdos · Full Stack Product Engineer',
-    description:
-      'Production-ready web, mobile, ecommerce and realtime engineering for teams and clients.',
-    images: [
-      {
-        url: '/og.png',
-        width: 1729,
-        height: 910,
-        alt: 'Rafi Ferdos — Full-stack product engineer'
-      }
-    ]
+    title: fullTitle,
+    description: `${profile.jobTitle}. Web, mobile, ecommerce and real-time products for teams and clients.`,
+    images: [OG_IMAGE]
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@rafiferdos',
-    title: 'Rafi Ferdos · Full Stack Product Engineer',
-    description: 'Production-ready web, mobile and realtime engineering.',
-    images: ['/og.png']
+    title: fullTitle,
+    description: `${profile.jobTitle}. Web, mobile and real-time products.`,
+    images: [OG_IMAGE]
   },
   robots: {
     index: true,
@@ -105,15 +94,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <QueryProvider>
-            <TooltipProvider>
-              <SmoothScrollProvider>
-                <TubelightNavBar />
-                {children}
-              </SmoothScrollProvider>
-              <Toaster richColors closeButton />
-            </TooltipProvider>
-          </QueryProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

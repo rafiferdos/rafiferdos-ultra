@@ -1,6 +1,6 @@
 'use client'
 
-import { CreatableMultiSelect } from '@/components/dashboard/creatable-multi-select'
+import { CreatableMultiSelect } from '@/components/Dashboard/creatable-multi-select'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -14,10 +14,11 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
-import type { Project } from '@/data/site-content'
+import type { GalleryItem, Project } from '@/data/site-content'
 import { technologyCatalog } from '@/data/technology-catalog'
 import { getApiError } from '@/lib/http/client'
-import { Plus, Upload } from 'lucide-react'
+import { projectKey, slugify } from '@/lib/slug'
+import { ExternalLink, Plus, Upload, X } from 'lucide-react'
 import { FormEvent, useState } from 'react'
 import { toast } from 'sonner'
 import { useSaveContent, useUploadMedia } from '../hooks/use-dashboard-content'
@@ -46,10 +47,15 @@ const projectTags = [
 
 type ProjectDraft = {
   id?: string
+  slug: string
   title: string
   subtitle: string
   description: string
   role: string
+  client: string
+  overview: string
+  challenge: string
+  solution: string
   year: string
   status: string
   discipline: Project['discipline']
@@ -61,16 +67,26 @@ type ProjectDraft = {
   githubUrl: string
   caseStudyUrl: string
   imageUrl: string
+  coverWidth: number | null
+  coverHeight: number | null
+  coverBlur: string | null
+  videoUrl: string
+  gallery: GalleryItem[]
   accent: string
   featured: boolean
   sortOrder: string
 }
 
 const emptyProject = (): ProjectDraft => ({
+  slug: '',
   title: '',
   subtitle: '',
   description: '',
   role: '',
+  client: '',
+  overview: '',
+  challenge: '',
+  solution: '',
   year: String(new Date().getFullYear()),
   status: 'Published',
   discipline: 'Full stack',
@@ -82,6 +98,11 @@ const emptyProject = (): ProjectDraft => ({
   githubUrl: '',
   caseStudyUrl: '',
   imageUrl: '',
+  coverWidth: null,
+  coverHeight: null,
+  coverBlur: null,
+  videoUrl: '',
+  gallery: [],
   accent: '#f59e0b',
   featured: true,
   sortOrder: '0'
@@ -108,10 +129,15 @@ export function ProjectPanel({
   function edit(item: Project) {
     setDraft({
       id: item.id,
+      slug: item.slug || '',
       title: item.title,
       subtitle: item.subtitle || '',
       description: item.description,
       role: item.role || '',
+      client: item.client || '',
+      overview: item.overview || '',
+      challenge: item.challenge || '',
+      solution: item.solution || '',
       year: String(item.year || new Date().getFullYear()),
       status: item.status || 'Published',
       discipline: item.discipline,
@@ -123,6 +149,11 @@ export function ProjectPanel({
       githubUrl: item.githubUrl || '',
       caseStudyUrl: item.caseStudyUrl || '',
       imageUrl: item.imageUrl || '',
+      coverWidth: item.coverWidth ?? null,
+      coverHeight: item.coverHeight ?? null,
+      coverBlur: item.coverBlur ?? null,
+      videoUrl: item.videoUrl || '',
+      gallery: item.gallery ?? [],
       accent: item.accent,
       featured: item.featured,
       sortOrder: String(
@@ -145,10 +176,15 @@ export function ProjectPanel({
         entity: 'projects',
         id: draft.id,
         record: {
+          slug: draft.slug.trim() || null,
           title: draft.title.trim(),
           subtitle: draft.subtitle.trim() || null,
           description: draft.description.trim(),
           role: draft.role.trim() || null,
+          client: draft.client.trim() || null,
+          overview: draft.overview.trim() || null,
+          challenge: draft.challenge.trim() || null,
+          solution: draft.solution.trim() || null,
           year: draft.year ? Number(draft.year) : null,
           status: draft.status,
           discipline: draft.discipline,
@@ -163,6 +199,11 @@ export function ProjectPanel({
           githubUrl: draft.githubUrl || null,
           caseStudyUrl: draft.caseStudyUrl || null,
           imageUrl: draft.imageUrl || null,
+          coverWidth: draft.coverWidth,
+          coverHeight: draft.coverHeight,
+          coverBlur: draft.coverBlur,
+          videoUrl: draft.videoUrl.trim() || null,
+          gallery: draft.gallery,
           accent: draft.accent,
           featured: draft.featured,
           sortOrder: Number(draft.sortOrder || 0)
@@ -178,11 +219,35 @@ export function ProjectPanel({
       }
     )
   }
+  const effectiveSlug = slugify(draft.slug || draft.title)
+  const slugTaken = items.some(
+    (item) => item.id !== draft.id && item.slug && item.slug === effectiveSlug
+  )
+  const saved = items.find((item) => item.id === draft.id)
+
+  function uploadGallery(files: FileList | null) {
+    for (const file of Array.from(files ?? []))
+      upload.mutate(file, {
+        onSuccess: ({ url, width, height }) =>
+          setDraft((current) => ({
+            ...current,
+            gallery: [...current.gallery, { url, width, height, alt: '', label: '' }]
+          })),
+        onError: (error) => toast.error(getApiError(error, 'Upload failed'))
+      })
+  }
+  const patchGallery = (index: number, change: Partial<GalleryItem>) =>
+    setDraft((current) => ({
+      ...current,
+      gallery: current.gallery.map((item, i) => (i === index ? { ...item, ...change } : item))
+    }))
+
   function uploadImage(file?: File) {
     if (!file) return
     upload.mutate(file, {
-      onSuccess: ({ url }) => {
-        patch('imageUrl', url)
+      onSuccess: ({ url, width, height }) => {
+        // The blur placeholder comes from the backfill script, so a new cover clears the old one.
+        setDraft((current) => ({ ...current, imageUrl: url, coverWidth: width, coverHeight: height, coverBlur: null }))
         toast.success('Cover uploaded')
       },
       onError: (error) => toast.error(getApiError(error, 'Upload failed'))
@@ -196,6 +261,16 @@ export function ProjectPanel({
           <CardTitle className="flex items-center gap-2 text-base">
             <Plus className="size-4 text-primary" />
             {draft.id ? 'Edit project' : 'Add project'}
+            {saved && (
+              <a
+                href={`/projects/${projectKey(saved)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="ml-auto flex items-center gap-1 text-sm font-normal text-primary"
+              >
+                View page <ExternalLink className="size-3.5" />
+              </a>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -207,6 +282,20 @@ export function ProjectPanel({
                 onChange={(e) => patch('title', e.target.value)}
                 placeholder="A clear product name"
               />
+            </Field>
+            <Field label="URL slug · leave empty to use the title">
+              <Input
+                value={draft.slug}
+                onChange={(e) => patch('slug', e.target.value)}
+                placeholder={slugify(draft.title) || 'my-project'}
+              />
+              <p
+                className={`text-xs ${slugTaken ? 'text-destructive' : 'text-muted-foreground'}`}
+              >
+                {slugTaken
+                  ? 'Another project already uses this slug.'
+                  : `/projects/${effectiveSlug || '…'}`}
+              </p>
             </Field>
             <Field label="Short supporting line">
               <Input
@@ -223,7 +312,34 @@ export function ProjectPanel({
                 onChange={(e) => patch('description', e.target.value)}
               />
             </Field>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Overview · page only">
+              <Textarea
+                rows={4}
+                value={draft.overview}
+                onChange={(e) => patch('overview', e.target.value)}
+              />
+            </Field>
+            <Field label="Challenge · page only">
+              <Textarea
+                rows={4}
+                value={draft.challenge}
+                onChange={(e) => patch('challenge', e.target.value)}
+              />
+            </Field>
+            <Field label="Solution · page only">
+              <Textarea
+                rows={4}
+                value={draft.solution}
+                onChange={(e) => patch('solution', e.target.value)}
+              />
+            </Field>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Field label="Client">
+                <Input
+                  value={draft.client}
+                  onChange={(e) => patch('client', e.target.value)}
+                />
+              </Field>
               <Field label="Your role">
                 <Input
                   value={draft.role}
@@ -365,7 +481,9 @@ export function ProjectPanel({
               <div className="flex gap-2">
                 <Input
                   value={draft.imageUrl}
-                  onChange={(e) => patch('imageUrl', e.target.value)}
+                  onChange={(e) =>
+                    setDraft((current) => ({ ...current, imageUrl: e.target.value, coverWidth: null, coverHeight: null, coverBlur: null }))
+                  }
                   placeholder="Cloudinary URL"
                 />
                 <Button
@@ -380,6 +498,59 @@ export function ProjectPanel({
                     accept="image/*"
                     disabled={upload.isPending}
                     onChange={(e) => uploadImage(e.target.files?.[0])}
+                    className="absolute inset-0 cursor-pointer opacity-0"
+                  />
+                </Button>
+              </div>
+            </Field>
+            <Field label="Video URL · optional">
+              <Input
+                type="url"
+                value={draft.videoUrl}
+                onChange={(e) => patch('videoUrl', e.target.value)}
+              />
+            </Field>
+            <Field label="Gallery · shown on the project page">
+              <div className="grid gap-2">
+                {draft.gallery.map((item, index) => (
+                  <div key={`${item.url}-${index}`} className="flex items-center gap-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.url} alt="" className="size-9 shrink-0 rounded object-cover" />
+                    <Input
+                      value={item.alt}
+                      onChange={(e) => patchGallery(index, { alt: e.target.value })}
+                      placeholder="Alt text"
+                    />
+                    <Input
+                      value={item.label}
+                      onChange={(e) => patchGallery(index, { label: e.target.value })}
+                      placeholder="Caption"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      aria-label="Remove image"
+                      onClick={() =>
+                        patch('gallery', draft.gallery.filter((_, i) => i !== index))
+                      }
+                    >
+                      <X />
+                    </Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" className="relative w-fit">
+                  <Upload />
+                  {upload.isPending ? 'Uploading…' : 'Add images'}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    disabled={upload.isPending}
+                    onChange={(e) => {
+                      uploadGallery(e.target.files)
+                      e.target.value = ''
+                    }}
                     className="absolute inset-0 cursor-pointer opacity-0"
                   />
                 </Button>
@@ -413,7 +584,7 @@ export function ProjectPanel({
               </div>
             </div>
             <div className="flex gap-2">
-              <Button disabled={save.isPending || !draft.techStack.length}>
+              <Button disabled={save.isPending || !draft.techStack.length || slugTaken}>
                 {save.isPending
                   ? 'Saving…'
                   : draft.id

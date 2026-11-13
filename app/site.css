@@ -1,0 +1,747 @@
+/* Public site tokens. Prefixed so the dashboard's shadcn variables stay untouched. */
+
+:root {
+  --site-bg: #f3f1ec;
+  --site-surface: #e9e6df;
+  --site-ink: #141312;
+  --site-muted: #6a665f;
+  --site-faint: #86817a;
+  --site-accent: #c7340e;
+  --site-accent-ink: #ffffff;
+  --site-line: color-mix(in srgb, var(--site-ink) 12%, transparent);
+  --site-line-strong: color-mix(in srgb, var(--site-ink) 25%, transparent);
+}
+
+/* globals.css still has the old 6rem scroll-padding. Section anchors already carry scroll-mt-16 for the header, so the padding would double it. */
+html:has(.site-root) {
+  scroll-padding-top: 0;
+}
+
+.site-root [tabindex='-1'] {
+  outline: none;
+}
+
+.dark {
+  --site-bg: #0f0e0d;
+  --site-surface: #1a1918;
+  --site-ink: #edebe6;
+  --site-muted: #8c8780;
+  --site-faint: #6e6a64;
+  --site-accent: #ff4a1c;
+  --site-accent-ink: #0f0e0d;
+}
+
+@theme inline {
+  --color-site-bg: var(--site-bg);
+  --color-site-surface: var(--site-surface);
+  --color-site-ink: var(--site-ink);
+  --color-site-muted: var(--site-muted);
+  --color-site-faint: var(--site-faint);
+  --color-site-accent: var(--site-accent);
+  --color-site-accent-ink: var(--site-accent-ink);
+  --color-site-line: var(--site-line);
+  --color-site-line-strong: var(--site-line-strong);
+
+  --font-site: var(--font-mona), ui-sans-serif, system-ui, sans-serif;
+  --font-site-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+@theme {
+  --spacing-gutter: clamp(1.25rem, 3.9vw, 3.5rem);
+  --spacing-section: clamp(5rem, 8.75vw, 8rem);
+
+  --text-display: clamp(6rem, 18vw, 17rem);
+  --text-display--line-height: 0.86;
+  --text-display--font-weight: 800;
+  --text-h1: clamp(2.6rem, 5.2vw, 4.75rem);
+  --text-h1--line-height: 1.02;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 600;
+  --text-work: clamp(2.2rem, 4.8vw, 4.4rem);
+  --text-work--line-height: 1;
+  --text-work--font-weight: 700;
+  --text-index: clamp(3rem, 6vw, 5.5rem);
+  --text-index--line-height: 1;
+  --text-index--font-weight: 800;
+  --text-h3: clamp(1.6rem, 2.6vw, 2.4rem);
+  --text-h3--line-height: 1.1;
+  --text-h3--font-weight: 700;
+  --text-lead: 1.375rem;
+  --text-lead--line-height: 1.4;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.45;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.06em;
+  --text-label-s: 0.6875rem;
+  --text-label-s--line-height: 1.4;
+  --text-label-s--letter-spacing: 0.06em;
+  --text-marquee: clamp(2.5rem, 5vw, 4.5rem);
+  --text-marquee--line-height: 1.1;
+  --text-marquee--font-weight: 250;
+}
+
+/* Roles that carry a width axis, case or family on top of the size tokens. */
+@utility t-display {
+  @apply text-display font-site uppercase;
+  font-stretch: 75%;
+}
+
+@utility t-h1 {
+  @apply text-h1 font-site;
+  font-stretch: 90%;
+}
+
+@utility t-work {
+  @apply text-work font-site;
+  font-stretch: 88%;
+}
+
+@utility t-index {
+  @apply text-index font-site text-site-faint;
+  font-stretch: 75%;
+}
+
+@utility t-h3 {
+  @apply text-h3 font-site;
+  font-stretch: 88%;
+}
+
+@utility t-label {
+  @apply text-label font-site-mono uppercase;
+}
+
+@utility t-label-s {
+  @apply text-label-s font-site-mono uppercase;
+}
+
+@utility t-marquee {
+  @apply text-marquee font-site italic;
+  font-stretch: 125%;
+}
+
+.site-root ::selection {
+  background: var(--site-accent);
+  color: var(--site-accent-ink);
+}
+
+.site-root :focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
+}
+
+/* Keeps overscroll and the area behind the page in the site colors. */
+html:has(.site-root),
+body:has(.site-root) {
+  background-color: var(--site-bg);
+  background-image: none;
+}
+
+/* Set by the Cursor component on fine pointers only; form fields keep their own cursor. */
+.site-cursor,
+.site-cursor a,
+.site-cursor button {
+  cursor: none;
+}
+
+/* Hero: text stays visible without JS; the pre-paint js-motion class hides it only when motion will play. */
+.hero-line {
+  display: block;
+  white-space: nowrap;
+  contain: layout paint;
+}
+
+.js-motion [data-hero-name],
+.js-motion [data-hero-intro] {
+  visibility: hidden;
+}
+
+.js-motion [data-hero-fade] {
+  opacity: 0;
+}
+
+/* Marquee: a wrapped, static list by default; one scrolling row when motion is on. */
+.marquee {
+  overflow: hidden;
+}
+
+.marquee-row + .marquee-row {
+  border-top: 1px solid var(--site-line);
+}
+
+.marquee-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.5em;
+  row-gap: 0.15em;
+  padding: 1.25rem var(--spacing-gutter);
+  font-family: var(--font-site);
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  font-style: italic;
+  font-stretch: 125%;
+  font-weight: 250;
+  line-height: 1.1;
+}
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  white-space: nowrap;
+}
+
+.marquee-mark {
+  color: var(--site-accent);
+  font-size: 0.4em;
+  font-style: normal;
+}
+
+.marquee-dup {
+  display: none;
+}
+
+.js-motion .marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.js-motion .marquee-group {
+  flex: none;
+  flex-wrap: nowrap;
+  padding-inline: 0 0.5em;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.js-motion .marquee-dup {
+  display: flex;
+}
+
+/* Selected work: a plain list with inline covers by default; the sticky dock and row states are added when motion runs on desktop. */
+.work-row-grid {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  column-gap: 1.25rem;
+  align-items: start;
+  padding-block: 1.75rem;
+}
+
+.work-title {
+  color: var(--site-ink);
+}
+
+/* Inactive titles are muted, not faded, so every row keeps readable contrast. */
+.js-motion .work .work-title {
+  color: color-mix(in srgb, var(--site-accent) calc(var(--w, 0) * 1%), var(--site-muted));
+}
+
+.work-inline-cover {
+  position: relative;
+  grid-column: 2 / -1;
+  width: min(70%, 20rem);
+  margin-top: 1.25rem;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--site-surface);
+}
+
+.work-dock {
+  display: none;
+}
+
+.work-roll {
+  height: 1lh;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+
+.work-roll span {
+  display: block;
+  height: 1lh;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .work-row-grid {
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto 9rem;
+    align-items: center;
+    min-height: 40vh;
+    padding-block: 0;
+  }
+
+  .work-inline-cover {
+    grid-column: auto;
+    width: 9rem;
+    margin-top: 0;
+  }
+
+  .js-motion .work .work-row-grid {
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  }
+
+  .js-motion .work .work-inline-cover {
+    display: none;
+  }
+
+  .js-motion .work .work-body {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.75rem;
+  }
+
+  .js-motion .work .work-list {
+    grid-column: 1 / span 7;
+  }
+
+  .js-motion .work .work-dock {
+    display: block;
+    grid-column: 8 / span 5;
+  }
+
+  .work-dock-sticky {
+    position: sticky;
+    top: 20vh;
+    width: min(100%, 48vh);
+    margin-left: auto;
+  }
+
+  .work-dock-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--site-surface);
+  }
+
+  .work-frame {
+    position: absolute;
+    inset: 0;
+  }
+
+  .work-frame:not(:first-child) {
+    visibility: hidden;
+  }
+
+  .work-dock-meta {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+}
+
+/* The hovered row's frame leaves the dock (JS sets its size and transform). The rest of the dock goes empty meanwhile. */
+@media (min-width: 768px) and (pointer: fine) {
+  .work-frame {
+    transition: opacity 0.25s;
+  }
+
+  .work-dock-box.is-away .work-frame:not(.is-held) {
+    opacity: 0;
+  }
+
+  .work-frame.is-held {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 60 !important;
+    visibility: visible !important;
+    pointer-events: none;
+    transition: none;
+  }
+}
+
+/* Up close: a native snap scroller by default; on desktop with motion it becomes a scrubbed, draggable track. */
+.upclose {
+  --upclose-h: min(62vh, 36rem);
+}
+
+.upclose-viewport {
+  overflow-x: auto;
+  padding-inline: var(--spacing-gutter);
+  scroll-padding-inline: var(--spacing-gutter);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.upclose-track {
+  display: flex;
+  width: max-content;
+  gap: 1.5rem;
+}
+
+.upclose-item {
+  flex: none;
+  width: min(85vw, calc(var(--upclose-h) * var(--ratio)));
+  scroll-snap-align: start;
+}
+
+.upclose-frame {
+  aspect-ratio: var(--ratio);
+  overflow: hidden;
+  background: var(--site-surface);
+}
+
+@media (min-width: 768px) {
+  .js-motion .upclose-viewport {
+    overflow: hidden;
+    padding-inline: 0;
+    scroll-snap-type: none;
+  }
+
+  .js-motion .upclose-track {
+    padding-inline: var(--spacing-gutter);
+    will-change: transform;
+  }
+}
+
+/* Statement: a taller section with a sticky inner when motion is on; words start dim and the scrub brightens them. */
+.statement-em {
+  font-style: italic;
+  font-stretch: 125%;
+  font-weight: 250;
+}
+
+.js-motion .statement {
+  height: 160svh;
+}
+
+.js-motion .statement-inner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.js-motion [data-word] {
+  opacity: 0.15;
+}
+
+/* Experience: hover fills the whole tile with the accent (a scaleY pseudo-element) and veils the other tiles with the page color.
+   Both are transform and opacity only, on pseudo-elements, so the tile's own scrubbed opacity is never fought. Hover devices only. */
+.exp-tile {
+  position: relative;
+}
+
+.exp-body {
+  position: relative;
+  z-index: 1;
+}
+
+.exp-arrow {
+  display: inline-block;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .exp-tile::before,
+  .exp-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .exp-tile::before {
+    background: var(--site-accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .exp-tile::after {
+    z-index: 2;
+    inset: -1px;
+    background: var(--site-bg);
+    opacity: 0;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .exp-tile:is(:hover, :focus-within)::before {
+    transform: scaleY(1);
+  }
+
+  .exp-tile:is(:hover, :focus-within) .exp-body,
+  .exp-tile:is(:hover, :focus-within) .exp-body * {
+    color: var(--site-accent-ink);
+    transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .exp-list:has(.exp-tile:is(:hover, :focus-within)) .exp-tile:not(:is(:hover, :focus-within))::after {
+    opacity: 0.65;
+  }
+
+  .exp-tile:is(:hover, :focus-within) .exp-arrow {
+    transform: translate(4px, -4px);
+  }
+}
+
+.js-motion [data-exp-bullet] {
+  visibility: hidden;
+}
+
+/* Writing: the title is stacked with a copy of itself, and hover slides the copy in. The pseudo-element wraps with the title. */
+.roll-title {
+  display: block;
+  overflow: hidden;
+}
+
+.roll-title-inner {
+  position: relative;
+  display: block;
+  transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.roll-title-inner::after {
+  content: attr(data-text);
+  content: attr(data-text) / '';
+  position: absolute;
+  inset: 100% 0 auto 0;
+  color: var(--site-accent);
+}
+
+.writing-row:hover .roll-title-inner,
+.writing-row:focus-visible .roll-title-inner {
+  transform: translateY(-100%);
+}
+
+.js-motion [data-writing-row] {
+  visibility: hidden;
+}
+
+/* Contact: the form is always in the DOM. It opens with an instant 0fr to 1fr switch; only its opacity and y animate. */
+.js-motion [data-cta-name] {
+  visibility: hidden;
+}
+
+.cta-form {
+  display: grid;
+  grid-template-rows: 0fr;
+}
+
+.cta-form.is-open {
+  grid-template-rows: 1fr;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll-title-inner {
+    transition: none;
+  }
+}
+
+/* The global reduced-motion rule gives every element a 0.01ms transition, which would still interpolate the rows. */
+.cta-form {
+  transition-property: none;
+}
+
+/* FitText: the container is a size container, so cqw is its own width. --fit-w (em width of the text) is set from JS;
+   the component sets a measured fallback so the reserved height is right before JS runs. */
+.fit {
+  display: block;
+  overflow: clip;
+  container-type: inline-size;
+}
+
+.fit-text {
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  font-size: calc(100cqw / var(--fit-w));
+}
+
+/* Archive pages reuse the work row without the dock, so the rows are short and show their own cover. */
+.archive .work-row-grid {
+  min-height: 0;
+  padding-block: 1.75rem;
+}
+
+/* Article body: site tokens for the text, links and code, on top of the Plate static markup. */
+.prose-site {
+  color: var(--site-ink);
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.prose-site a {
+  color: var(--site-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.prose-site :is(h1, h2, h3) {
+  margin-block: 2.5rem 1rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-stretch: 88%;
+}
+
+.prose-site h1 { font-size: 2.25rem; }
+.prose-site h2 { font-size: 1.875rem; }
+.prose-site h3 { font-size: 1.5rem; }
+
+.prose-site p {
+  margin-block-end: 1.5rem;
+}
+
+.prose-site blockquote {
+  margin-block: 2rem;
+  border-left: 2px solid var(--site-accent);
+  padding-left: 1.25rem;
+  color: var(--site-muted);
+}
+
+.prose-site pre {
+  margin-block: 2rem;
+  overflow-x: auto;
+  background: var(--site-surface);
+  padding: 1.25rem;
+  font-family: var(--font-site-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Intro (first visit, home only) and page transition bars. Both are plain transform wipes. */
+.intro {
+  display: none;
+}
+
+.js-intro .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: block;
+}
+
+.intro-bar,
+.page-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(20% + 1px);
+}
+
+.intro-bar {
+  background: var(--site-bg);
+  transform-origin: top;
+}
+
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  pointer-events: none;
+}
+
+.page-panel {
+  position: absolute;
+  inset: 0;
+  background: var(--site-bg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+.page-title-layer {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  color: var(--site-ink);
+}
+
+.page-bar {
+  background: var(--site-ink);
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+/* Header items: the box is the cap box, so flex centring is optical centring. The roll copies are trimmed the same way,
+   so each one is exactly one link tall. */
+.nav-trim,
+.nav-trim [data-roll] {
+  text-box: trim-both cap alphabetic;
+}
+
+/* The roll mask clips at the link's padding box, which with the trim is only the cap box, so ascenders (d, k, l) and the descender of "g" were cut.
+   Padding gives the mask room and the negative margin takes it back, so layout still sees the cap box. Every copy carries the same padding:
+   one roll (yPercent -100) is then a copy plus its clearance, which hides the old label completely and parks the next one below the mask. */
+[data-roll-link].nav-trim {
+  padding-block: 0.3em;
+  margin-block: -0.3em;
+}
+
+[data-roll-link].nav-trim [data-roll] {
+  padding-block: 0.3em;
+}
+
+[data-roll-link].nav-trim > [data-roll]:first-child {
+  margin-block: -0.3em;
+}
+
+/* The full stop after the name: an accent box as tall as a full stop, standing on the baseline (an empty inline-block's baseline is its
+   bottom edge), with the dot cut out of it in the ink color. It never reaches up the line height. */
+.wordmark-dot {
+  position: relative;
+  display: inline-block;
+  width: 0.36em;
+  height: 0.36em;
+  margin-inline-start: 0.08em;
+  background: var(--site-accent);
+}
+
+.wordmark-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.19em;
+  height: 0.19em;
+  border-radius: 50%;
+  background: var(--site-accent-ink);
+}
+
+/* Project detail. The title box has a fixed height so a measured FitText never moves what is below it; the text sits on its bottom edge. */
+.project-title {
+  --cap: clamp(4.5rem, 14vw, 14rem);
+  display: flex;
+  align-items: flex-end;
+  height: calc(var(--cap) * 0.9);
+}
+
+.project-title .fit {
+  flex: 1;
+}
+
+.project-title .fit-text {
+  font-size: min(calc(100cqw / var(--fit-w)), var(--cap));
+}
+
+.js-motion [data-page-title] .fit-text,
+.js-motion [data-reveal],
+.js-motion [data-next] .fit-text {
+  visibility: hidden;
+}
+
+/* Next project: an inverted full-bleed block; the title fills the width and the cover is a small frame, so the two never compete. */
+.next-project {
+  display: block;
+  overflow: hidden;
+  padding: var(--spacing-section) var(--spacing-gutter);
+  background: var(--site-ink);
+  color: var(--site-bg);
+}
+
+.next-project-cover {
+  width: clamp(6rem, 14vw, 12rem);
+  aspect-ratio: 4 / 5;
+  flex: none;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.next-project:hover .next-project-cover,
+.next-project:focus-visible .next-project-cover {
+  transform: translateY(-0.5rem);
+}

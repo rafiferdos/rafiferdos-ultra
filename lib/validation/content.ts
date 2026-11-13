@@ -1,17 +1,36 @@
 import { z } from 'zod'
+import { SLUG_PATTERN } from '@/lib/slug'
 
 const optionalUrl = z.union([z.url(), z.literal(''), z.null()]).optional()
 
+const galleryItemSchema = z.object({
+  url: z.url(),
+  width: z.number().int().positive().max(20_000),
+  height: z.number().int().positive().max(20_000),
+  alt: z.string().trim().max(240),
+  label: z.string().trim().max(80)
+})
+
 export const projectRecordSchema = z.object({
+  slug: z.string().trim().max(80).regex(SLUG_PATTERN).nullable().optional(),
   title: z.string().trim().min(2).max(140),
   subtitle: z.string().trim().max(180).nullable().optional(),
   description: z.string().trim().min(10).max(2_000),
   role: z.string().trim().max(120).nullable().optional(),
+  client: z.string().trim().max(120).nullable().optional(),
+  overview: z.string().trim().max(4_000).nullable().optional(),
+  challenge: z.string().trim().max(4_000).nullable().optional(),
+  solution: z.string().trim().max(4_000).nullable().optional(),
   year: z.number().int().min(2000).max(2100).nullable().optional(),
   status: z.enum(['Published', 'In development', 'Maintained', 'Archived']),
   caseStudyUrl: optionalUrl,
   outcomes: z.array(z.string().trim().min(1).max(240)).max(20),
   imageUrl: optionalUrl,
+  coverWidth: z.number().int().positive().max(20_000).nullable().optional(),
+  coverHeight: z.number().int().positive().max(20_000).nullable().optional(),
+  coverBlur: z.string().max(2_000).nullable().optional(),
+  videoUrl: optionalUrl,
+  gallery: z.array(galleryItemSchema).max(30).optional(),
   liveUrl: optionalUrl,
   githubUrl: optionalUrl,
   techStack: z.array(z.string().trim().min(1).max(80)).min(1).max(80),

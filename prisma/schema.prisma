@@ -18,15 +18,26 @@ model Admin {
 
 model Project {
   id           String   @id @default(cuid())
+  // Nullable so the column can be added to rows that already exist; prisma/scripts/backfill-slugs.ts fills it.
+  slug         String?  @unique
   title        String
   description  String
   subtitle     String?
   role         String?
+  client       String?
+  overview     String?
+  challenge    String?
+  solution     String?
   year         Int?
   status       String   @default("Published")
   caseStudyUrl String?
   outcomes     String[] @default([])
   imageUrl     String?
+  coverWidth   Int?
+  coverHeight  Int?
+  coverBlur    String?
+  videoUrl     String?
+  gallery      Json     @default("[]")
   liveUrl      String?
   githubUrl    String?
   techStack    String[]

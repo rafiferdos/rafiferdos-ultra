@@ -9,17 +9,36 @@ export type Experience = {
   stack: string[]
 }
 
+export type GalleryItem = {
+  url: string
+  width: number
+  height: number
+  alt: string
+  label: string
+}
+
 export type Project = {
   id: string
+  slug?: string
+  updatedAt?: string
   title: string
   description: string
   subtitle?: string
   role?: string
+  client?: string
+  overview?: string
+  challenge?: string
+  solution?: string
   year?: number
   status?: string
   caseStudyUrl?: string
   outcomes?: string[]
   imageUrl?: string
+  coverWidth?: number
+  coverHeight?: number
+  coverBlur?: string
+  videoUrl?: string
+  gallery?: GalleryItem[]
   liveUrl?: string
   githubUrl?: string
   techStack: string[]

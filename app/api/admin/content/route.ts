@@ -6,10 +6,11 @@ import {
   getMessages,
   getProjects,
   insertRecord,
+  SlugTakenError,
   updateRecord
 } from '@/lib/content-store'
 import { NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import {
   blogRecordSchema,
   messagePatchSchema,
@@ -39,13 +40,31 @@ function invalid(details?: unknown) {
     { status: 400 }
   )
 }
-function refreshPublicContent(entity: 'projects' | 'blogs' | 'messages') {
+function slugConflict(error: unknown) {
+  const duplicate =
+    error instanceof SlugTakenError ||
+    (error as { code?: string } | null)?.code === 'P2002'
+  return duplicate
+    ? NextResponse.json(
+        { error: 'That slug is already used by another project.' },
+        { status: 409 }
+      )
+    : null
+}
+function refreshPublicContent(
+  entity: 'projects' | 'blogs' | 'messages',
+  slug?: string | null
+) {
   if (entity === 'projects') {
+    revalidateTag('projects')
+    if (slug) revalidateTag(`project:${slug}`)
+    revalidatePath('/projects/[slug]', 'page')
     revalidatePath('/')
     revalidatePath('/projects')
     revalidatePath('/sitemap.xml')
   }
   if (entity === 'blogs') {
+    revalidateTag('articles')
     revalidatePath('/')
     revalidatePath('/blogs')
     revalidatePath('/blogs/[slug]', 'page')
@@ -88,11 +107,11 @@ export async function POST(request: Request) {
   if (!parsed.success) return invalid(parsed.error.flatten())
   try {
     const data = await insertRecord(entity, parsed.data)
-    refreshPublicContent(entity)
+    refreshPublicContent(entity, 'slug' in data ? data.slug : null)
     return NextResponse.json({ data })
   } catch (error) {
     console.error('Content create failed', error)
-    return NextResponse.json(
+    return slugConflict(error) ?? NextResponse.json(
       {
         error:
           'The content could not be saved. Check database connectivity and unique fields.'
@@ -124,11 +143,11 @@ export async function PATCH(request: Request) {
   if (!parsed.success) return invalid(parsed.error.flatten())
   try {
     const data = await updateRecord(entity, String(id), parsed.data)
-    refreshPublicContent(entity)
+    refreshPublicContent(entity, 'slug' in data ? data.slug : null)
     return NextResponse.json({ data })
   } catch (error) {
     console.error('Content update failed', error)
-    return NextResponse.json(
+    return slugConflict(error) ?? NextResponse.json(
       { error: 'The content could not be updated.' },
       { status: 500 }
     )

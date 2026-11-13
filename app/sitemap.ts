@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getBlogs, getProjects } from '@/lib/content-store'
 import { SITE_URL } from '@/lib/site'
+import { projectKey } from '@/lib/slug'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, projects] = await Promise.all([getBlogs(), getProjects()])
@@ -11,6 +12,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 1
+    },
+    {
+      url: `${SITE_URL}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9
     },
     {
       url: `${SITE_URL}/projects`,
@@ -26,6 +33,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9
     },
+    ...projects.map((project) => ({
+      url: `${SITE_URL}/projects/${projectKey(project)}`,
+      lastModified: project.updatedAt ? new Date(project.updatedAt) : latestProject,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8
+    })),
     ...posts.map((post) => ({
       url: `${SITE_URL}/blogs/${post.slug}`,
       lastModified: new Date(post.publishedAt),

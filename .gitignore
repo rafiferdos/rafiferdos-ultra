@@ -41,3 +41,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /app/generated/prisma/
+
+# MCP browser logs and QA screenshots
+/.playwright-mcp/
+/docs/qa/
+
+# reference screenshots (notes.md stays committed)
+/docs/reference/mikewilcock/*.jpg
