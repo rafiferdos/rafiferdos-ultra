@@ -680,10 +680,26 @@ body:has(.site-root) {
   margin-block: -0.3em;
 }
 
-.wordmark-chip {
-  padding-inline: 0.18em 0.28em;
+/* The full stop after the name: an accent box as tall as a full stop, standing on the baseline (an empty inline-block's baseline is its
+   bottom edge), with the dot cut out of it in the ink color. It never reaches up the line height. */
+.wordmark-dot {
+  position: relative;
+  display: inline-block;
+  width: 0.36em;
+  height: 0.36em;
+  margin-inline-start: 0.08em;
   background: var(--site-accent);
-  color: var(--site-accent-ink);
+}
+
+.wordmark-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.19em;
+  height: 0.19em;
+  border-radius: 50%;
+  background: var(--site-accent-ink);
 }
 
 /* Project detail. The title box has a fixed height so a measured FitText never moves what is below it; the text sits on its bottom edge. */
