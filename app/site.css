@@ -377,3 +377,63 @@ body:has(.site-root) {
     will-change: transform;
   }
 }
+
+/* Statement: a taller section with a sticky inner when motion is on; words start dim and the scrub brightens them. */
+.statement-em {
+  font-style: italic;
+  font-stretch: 125%;
+  font-weight: 250;
+}
+
+.js-motion .statement {
+  height: 160svh;
+}
+
+.js-motion .statement-inner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.js-motion [data-word] {
+  opacity: 0.15;
+}
+
+/* Experience: the accent rule is a scaleX pseudo-element, so hover animates transform only. */
+.exp-tile {
+  position: relative;
+}
+
+.exp-tile::before {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto 0;
+  height: 1px;
+  background: var(--site-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-tile:hover::before,
+.exp-tile:focus-within::before {
+  transform: scaleX(1);
+}
+
+.exp-arrow {
+  display: inline-block;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-arrow:hover,
+.exp-arrow:focus-visible {
+  color: var(--site-accent);
+  transform: translate(4px, -4px);
+}
+
+.js-motion [data-exp-bullet] {
+  visibility: hidden;
+}

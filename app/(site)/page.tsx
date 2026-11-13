@@ -1,9 +1,9 @@
 import Contact from '@/components/Home/Contact/Contact'
 import { BlogGateway } from '@/components/Home/BlogGateway/BlogGateway'
-import Experience from '@/components/Home/Experience/Experience'
 import TechStack from '@/components/Home/TechStack/TechStack'
-import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
+import { Experience } from '@/features/home/experience'
 import { Hero } from '@/features/home/hero'
+import { Statement } from '@/features/home/statement'
 import { SelectedWork } from '@/features/home/selected-work'
 import { UpClose } from '@/features/home/up-close'
 import { SkillsMarquee } from '@/features/home/skills-marquee'
@@ -121,10 +121,10 @@ export default async function Home() {
         <SkillsMarquee />
         <SelectedWork projects={projects} />
         <UpClose projects={projects} />
+        <Statement />
+        <Experience />
         <div className="mx-auto w-[min(92%,80rem)]">
-          <WhyMe />
           <TechStack />
-          <Experience />
           <BlogGateway posts={posts} />
           <Contact />
         </div>
