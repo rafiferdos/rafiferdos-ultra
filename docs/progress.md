@@ -193,3 +193,11 @@ Part 1: items 6, 7, 1, 2, 3. Playwright screenshots in `docs/qa/fixing/<item>/` 
 - Left as is on purpose: ZenDevz "Full Stack Developer" in Experience (the resume's own wording for that role).
 - CLAUDE.md and `docs/design-brief.md` positioning lines updated, so the next session does not revert it.
 - Header has no title text, and the footer must not have one, so the title shows in the hero label row and in the metadata.
+
+### Item 1: hero name as a staircase
+- At 768 px and up the name is two lines in one `FitText` (`lines={['Rafi', 'Ferdos']}`). Both lines have the same font size, FERDOS starts where RAFI ends (an inline `margin-left` of the widths above it, in em), and the pair spans the container. RAFI is 37% and FERDOS 63% of the width. Below 768 px it is two stacked lines, each fitted on its own: RAFI 217 px and FERDOS 129 px at 390, where a staircase would have been about 80 px.
+- `FitText` now measures every line and writes `--fit-w1..n` and their sum `--fit-w`; the size is still pure CSS (`100cqw / --fit-w`). Single-line uses (Say hello, project titles) are unchanged.
+- Measured (dev server, boxes): 1440 px: RAFI 56 to 545, FERDOS 545 to 1369, container 56 to 1369, font 317 px. 1024 px: RAFI 40 to 386, FERDOS 386 to 969, container 40 to 969, font 224 px. 768 px: container 30 to 723, FERDOS ends 723.5 (0.4 px of kerning drift, clipped by the box). 390 px: both lines 20 to 355. Gaps between the lines and at the right edge are under 0.5 px. No horizontal overflow at any width. Hero height equals the viewport at 1440x900, 1024x768 and 390x844 and the intro text ends above the fold.
+- Screenshots: `docs/qa/fixing/item-1/hero-{1440,1024,390}.png`.
+- **No portrait exists:** the hero is text only and `rafi.png` appears only in the JSON-LD, so there was no portrait or scroll handoff to keep or move. The scroll "leave" scrub still moves line 1 up 12vh and line 2 up 4vh, which gives the staircase a small parallax.
+- Not re-measured here: CLS and Lighthouse for this change (the final pass of part 2 does it on a production build).

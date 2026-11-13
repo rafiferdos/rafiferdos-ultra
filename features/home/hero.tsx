@@ -17,11 +17,11 @@ export function Hero() {
 
       <h1 className="flex flex-1 flex-col justify-center">
         <span className="sr-only">Rafi Ferdos</span>
-        {/* Two renderings, one per breakpoint: each line is fitted to the container, and HeroMotion animates the visible one. */}
+        {/* Two renderings, one per breakpoint, and HeroMotion animates the visible one.
+            Wide: a staircase, FERDOS starting under the end of RAFI, both lines at one size so the name spans the container.
+            Narrow: two stacked lines, each fitted on its own, because a staircase would shrink the type to about 80px at 390. */}
         <span aria-hidden data-hero-name="wide" className="hidden md:block">
-          <FitText fallback={4.31} data-hero-line className="t-display hero-line">
-            Rafi Ferdos
-          </FitText>
+          <FitText lines={['Rafi', 'Ferdos']} fallback={[1.54, 2.6]} data-hero-line className="t-display hero-line" />
         </span>
         <span aria-hidden data-hero-name="narrow" className="block md:hidden">
           <FitText fallback={1.54} data-hero-line className="t-display hero-line">
