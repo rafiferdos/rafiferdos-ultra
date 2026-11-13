@@ -27,6 +27,11 @@ model Project {
   caseStudyUrl String?
   outcomes     String[] @default([])
   imageUrl     String?
+  coverWidth   Int?
+  coverHeight  Int?
+  coverBlur    String?
+  videoUrl     String?
+  gallery      Json     @default("[]")
   liveUrl      String?
   githubUrl    String?
   techStack    String[]

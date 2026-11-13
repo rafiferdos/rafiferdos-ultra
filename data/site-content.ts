@@ -9,6 +9,14 @@ export type Experience = {
   stack: string[]
 }
 
+export type GalleryItem = {
+  url: string
+  width: number
+  height: number
+  alt: string
+  label: string
+}
+
 export type Project = {
   id: string
   title: string
@@ -20,6 +28,11 @@ export type Project = {
   caseStudyUrl?: string
   outcomes?: string[]
   imageUrl?: string
+  coverWidth?: number
+  coverHeight?: number
+  coverBlur?: string
+  videoUrl?: string
+  gallery?: GalleryItem[]
   liveUrl?: string
   githubUrl?: string
   techStack: string[]

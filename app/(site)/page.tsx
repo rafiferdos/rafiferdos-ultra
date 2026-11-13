@@ -10,8 +10,6 @@ import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
 import { profile, safeJsonLd, SITE_URL } from '@/lib/site'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata: Metadata = {
   title: {
     default: 'Rafi Ferdos — Full Stack Product Engineer',

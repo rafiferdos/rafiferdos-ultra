@@ -2,6 +2,14 @@ import { z } from 'zod'
 
 const optionalUrl = z.union([z.url(), z.literal(''), z.null()]).optional()
 
+const galleryItemSchema = z.object({
+  url: z.url(),
+  width: z.number().int().positive().max(20_000),
+  height: z.number().int().positive().max(20_000),
+  alt: z.string().trim().max(240),
+  label: z.string().trim().max(80)
+})
+
 export const projectRecordSchema = z.object({
   title: z.string().trim().min(2).max(140),
   subtitle: z.string().trim().max(180).nullable().optional(),
@@ -12,6 +20,11 @@ export const projectRecordSchema = z.object({
   caseStudyUrl: optionalUrl,
   outcomes: z.array(z.string().trim().min(1).max(240)).max(20),
   imageUrl: optionalUrl,
+  coverWidth: z.number().int().positive().max(20_000).nullable().optional(),
+  coverHeight: z.number().int().positive().max(20_000).nullable().optional(),
+  coverBlur: z.string().max(2_000).nullable().optional(),
+  videoUrl: optionalUrl,
+  gallery: z.array(galleryItemSchema).max(30).optional(),
   liveUrl: optionalUrl,
   githubUrl: optionalUrl,
   techStack: z.array(z.string().trim().min(1).max(80)).min(1).max(80),

@@ -9,7 +9,7 @@ import {
   updateRecord
 } from '@/lib/content-store'
 import { NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import {
   blogRecordSchema,
   messagePatchSchema,
@@ -41,11 +41,13 @@ function invalid(details?: unknown) {
 }
 function refreshPublicContent(entity: 'projects' | 'blogs' | 'messages') {
   if (entity === 'projects') {
+    revalidateTag('projects')
     revalidatePath('/')
     revalidatePath('/projects')
     revalidatePath('/sitemap.xml')
   }
   if (entity === 'blogs') {
+    revalidateTag('articles')
     revalidatePath('/')
     revalidatePath('/blogs')
     revalidatePath('/blogs/[slug]', 'page')

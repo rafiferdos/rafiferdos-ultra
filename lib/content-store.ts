@@ -1,4 +1,5 @@
-import { BlogPost, Project } from '@/data/site-content'
+import { BlogPost, GalleryItem, Project } from '@/data/site-content'
+import { unstable_cache } from 'next/cache'
 import { getPrisma } from '@/lib/prisma'
 import { Prisma } from '@/app/generated/prisma/client'
 
@@ -50,6 +51,11 @@ function projectRow(row: {
   caseStudyUrl: string | null
   outcomes: string[]
   imageUrl: string | null
+  coverWidth: number | null
+  coverHeight: number | null
+  coverBlur: string | null
+  videoUrl: string | null
+  gallery: unknown
   liveUrl: string | null
   githubUrl: string | null
   techStack: string[]
@@ -62,6 +68,11 @@ function projectRow(row: {
   return {
     ...row,
     imageUrl: row.imageUrl || undefined,
+    coverWidth: row.coverWidth ?? undefined,
+    coverHeight: row.coverHeight ?? undefined,
+    coverBlur: row.coverBlur || undefined,
+    videoUrl: row.videoUrl || undefined,
+    gallery: Array.isArray(row.gallery) ? (row.gallery as GalleryItem[]) : [],
     liveUrl: row.liveUrl || undefined,
     githubUrl: row.githubUrl || undefined,
     subtitle: row.subtitle || undefined,
@@ -112,13 +123,46 @@ function blogRow(row: {
   }
 }
 
-export async function getProjects(): Promise<Project[]> {
-  if (!contentBackendConfigured()) return []
-  try {
+// The loaders throw on a database error so unstable_cache never stores a failure.
+// The public wrappers turn that into an empty result, same as before.
+const loadProjects = unstable_cache(
+  async () => {
     const rows = await getPrisma().project.findMany({
       orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }]
     })
     return rows.map(projectRow)
+  },
+  ['projects'],
+  { tags: ['projects'] }
+)
+
+const loadBlogs = unstable_cache(
+  async (publishedOnly: boolean) => {
+    const rows = await getPrisma().blogPost.findMany({
+      where: publishedOnly ? { published: true } : undefined,
+      orderBy: { publishedAt: 'desc' }
+    })
+    return rows.map(blogRow)
+  },
+  ['blogs'],
+  { tags: ['articles'] }
+)
+
+const loadBlogBySlug = unstable_cache(
+  async (slug: string) => {
+    const row = await getPrisma().blogPost.findFirst({
+      where: { slug, published: true }
+    })
+    return row ? blogRow(row) : null
+  },
+  ['blog-by-slug'],
+  { tags: ['articles'] }
+)
+
+export async function getProjects(): Promise<Project[]> {
+  if (!contentBackendConfigured()) return []
+  try {
+    return await loadProjects()
   } catch {
     return []
   }
@@ -127,13 +171,18 @@ export async function getProjects(): Promise<Project[]> {
 export async function getBlogs(publishedOnly = true): Promise<BlogPost[]> {
   if (!contentBackendConfigured()) return []
   try {
-    const rows = await getPrisma().blogPost.findMany({
-      where: publishedOnly ? { published: true } : undefined,
-      orderBy: { publishedAt: 'desc' }
-    })
-    return rows.map(blogRow)
+    return await loadBlogs(publishedOnly)
   } catch {
     return []
+  }
+}
+
+export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
+  if (!contentBackendConfigured()) return null
+  try {
+    return await loadBlogBySlug(slug)
+  } catch {
+    return null
   }
 }
 
@@ -167,6 +216,21 @@ export async function insertRecord(
         caseStudyUrl: optionalText(rest.caseStudyUrl),
         outcomes: list(rest.outcomes),
         imageUrl: optionalText(rest.imageUrl),
+        ...(rest.coverWidth === undefined
+          ? {}
+          : { coverWidth: rest.coverWidth ? Number(rest.coverWidth) : null }),
+        ...(rest.coverHeight === undefined
+          ? {}
+          : { coverHeight: rest.coverHeight ? Number(rest.coverHeight) : null }),
+        ...(rest.coverBlur === undefined
+          ? {}
+          : { coverBlur: optionalText(rest.coverBlur) }),
+        ...(rest.videoUrl === undefined
+          ? {}
+          : { videoUrl: optionalText(rest.videoUrl) }),
+        ...(rest.gallery === undefined
+          ? {}
+          : { gallery: rest.gallery as Prisma.InputJsonValue }),
         liveUrl: optionalText(rest.liveUrl),
         githubUrl: optionalText(rest.githubUrl),
         techStack: list(rest.techStack),
@@ -237,6 +301,21 @@ export async function updateRecord(
         caseStudyUrl: optionalText(rest.caseStudyUrl),
         outcomes: list(rest.outcomes),
         imageUrl: optionalText(rest.imageUrl),
+        ...(rest.coverWidth === undefined
+          ? {}
+          : { coverWidth: rest.coverWidth ? Number(rest.coverWidth) : null }),
+        ...(rest.coverHeight === undefined
+          ? {}
+          : { coverHeight: rest.coverHeight ? Number(rest.coverHeight) : null }),
+        ...(rest.coverBlur === undefined
+          ? {}
+          : { coverBlur: optionalText(rest.coverBlur) }),
+        ...(rest.videoUrl === undefined
+          ? {}
+          : { videoUrl: optionalText(rest.videoUrl) }),
+        ...(rest.gallery === undefined
+          ? {}
+          : { gallery: rest.gallery as Prisma.InputJsonValue }),
         liveUrl: optionalText(rest.liveUrl),
         githubUrl: optionalText(rest.githubUrl),
         techStack: list(rest.techStack),

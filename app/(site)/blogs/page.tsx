@@ -2,8 +2,6 @@ import { WritingExplorer } from '@/components/Blogs/WritingExplorer'
 import { getBlogs } from '@/lib/content-store'
 import type { Metadata } from 'next'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata: Metadata = {
   title: 'Writing',
   description:

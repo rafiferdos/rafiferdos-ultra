@@ -34,7 +34,7 @@ export const dashboardApi = {
   async upload(file: File) {
     const body = new FormData()
     body.append('file', file)
-    const { data } = await apiClient.post<{ url: string }>(
+    const { data } = await apiClient.post<{ url: string; width: number; height: number }>(
       '/admin/upload',
       body
     )

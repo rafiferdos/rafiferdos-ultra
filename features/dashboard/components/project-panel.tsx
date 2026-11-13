@@ -61,6 +61,9 @@ type ProjectDraft = {
   githubUrl: string
   caseStudyUrl: string
   imageUrl: string
+  coverWidth: number | null
+  coverHeight: number | null
+  coverBlur: string | null
   accent: string
   featured: boolean
   sortOrder: string
@@ -82,6 +85,9 @@ const emptyProject = (): ProjectDraft => ({
   githubUrl: '',
   caseStudyUrl: '',
   imageUrl: '',
+  coverWidth: null,
+  coverHeight: null,
+  coverBlur: null,
   accent: '#f59e0b',
   featured: true,
   sortOrder: '0'
@@ -123,6 +129,9 @@ export function ProjectPanel({
       githubUrl: item.githubUrl || '',
       caseStudyUrl: item.caseStudyUrl || '',
       imageUrl: item.imageUrl || '',
+      coverWidth: item.coverWidth ?? null,
+      coverHeight: item.coverHeight ?? null,
+      coverBlur: item.coverBlur ?? null,
       accent: item.accent,
       featured: item.featured,
       sortOrder: String(
@@ -163,6 +172,9 @@ export function ProjectPanel({
           githubUrl: draft.githubUrl || null,
           caseStudyUrl: draft.caseStudyUrl || null,
           imageUrl: draft.imageUrl || null,
+          coverWidth: draft.coverWidth,
+          coverHeight: draft.coverHeight,
+          coverBlur: draft.coverBlur,
           accent: draft.accent,
           featured: draft.featured,
           sortOrder: Number(draft.sortOrder || 0)
@@ -181,8 +193,9 @@ export function ProjectPanel({
   function uploadImage(file?: File) {
     if (!file) return
     upload.mutate(file, {
-      onSuccess: ({ url }) => {
-        patch('imageUrl', url)
+      onSuccess: ({ url, width, height }) => {
+        // The blur placeholder comes from the backfill script, so a new cover clears the old one.
+        setDraft((current) => ({ ...current, imageUrl: url, coverWidth: width, coverHeight: height, coverBlur: null }))
         toast.success('Cover uploaded')
       },
       onError: (error) => toast.error(getApiError(error, 'Upload failed'))
@@ -365,7 +378,9 @@ export function ProjectPanel({
               <div className="flex gap-2">
                 <Input
                   value={draft.imageUrl}
-                  onChange={(e) => patch('imageUrl', e.target.value)}
+                  onChange={(e) =>
+                    setDraft((current) => ({ ...current, imageUrl: e.target.value, coverWidth: null, coverHeight: null, coverBlur: null }))
+                  }
                   placeholder="Cloudinary URL"
                 />
                 <Button

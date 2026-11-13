@@ -21,5 +21,5 @@ export async function POST(request: Request) {
   const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method: 'POST', body: form })
   const data = await response.json()
   if (!response.ok) return NextResponse.json({ error: data.error?.message || 'Upload failed.' }, { status: 502 })
-  return NextResponse.json({ url: data.secure_url })
+  return NextResponse.json({ url: data.secure_url, width: data.width, height: data.height })
 }

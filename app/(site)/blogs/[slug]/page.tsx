@@ -2,13 +2,15 @@ import { ArticleBody } from '@/components/Blogs/ArticleBody'
 import { RichArticleBody } from '@/components/Blogs/RichArticleBody'
 import { Reveal } from '@/components/ui/reveal'
 import { SITE_URL, profile, safeJsonLd } from '@/lib/site'
-import { getBlogs } from '@/lib/content-store'
+import { getBlogBySlug, getBlogs } from '@/lib/content-store'
 import { ArrowLeft, Clock3 } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
+export async function generateStaticParams() {
+  return (await getBlogs()).map(({ slug }) => ({ slug }))
+}
 
 export async function generateMetadata({
   params
@@ -16,7 +18,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const post = (await getBlogs()).find((item) => item.slug === slug)
+  const post = await getBlogBySlug(slug)
   if (!post) return { title: 'Article not found' }
   const image = post.imageUrl?.startsWith('http') ? post.imageUrl : undefined
   return {
@@ -47,7 +49,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const post = (await getBlogs()).find((item) => item.slug === slug)
+  const post = await getBlogBySlug(slug)
   if (!post) notFound()
   const articleJsonLd = {
     '@context': 'https://schema.org',
