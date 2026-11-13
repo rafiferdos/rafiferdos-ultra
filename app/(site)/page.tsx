@@ -15,7 +15,7 @@ const homeTitle = `${profile.name}, ${profile.jobTitle}`
 export const metadata: Metadata = {
   // absolute: the root layout's template would otherwise append the name a second time.
   title: { absolute: homeTitle },
-  description: `${profile.name} is a ${profile.jobTitle} with 3+ years building production web and mobile applications, including international client work.`,
+  description: `${profile.name} is a ${profile.jobTitle}. Web and mobile products built end to end, with 3+ years in production and international client work.`,
   keywords: [
     'Rafi Ferdos',
     'Full Stack AI Engineer',

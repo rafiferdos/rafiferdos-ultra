@@ -1,6 +1,6 @@
 import { ExperienceMotion } from '@/features/home/experience-motion'
 
-// Facts and bullets are word for word from docs/resume.md (v5). The Webbly Media role is left out until Rafi gives the title and dates.
+// Every fact here is from docs/resume.md (v5), reworded shorter. The Webbly Media role is left out until Rafi gives the title and dates.
 const roles = [
   {
     company: 'Sparktech Agency - BDCallingIT',
@@ -8,8 +8,9 @@ const roles = [
     dates: 'July 2025 - June 2026',
     href: undefined,
     bullets: [
-      'Expanded from frontend to full-stack within 3 months and React Native within 7, delivering 2 production ecommerce mobile applications end to end.',
-      'Migrated client data integrations from REST to GraphQL, reducing unnecessary data fetching and simplifying frontend state management across multiple products.'
+      'Joined on the frontend. Full stack within 3 months, React Native within 7. Two ecommerce apps, shipped start to finish.',
+      'Moved client data from REST to GraphQL, so the apps fetch less and the frontend state is simpler.',
+      'Built real-time chat and notifications with Socket.IO.'
     ]
   },
   {
@@ -18,8 +19,8 @@ const roles = [
     dates: 'Nov 2024 - Feb 2025',
     href: 'https://zendevz.com',
     bullets: [
-      "Built and deployed the agency's official portfolio with Next.js, Prisma, and PostgreSQL to support client acquisition.",
-      "Conducted 35+ code reviews as the team's technical lead, maintaining standards across a small team and preventing regressions before production."
+      "Built and deployed the agency's own portfolio on Next.js, Prisma and PostgreSQL.",
+      'Led international client projects end to end, and did 35+ code reviews as technical lead.'
     ]
   },
   {
@@ -28,8 +29,8 @@ const roles = [
     dates: 'Jan 2023 - Dec 2024',
     href: undefined,
     bullets: [
-      'Owned the club website after promotion, shipping new features, resolving bugs, and maintaining the site with a dedicated web team.',
-      'Built a custom event registration system that replaced manual coordination and streamlined attendee registration for club events.'
+      'Promoted within 8 months, then owned the club website with a dedicated web team.',
+      'Built the event registration system that replaced manual coordination.'
     ]
   }
 ]

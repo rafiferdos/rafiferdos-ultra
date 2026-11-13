@@ -3,12 +3,10 @@ import { StatementMotion } from '@/features/home/statement-motion'
 type Kind = 'em' | 'accent'
 
 const segments: { text: string; kind?: Kind }[] = [
-  { text: "I'm Rafi. I build the " },
-  { text: 'whole thing', kind: 'em' },
-  { text: ': the API, the database, the interface and the ' },
-  { text: 'mobile app', kind: 'em' },
-  { text: '. Lately that means real-time chat with Socket.IO, moving clients from REST to GraphQL, and ' },
-  { text: 'two ecommerce apps in React Native.', kind: 'accent' }
+  { text: 'Most products are built in pieces, by people who never meet. I build ' },
+  { text: 'all of it', kind: 'em' },
+  { text: ': the database, the API, the screen in your hand. One person. One standard. ' },
+  { text: 'End to end.', kind: 'accent' }
 ]
 
 // Emphasis segments split into one span per word so the scrub can light them one at a time.

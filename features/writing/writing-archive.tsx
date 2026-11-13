@@ -62,7 +62,7 @@ export function WritingArchive({ posts }: { posts: BlogPost[] }) {
 
       {shown.length === 0 ? (
         <p className="t-label border-t border-site-line py-12 text-site-muted">
-          {posts.length === 0 ? '(No articles yet)' : '(No matches)'}
+          {posts.length === 0 ? '(Nothing published yet)' : '(Nothing matches that)'}
         </p>
       ) : (
         <ul className="border-b border-site-line">

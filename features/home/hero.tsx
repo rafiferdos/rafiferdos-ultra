@@ -35,8 +35,8 @@ export function Hero() {
 
       <div className="flex flex-col justify-between gap-8 pb-10 pt-8 md:flex-row md:items-end">
         <p data-hero-intro className="text-lead max-w-[34rem]">
-          I build web and mobile apps end to end, from the database to the interface. 3+ years of
-          shipping with React, Next.js, Node.js and React Native.
+          I build web and mobile products from the database to the last pixel. 3+ years of shipping,
+          for product teams and clients abroad.
         </p>
         <div data-hero-fade className="t-label flex flex-col items-start gap-3 md:items-end">
           <RollLink href="#work">See the work →</RollLink>

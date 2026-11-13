@@ -6,11 +6,11 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Writing',
   description:
-    'Practical notes that show how Rafi Ferdos approaches full-stack, mobile, realtime and AI product engineering.',
+    'Notes from building web, mobile and real-time products, by Rafi Ferdos.',
   alternates: { canonical: '/blogs' },
   openGraph: {
     title: 'Engineering Writing by Rafi Ferdos',
-    description: 'Practical notes on Next.js, backend systems, mobile, realtime and production AI.',
+    description: 'Notes on Next.js, backend systems, mobile apps and real-time features.',
     url: '/blogs',
     images: [OG_IMAGE]
   }

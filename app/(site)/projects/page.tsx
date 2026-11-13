@@ -6,11 +6,11 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'Explore Rafi Ferdos’s frontend, backend, full-stack and mobile work by discipline, context and technology.',
+    'Projects by Rafi Ferdos: what each one is, what I did on it, and the stack.',
   alternates: { canonical: '/projects' },
   openGraph: {
     title: 'Projects by Rafi Ferdos',
-    description: 'Full-stack, frontend, backend and mobile product engineering work.',
+    description: 'Web, backend and mobile projects, and my part in each.',
     url: '/projects',
     images: [OG_IMAGE]
   }

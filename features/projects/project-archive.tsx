@@ -108,7 +108,7 @@ export function ProjectArchive({ projects }: { projects: Project[] }) {
 
       {shown.length === 0 ? (
         <p className="t-label border-t border-site-line py-12 text-site-muted">
-          {projects.length === 0 ? '(No projects yet)' : '(No matches)'}
+          {projects.length === 0 ? '(Case studies are on the way)' : '(Nothing matches that)'}
         </p>
       ) : (
         <ul className="border-b border-site-line">

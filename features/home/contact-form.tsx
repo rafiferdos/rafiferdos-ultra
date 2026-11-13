@@ -9,9 +9,9 @@ type Field = 'name' | 'email' | 'message'
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 const messages: Record<Field, string> = {
-  name: 'Enter your name, 2 characters or more.',
+  name: 'Your name, please. 2 characters or more.',
   email: 'Enter a valid email address.',
-  message: 'Write at least 10 characters.'
+  message: 'A few more words, please. 10 characters or more.'
 }
 
 const fieldClass =
@@ -131,12 +131,12 @@ export function ContactForm({ topic, onTopicChange }: Props) {
           disabled={status === 'sending'}
           className="rounded-full border border-site-ink px-6 py-3 uppercase transition-colors hover:border-site-accent hover:text-site-accent disabled:opacity-50"
         >
-          {status === 'sending' ? 'Sending...' : 'Send message'}
+          {status === 'sending' ? 'Sending' : 'Send message'}
         </button>
         <p role="status" aria-live="polite" className={status === 'error' ? 'text-site-accent' : 'text-site-muted'}>
-          {status === 'sent' && 'Message received. I will get back to you soon.'}
+          {status === 'sent' && 'Got it. I will reply by email.'}
           {status === 'error' && `${failure} You can also email me directly.`}
-          {status === 'idle' && Object.keys(errors).length > 0 && 'Please fix the highlighted fields.'}
+          {status === 'idle' && Object.keys(errors).length > 0 && 'Check the highlighted fields.'}
         </p>
       </div>
     </form>
