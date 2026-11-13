@@ -16,6 +16,8 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - **Title "Full Stack AI Engineer".** Resume v5 says "Full Stack Developer" and has no AI line. The site uses your title (hero, page titles, meta, Open Graph, JSON-LD, manifest). Copy claims AI as a skill, not as shipped AI work. If you have shipped an AI feature, add it to `docs/resume.md` and it can be named.
 - **`public/og.png`** may still show the old title. It is an image, so it was not regenerated.
 - **JSON-LD `knowsAbout` and keywords** now list AI engineering, RAG and AWS (you named them, the resume does not). Docker and CI/CD are on the resume.
+- **Skills marquee: four skills you named are not on resume v5:** AI and RAG, AWS, Jest, Playwright. They are shown as skills only. Docker, CI/CD and everything else in the rows are on the resume.
+- **Skills marquee: two extras you did not name:** "Real-time systems" (resume summary and the Socket.IO bullet) and "Code review" (the 35+ code reviews bullet). Both are in the resume's own words. Say so if you want either one out.
 
 ## Phase 4 (Data), done
 
@@ -209,3 +211,13 @@ Part 1: items 6, 7, 1, 2, 3. Playwright screenshots in `docs/qa/fixing/<item>/` 
 - `MAX_SCALE` 1.55 to 1.8, because the normalisation gives part of the stretch back. Result: the nearest letter grows 22 to 46%, the far ones shrink to about 0.85.
 - Measured in Chrome DevTools (real 60 fps; headless Playwright throttles rAF), synthetic pointermoves, 1.3 s settle each. Edge movement of the first and last letter of every line, vs rest: **0.00 px** at 1440 (hero lines 1 and 2, Say hello: pointer on first letter, last letter, middle, and at x = 2 and x = innerWidth - 2 for the hero), 1024 (all four hero spots, Say hello: 0.00 and -0.03 px) and 500 (the narrowest this browser window gets; narrow layout, both lines and Say hello: 0.00). `scrollWidth === clientWidth` after every move. Screenshot: `docs/qa/fixing/item-2/hero-hover-right-1440.png`.
 - Not measured: 390 px exactly (the DevTools window will not go under 500), and touch (kinetic is fine pointers only, so nothing runs there).
+
+### Item 3: skills
+- Two rows, different skills, opposite directions, pause on hover (all unchanged mechanics), reordered so the advanced skills open each row:
+  - Row 1, "Frontend, mobile and AI" (moves left): AI and RAG, Next.js, TypeScript, React Native, React, Expo, Redux, Tailwind CSS, JavaScript (ES6+), Code review.
+  - Row 2, "Backend, cloud and testing" (moves right): AWS, Docker, CI/CD, GraphQL, Node.js, PostgreSQL, Playwright, Jest, Socket.IO, Real-time systems, Prisma ORM, Express.js, REST APIs, MongoDB, Mongoose, Firebase, Git.
+- Both tracks start at x = 0, so the first items are on screen before the marquee moves. Fully visible at rest (before the track moves): 1440 and 1024 px: row 1 AI and RAG, Next.js, TypeScript (React Native cut off); row 2 AWS, Docker, CI/CD, GraphQL (Node.js cut off). 390 px: row 1 AI and RAG (Next.js partly); row 2 AWS, Docker.
+- Measured in Chrome DevTools: row 1 moves at -40 px/s, row 2 at +40 px/s; hovering row 1 stops it (0 px/s) while row 2 keeps going (40 px/s) and row 1 resumes at -40 px/s after the pointer leaves. No horizontal overflow.
+- A gotcha while testing: after a hot reload the marquee effect was dead (no `tabindex` on the rows) until a full reload. Not a code bug; it did not happen after a clean load.
+- Screenshots: `docs/qa/fixing/item-3/skills-{1440,390}.png` (the 1440 one is mid-scroll, so it shows later items).
+- The extra skills are listed under "Needs Rafi: confirm" at the top of this file.

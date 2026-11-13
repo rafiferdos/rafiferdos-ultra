@@ -4,29 +4,46 @@ import { useRef } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap'
 
-// The Skills list of docs/resume.md, split by area. Two rows, so each can run its own way.
+// The Skills list of docs/resume.md, split by area, plus what Rafi named that the resume does not list yet:
+// AI and RAG, AWS, Jest, Playwright (see "Needs Rafi: confirm" in progress.md). Two rows, so each can run its own way.
+// Both tracks start at x = 0, so the first items of each row are the ones on screen before it moves: the advanced skills go first.
 const rows = [
   {
-    label: 'Frontend and mobile',
+    label: 'Frontend, mobile and AI',
     direction: -1,
-    skills: ['Next.js', 'React', 'TypeScript', 'JavaScript (ES6+)', 'React Native', 'Expo', 'Redux', 'Tailwind CSS']
+    skills: [
+      'AI and RAG',
+      'Next.js',
+      'TypeScript',
+      'React Native',
+      'React',
+      'Expo',
+      'Redux',
+      'Tailwind CSS',
+      'JavaScript (ES6+)',
+      'Code review'
+    ]
   },
   {
-    label: 'Backend, data and tools',
+    label: 'Backend, cloud and testing',
     direction: 1,
     skills: [
-      'Node.js',
-      'Express.js',
-      'Socket.IO',
-      'REST APIs',
+      'AWS',
+      'Docker',
+      'CI/CD',
       'GraphQL',
+      'Node.js',
       'PostgreSQL',
+      'Playwright',
+      'Jest',
+      'Socket.IO',
+      'Real-time systems',
       'Prisma ORM',
+      'Express.js',
+      'REST APIs',
       'MongoDB',
       'Mongoose',
       'Firebase',
-      'Docker',
-      'CI/CD',
       'Git'
     ]
   }
