@@ -45,3 +45,6 @@ next-env.d.ts
 # MCP browser logs and QA screenshots
 /.playwright-mcp/
 /docs/qa/
+
+# reference screenshots (notes.md stays committed)
+/docs/reference/mikewilcock/*.jpg
