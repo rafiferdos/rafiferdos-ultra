@@ -206,3 +206,130 @@ body:has(.site-root) {
 .js-motion .marquee-dup {
   display: flex;
 }
+
+/* Selected work: a plain list with inline covers by default; the sticky dock and row states are added when motion runs on desktop. */
+.work-row-grid {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  column-gap: 1.25rem;
+  align-items: start;
+  padding-block: 1.75rem;
+}
+
+.work-title {
+  color: color-mix(in srgb, var(--site-accent) calc(var(--w, 0) * 1%), var(--site-ink));
+}
+
+.work-inline-cover {
+  position: relative;
+  grid-column: 2 / -1;
+  width: min(70%, 20rem);
+  margin-top: 1.25rem;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--site-surface);
+}
+
+.work-dock,
+.work-preview {
+  display: none;
+}
+
+.work-roll {
+  height: 1lh;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+
+.work-roll span {
+  display: block;
+  height: 1lh;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .work-row-grid {
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto 9rem;
+    align-items: center;
+    min-height: 40vh;
+    padding-block: 0;
+  }
+
+  .work-inline-cover {
+    grid-column: auto;
+    width: 9rem;
+    margin-top: 0;
+  }
+
+  .js-motion .work-row-grid {
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  }
+
+  .js-motion .work-inline-cover {
+    display: none;
+  }
+
+  .js-motion .work-row {
+    opacity: 0.4;
+  }
+
+  .js-motion .work-body {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.75rem;
+  }
+
+  .js-motion .work-list {
+    grid-column: 1 / span 7;
+  }
+
+  .js-motion .work-dock {
+    display: block;
+    grid-column: 8 / span 5;
+  }
+
+  .work-dock-sticky {
+    position: sticky;
+    top: 20vh;
+  }
+
+  .work-dock-box {
+    position: relative;
+    height: 60vh;
+    max-width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--site-surface);
+  }
+
+  .work-frame {
+    position: absolute;
+    inset: 0;
+  }
+
+  .work-frame:not(:first-child) {
+    visibility: hidden;
+  }
+
+  .work-dock-meta {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 768px) and (pointer: fine) {
+  .js-motion .work-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 60;
+    display: block;
+    width: 320px;
+    height: 400px;
+    background: var(--site-surface) center / cover no-repeat;
+    opacity: 0;
+    pointer-events: none;
+  }
+}

@@ -1,10 +1,10 @@
 import Contact from '@/components/Home/Contact/Contact'
 import { BlogGateway } from '@/components/Home/BlogGateway/BlogGateway'
 import Experience from '@/components/Home/Experience/Experience'
-import Projects from '@/components/Home/Projects/Projects'
 import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
 import { Hero } from '@/features/home/hero'
+import { SelectedWork } from '@/features/home/selected-work'
 import { SkillsMarquee } from '@/features/home/skills-marquee'
 import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
@@ -118,11 +118,11 @@ export default async function Home() {
         />
         <Hero />
         <SkillsMarquee />
+        <SelectedWork projects={projects} />
         <div className="mx-auto w-[min(92%,80rem)]">
           <WhyMe />
           <TechStack />
           <Experience />
-          <Projects projects={projects} />
           <BlogGateway posts={posts} />
           <Contact />
         </div>

@@ -31,7 +31,7 @@ export function Hero() {
           shipping with React, Next.js, Node.js and React Native.
         </p>
         <div data-hero-fade className="t-label flex flex-col items-start gap-3 md:items-end">
-          <RollLink href="#projects">See the work →</RollLink>
+          <RollLink href="#work">See the work →</RollLink>
           <span className="text-site-muted">(Scroll, gently)</span>
         </div>
       </div>
