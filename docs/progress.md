@@ -73,3 +73,18 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - **Decision:** `.cta-form` has `transition-property: none` because the global reduced-motion rule in `globals.css` gives everything a 0.01ms transition, which delayed the `0fr` to `1fr` switch by about a second.
 - Without JavaScript the form stays closed. The email is in the footer row.
 - Not done here: DevTools trace and Lighthouse on a production build (phase 11).
+
+## Phase 9 (Archive routes), done
+
+- `/projects`: `features/projects/project-archive.tsx` (client filters) using the shared `ProjectRow`. `/blogs`: `features/writing/writing-archive.tsx` using the shared `ArticleRow` (the home teaser uses it too). `/blogs/[slug]`: new header, `next/image` cover, body styled with `.prose-site` (site tokens).
+- Filters: search, role and type pills (shown only when there are 2 or more values), a native stack select, a live `(n / N)` count in a `role="status"` region, and a reset. 0 results shows `(No matches)`, 0 items shows `(No projects yet)`.
+- Home metadata, canonical and JSON-LD now use `SITE_URL` (the old file hardcoded `rafiferdos.com` and `rafiferdos.vercel.app`). With the current env it resolves to `https://rafiferdos.vercel.app`, the portfolio URL in `docs/resume.md`. `lib/site.ts` still defaults to `rafiferdos.com` when the env var is missing.
+- Checked on a production build at 1440 and 390: CLS 0 and no horizontal overflow on all three routes, JSON-LD parses on `/` and on an article, the sitemap lists the home, `/projects`, `/blogs` and every article on `SITE_URL`, reduced motion keeps archive rows at opacity 1 with covers visible.
+- Bundle (First Load JS, shared 149 kB): `/projects` 210 kB (was 284), `/blogs` 204 kB (was 286), `/blogs/[slug]` 208 kB with 5.2 kB of its own (was 244 kB). The article body is rendered on the server by the Plate static renderer, so no Plate code ships to the client.
+- **Decision:** `.js-motion .work-*` rules are now scoped to `.work .work-*`, so only the home list gets the dock layout and dimmed rows. Archive rows get `min-height: 0` through `.archive`.
+- **Decision:** home title and job title say "Full Stack Developer" (were "Full Stack Product Engineer"), per CLAUDE.md. The title uses a comma, not an em dash.
+- **Decision:** dropped the old per-project badges and discipline/type selects in favour of pills; dropped the writing format and tag filters. Say if you want either back.
+- **Decision:** the article cover uses `fill` with `unoptimized` for any host that is not Cloudinary, since only Cloudinary is in `remotePatterns`.
+- **Decision:** Plate static blocks (code, tables, callouts) still use shadcn tokens for their own colors; only prose, links, quotes and `pre` follow the site tokens. Looks fine on the 4 current articles, none of which use tables or callouts, so not checked there.
+- Deleted `ProjectExplorer` and `WritingExplorer`. `components/ui/reveal` (framer/motion) is no longer used on any public page.
+- Not done here: DevTools trace and Lighthouse (phase 11).

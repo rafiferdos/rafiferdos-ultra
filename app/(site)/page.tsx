@@ -12,7 +12,7 @@ import { profile, safeJsonLd, SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Rafi Ferdos — Full Stack Product Engineer',
+    default: 'Rafi Ferdos, Full Stack Developer',
     template: '%s | Rafi Ferdos'
   },
   description:
@@ -32,21 +32,21 @@ export const metadata: Metadata = {
     'React Native',
     'Rafi Ferdos portfolio'
   ],
-  authors: [{ name: 'Rafi Ferdos', url: 'https://rafiferdos.vercel.app' }],
+  authors: [{ name: 'Rafi Ferdos', url: SITE_URL }],
   creator: 'Rafi Ferdos',
   publisher: 'Rafi Ferdos',
   openGraph: {
-    title: 'Rafi Ferdos — Full Stack Product Engineer',
+    title: 'Rafi Ferdos, Full Stack Developer',
     description:
       'Full-stack web, mobile and realtime products built with Next.js, React Native, Node.js, GraphQL and Socket.io.',
-    url: 'https://rafiferdos.com',
+    url: SITE_URL,
     siteName: 'Rafi Ferdos Portfolio',
     images: [
       {
         url: '/og.png',
         width: 1729,
         height: 910,
-        alt: 'Rafi Ferdos — Full Stack Product Engineer'
+        alt: 'Rafi Ferdos, Full Stack Developer'
       }
     ],
     type: 'website',
@@ -54,13 +54,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rafi Ferdos — Full Stack Product Engineer',
+    title: 'Rafi Ferdos, Full Stack Developer',
     description:
       'Production web, mobile and realtime work from full-stack developer Rafi Ferdos.',
     images: ['/og.png']
   },
   alternates: {
-    canonical: 'https://rafiferdos.com'
+    canonical: SITE_URL
   },
   robots: {
     index: true,

@@ -261,29 +261,29 @@ body:has(.site-root) {
     margin-top: 0;
   }
 
-  .js-motion .work-row-grid {
+  .js-motion .work .work-row-grid {
     grid-template-columns: 3.5rem minmax(0, 1fr) auto;
   }
 
-  .js-motion .work-inline-cover {
+  .js-motion .work .work-inline-cover {
     display: none;
   }
 
-  .js-motion .work-row {
+  .js-motion .work .work-row {
     opacity: 0.4;
   }
 
-  .js-motion .work-body {
+  .js-motion .work .work-body {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: 1.75rem;
   }
 
-  .js-motion .work-list {
+  .js-motion .work .work-list {
     grid-column: 1 / span 7;
   }
 
-  .js-motion .work-dock {
+  .js-motion .work .work-dock {
     display: block;
     grid-column: 8 / span 5;
   }
@@ -320,7 +320,7 @@ body:has(.site-root) {
 }
 
 @media (min-width: 768px) and (pointer: fine) {
-  .js-motion .work-preview {
+  .js-motion .work .work-preview {
     position: fixed;
     top: 0;
     left: 0;
@@ -495,4 +495,55 @@ body:has(.site-root) {
 /* text-display has a 6rem floor that is wider than a phone; the CTA is one line, so it follows the viewport instead. */
 .cta-name {
   font-size: min(18vw, 17rem);
+}
+
+/* Archive pages reuse the work row without the dock, so the rows are short and show their own cover. */
+.archive .work-row-grid {
+  min-height: 0;
+  padding-block: 1.75rem;
+}
+
+/* Article body: site tokens for the text, links and code, on top of the Plate static markup. */
+.prose-site {
+  color: var(--site-ink);
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.prose-site a {
+  color: var(--site-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.prose-site :is(h1, h2, h3) {
+  margin-block: 2.5rem 1rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-stretch: 88%;
+}
+
+.prose-site h1 { font-size: 2.25rem; }
+.prose-site h2 { font-size: 1.875rem; }
+.prose-site h3 { font-size: 1.5rem; }
+
+.prose-site p {
+  margin-block-end: 1.5rem;
+}
+
+.prose-site blockquote {
+  margin-block: 2rem;
+  border-left: 2px solid var(--site-accent);
+  padding-left: 1.25rem;
+  color: var(--site-muted);
+}
+
+.prose-site pre {
+  margin-block: 2rem;
+  overflow-x: auto;
+  background: var(--site-surface);
+  padding: 1.25rem;
+  font-family: var(--font-site-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
 }

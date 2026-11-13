@@ -4,7 +4,7 @@ export const SITE_URL = (
 
 export const profile = {
   name: 'Rafi Ferdos',
-  jobTitle: 'Full-stack product engineer',
+  jobTitle: 'Full Stack Developer',
   email: 'rafiferdos@gmail.com',
   phone: '+8801921479294',
   location: 'Dhaka, Bangladesh',
