@@ -4,8 +4,8 @@ import { useRef } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
 import { duration, gsap, ScrollTrigger, useGSAP } from '@/lib/gsap'
 
-// The detail page is server-rendered; this leaf only adds motion. CSS hides the targets under js-motion, GSAP shows them.
-export function ProjectMotion({ children }: { children: React.ReactNode }) {
+// Detail pages and /services are server-rendered; this leaf only adds motion. CSS hides the targets under js-motion, GSAP shows them.
+export function PageMotion({ children }: { children: React.ReactNode }) {
   const root = useRef<HTMLDivElement>(null)
   const { motionAllowed } = useMotion()
 
@@ -17,9 +17,9 @@ export function ProjectMotion({ children }: { children: React.ReactNode }) {
 
       // Title: the .fit box clips, so the text slides up inside it.
       // The click-through overlay (page-transition) already put the same title in place, so it does not slide again.
-      gsap.set(pick('[data-project-title] .fit-text'), { visibility: 'visible' })
+      gsap.set(pick('[data-page-title] .fit-text'), { visibility: 'visible' })
       if (document.documentElement.dataset.arrival !== 'title') {
-        gsap.from('[data-project-title] .fit-text', { yPercent: 105, duration: duration.display, ease: 'out', delay: 0.15 })
+        gsap.from('[data-page-title] .fit-text', { yPercent: 105, duration: duration.display, ease: 'out', delay: 0.15 })
       }
 
       // Small text plays once on enter.

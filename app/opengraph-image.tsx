@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { profile } from '@/lib/site'
+import { profile, SITE_URL } from '@/lib/site'
 
 export const alt = `${profile.name}, ${profile.jobTitle}`
 export const size = { width: 1200, height: 630 }
@@ -39,7 +39,7 @@ export default function OpengraphImage() {
           </span>
           <span style={{ fontWeight: 300 }}>erdos</span>
         </div>
-        <div style={{ display: 'flex', fontSize: 32, color: '#6a665f' }}>rafiferdos.vercel.app</div>
+        <div style={{ display: 'flex', fontSize: 32, color: '#6a665f' }}>{new URL(SITE_URL).host}</div>
       </div>
     ),
     size

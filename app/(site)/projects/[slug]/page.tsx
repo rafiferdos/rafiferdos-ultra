@@ -3,7 +3,7 @@ import { RollLink } from '@/components/site/roll-link'
 import { UpCloseView, type Media } from '@/features/home/up-close'
 import { ProjectCover } from '@/features/projects/project-cover'
 import { fitFallback, titleClass } from '@/features/projects/title-style'
-import { ProjectMotion } from '@/features/projects/project-motion'
+import { PageMotion } from '@/features/motion/page-motion'
 import { getProjectByKey, getProjects } from '@/lib/content-store'
 import { OG_IMAGE, SITE_URL } from '@/lib/site'
 import { projectKey } from '@/lib/slug'
@@ -78,7 +78,7 @@ export default async function ProjectPage({ params }: Params) {
 
   return (
     <main id="main" className="min-h-svh pt-28">
-      <ProjectMotion>
+      <PageMotion>
         <header className="px-gutter pb-10">
           <div className="t-label flex items-baseline justify-between gap-6 text-site-muted">
             <RollLink href="/projects">← All projects</RollLink>
@@ -88,7 +88,7 @@ export default async function ProjectPage({ params }: Params) {
               </span>
             )}
           </div>
-          <h1 data-project-title className="project-title mt-8">
+          <h1 data-page-title className="project-title mt-8">
             <FitText fallback={fitFallback(project.title)} className={titleClass}>
               {project.title}
             </FitText>
@@ -199,7 +199,7 @@ export default async function ProjectPage({ params }: Params) {
             <p className="t-label mt-6">{[next.role, next.year].filter(Boolean).join(' · ')}</p>
           </Link>
         )}
-      </ProjectMotion>
+      </PageMotion>
     </main>
   )
 }

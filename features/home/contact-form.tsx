@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 import { z } from 'zod'
+import { services } from '@/data/services'
 import { contactSchema } from '@/lib/validation/contact'
 
 type Field = 'name' | 'email' | 'message'
@@ -16,10 +17,16 @@ const messages: Record<Field, string> = {
 const fieldClass =
   'w-full border-b border-site-line-strong bg-transparent py-3 text-lead outline-none transition-colors placeholder:text-site-faint focus:border-site-accent aria-[invalid=true]:border-site-accent'
 
-// The API also requires a subject; the form has no subject field, so every message carries this one.
+// The API requires a subject. The topic picks it; "Something else" keeps the plain one.
 const SUBJECT = 'Message from the portfolio'
+const subjectFor = (topic: string) => {
+  const service = services.find(({ id }) => id === topic)
+  return service ? `Project enquiry: ${service.title}` : SUBJECT
+}
 
-export function ContactForm() {
+type Props = { topic: string; onTopicChange: (topic: string) => void }
+
+export function ContactForm({ topic, onTopicChange }: Props) {
   const [status, setStatus] = useState<Status>('idle')
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
   const [failure, setFailure] = useState('')
@@ -28,7 +35,7 @@ export function ContactForm() {
     event.preventDefault()
     const form = event.currentTarget
     const values = Object.fromEntries(new FormData(form)) as Record<string, string>
-    const parsed = contactSchema.safeParse({ ...values, subject: SUBJECT })
+    const parsed = contactSchema.safeParse({ ...values, subject: subjectFor(topic) })
     if (!parsed.success) {
       const bad = z.flattenError(parsed.error).fieldErrors
       setErrors(Object.fromEntries((Object.keys(messages) as Field[]).filter((key) => bad[key]).map((key) => [key, messages[key]])))
@@ -80,6 +87,25 @@ export function ContactForm() {
           )}
         </div>
       ))}
+      <div className="md:col-span-2">
+        <label htmlFor="contact-topic" className="t-label text-site-muted">
+          Topic
+        </label>
+        <select
+          id="contact-topic"
+          name="topic"
+          value={topic}
+          onChange={(event) => onTopicChange(event.target.value)}
+          className={`${fieldClass} appearance-none`}
+        >
+          {services.map(({ id, title }) => (
+            <option key={id} value={id}>
+              {title}
+            </option>
+          ))}
+          <option value="other">Something else</option>
+        </select>
+      </div>
       <div className="md:col-span-2">
         <label htmlFor="contact-message" className="t-label text-site-muted">
           Message

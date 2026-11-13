@@ -4,9 +4,9 @@ import { useRef } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
 import { duration, gsap, SplitText, stagger, useGSAP } from '@/lib/gsap'
 
-type Props = { id: string; className?: string; children: React.ReactNode }
+type Props = { id: string; labelledBy: string; className?: string; children: React.ReactNode }
 
-export function ExperienceMotion({ id, className, children }: Props) {
+export function ExperienceMotion({ id, labelledBy, className, children }: Props) {
   const root = useRef<HTMLElement>(null)
   const { motionAllowed } = useMotion()
 
@@ -19,12 +19,14 @@ export function ExperienceMotion({ id, className, children }: Props) {
       const to = { y: 0, opacity: 1, ease: 'none' }
 
       const mm = gsap.matchMedia()
-      // One row of tiles: a single scrub with a stagger across it.
+      // Three columns, any number of rows: each tile scrubs on its own, and the later columns start a little further up.
       mm.add('(min-width: 768px)', () => {
-        gsap.fromTo(tiles, from, {
-          ...to,
-          stagger: 0.15,
-          scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 45%', scrub: true }
+        tiles.forEach((tile, index) => {
+          const start = 92 - (index % 3) * 8
+          gsap.fromTo(tile, from, {
+            ...to,
+            scrollTrigger: { trigger: tile, start: `top ${start}%`, end: `top ${start - 35}%`, scrub: true }
+          })
         })
       })
       // Stacked tiles sit far apart, so each one scrubs on its own.
@@ -63,7 +65,7 @@ export function ExperienceMotion({ id, className, children }: Props) {
   )
 
   return (
-    <section ref={root} id={id} aria-labelledby="experience-title" className={className}>
+    <section ref={root} id={id} aria-labelledby={labelledBy} className={className}>
       {children}
     </section>
   )

@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
 import { FitText } from '@/components/site/fit-text'
 import { createKinetic } from '@/features/motion/kinetic-letters'
+import { serviceIds } from '@/data/services'
 import { duration, gsap, ScrollTrigger, SplitText, stagger, useGSAP } from '@/lib/gsap'
 
 // The form (and zod with it) loads on first open, and is warmed up when the CTA gets hover or focus.
@@ -16,6 +17,7 @@ export function ContactCta() {
   const root = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
   const [opened, setOpened] = useState(false)
+  const [topic, setTopic] = useState('other')
   const { motionAllowed } = useMotion()
 
   useGSAP(
@@ -54,6 +56,27 @@ export function ContactCta() {
     { scope: root, dependencies: [motionAllowed], revertOnUpdate: true }
   )
 
+  // /services?service=ai opens the form on that topic, and so does a card link on the page (a[data-service]).
+  // Lenis' anchor handling does the scroll to #contact.
+  useGSAP(
+    (_context, contextSafe) => {
+      const pick = contextSafe!((id: string) => {
+        setTopic(id)
+        setOpened(true)
+        setOpen(true)
+      })
+      const fromUrl = new URLSearchParams(location.search).get('service')
+      if (fromUrl && serviceIds.has(fromUrl)) pick(fromUrl)
+      const onClick = (event: MouseEvent) => {
+        const id = (event.target as Element).closest<HTMLElement>('a[data-service]')?.dataset.service
+        if (id && serviceIds.has(id)) pick(id)
+      }
+      document.addEventListener('click', onClick)
+      return () => document.removeEventListener('click', onClick)
+    },
+    { scope: root }
+  )
+
   // The collapse is instant (0fr to 1fr) so nothing animates layout; only the form's opacity and y play.
   useGSAP(
     () => {
@@ -90,7 +113,7 @@ export function ContactCta() {
 
       <div id="contact-form" className={`cta-form ${open ? 'is-open' : ''}`} inert={!open}>
         <div data-cta-form className="min-h-0 overflow-hidden">
-          {opened && <ContactForm />}
+          {opened && <ContactForm topic={topic} onTopicChange={setTopic} />}
         </div>
       </div>
     </div>

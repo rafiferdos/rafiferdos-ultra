@@ -6,6 +6,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-site-line px-gutter pb-8 pt-10">
       <div className="t-label flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+        <RollLink href="/services">Services</RollLink>
         <RollLink href={`mailto:${profile.email}`}>{profile.email}</RollLink>
         <RollLink href={profile.github} target="_blank" rel="noreferrer">
           GitHub ↗

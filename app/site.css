@@ -656,7 +656,6 @@ body:has(.site-root) {
 }
 
 .wordmark-chip {
-  margin-inline: 0.3em 0;
   padding-inline: 0.18em 0.28em;
   background: var(--site-accent);
   color: var(--site-accent-ink);
@@ -678,7 +677,7 @@ body:has(.site-root) {
   font-size: min(calc(100cqw / var(--fit-w)), var(--cap));
 }
 
-.js-motion [data-project-title] .fit-text,
+.js-motion [data-page-title] .fit-text,
 .js-motion [data-reveal],
 .js-motion [data-next] .fit-text {
   visibility: hidden;

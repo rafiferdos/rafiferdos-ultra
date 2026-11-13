@@ -38,7 +38,7 @@ const pad = (value: number) => String(value).padStart(2, '0')
 
 export function Experience() {
   return (
-    <ExperienceMotion id="experience" className="scroll-mt-16 px-gutter py-section">
+    <ExperienceMotion id="experience" labelledBy="experience-title" className="scroll-mt-16 px-gutter py-section">
       <header className="t-label flex items-baseline justify-between gap-6 pb-6">
         <h2 id="experience-title" className="t-label">
           (Experience)
