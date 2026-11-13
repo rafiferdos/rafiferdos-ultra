@@ -1,5 +1,4 @@
 import { MotionProvider } from '@/components/providers/motion-provider'
-import { QueryProvider } from '@/components/providers/query-provider'
 import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provider'
 import { Cursor } from '@/components/site/cursor'
 import { SiteFooter } from '@/components/site/footer'
@@ -39,8 +38,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             Skip to content
           </a>
           <Header />
-          {/* Contact still uses react-query until phase 8. */}
-          <QueryProvider>{children}</QueryProvider>
+          {children}
           <SiteFooter />
           <Cursor />
         </SmoothScrollProvider>

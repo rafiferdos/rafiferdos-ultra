@@ -437,3 +437,62 @@ body:has(.site-root) {
 .js-motion [data-exp-bullet] {
   visibility: hidden;
 }
+
+/* Writing: the title is stacked with a copy of itself, and hover slides the copy in. The pseudo-element wraps with the title. */
+.roll-title {
+  display: block;
+  overflow: hidden;
+}
+
+.roll-title-inner {
+  position: relative;
+  display: block;
+  transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.roll-title-inner::after {
+  content: attr(data-text);
+  content: attr(data-text) / '';
+  position: absolute;
+  inset: 100% 0 auto 0;
+  color: var(--site-accent);
+}
+
+.writing-row:hover .roll-title-inner,
+.writing-row:focus-visible .roll-title-inner {
+  transform: translateY(-100%);
+}
+
+.js-motion [data-writing-row] {
+  visibility: hidden;
+}
+
+/* Contact: the form is always in the DOM. It opens with an instant 0fr to 1fr switch; only its opacity and y animate. */
+.js-motion [data-cta-name] {
+  visibility: hidden;
+}
+
+.cta-form {
+  display: grid;
+  grid-template-rows: 0fr;
+}
+
+.cta-form.is-open {
+  grid-template-rows: 1fr;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll-title-inner {
+    transition: none;
+  }
+}
+
+/* The global reduced-motion rule gives every element a 0.01ms transition, which would still interpolate the rows. */
+.cta-form {
+  transition-property: none;
+}
+
+/* text-display has a 6rem floor that is wider than a phone; the CTA is one line, so it follows the viewport instead. */
+.cta-name {
+  font-size: min(18vw, 17rem);
+}

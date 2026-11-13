@@ -1,9 +1,8 @@
-import Contact from '@/components/Home/Contact/Contact'
-import { BlogGateway } from '@/components/Home/BlogGateway/BlogGateway'
-import TechStack from '@/components/Home/TechStack/TechStack'
+import { Contact } from '@/features/home/contact'
 import { Experience } from '@/features/home/experience'
 import { Hero } from '@/features/home/hero'
 import { Statement } from '@/features/home/statement'
+import { WritingTeaser } from '@/features/home/writing-teaser'
 import { SelectedWork } from '@/features/home/selected-work'
 import { UpClose } from '@/features/home/up-close'
 import { SkillsMarquee } from '@/features/home/skills-marquee'
@@ -90,7 +89,6 @@ export default async function Home() {
       image: `${SITE_URL}/rafi.png`,
       jobTitle: profile.jobTitle,
       email: `mailto:${profile.email}`,
-      telephone: profile.phone,
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'Dhaka',
@@ -123,11 +121,8 @@ export default async function Home() {
         <UpClose projects={projects} />
         <Statement />
         <Experience />
-        <div className="mx-auto w-[min(92%,80rem)]">
-          <TechStack />
-          <BlogGateway posts={posts} />
-          <Contact />
-        </div>
+        <WritingTeaser posts={posts} />
+        <Contact />
       </main>
     </>
   )

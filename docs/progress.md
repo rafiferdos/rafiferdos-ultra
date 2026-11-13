@@ -55,3 +55,21 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - **Decision:** nav "About" now points to `/#about`. Removed the old `WhyMe` and `Experience` components.
 - Statement copy is the plan draft. "the motion" is the one phrase the resume does not back, flagged with a TODO in `statement.tsx`.
 - Not done here: DevTools trace and Lighthouse on a production build (phase 11, same as phases 5 and 6).
+
+## Phase 8 (Writing teaser + Contact), done
+
+- `features/home/writing-teaser.tsx` + `writing-motion.tsx`, `contact.tsx` + `contact-cta.tsx` + `contact-form.tsx`, and `features/motion/kinetic-letters.ts`.
+- Writing: latest 3 published posts, hidden at 0. Rows are `(Category)`, title, read time, month and year. The title roll is CSS only (a `::after` copy from `data-text`, so long titles wrap). Each row plays once, a mask slide on enter. `All writing (N) →` links to `/blogs`.
+- Contact: `Got something in mind?`, then the giant accent `SAY HELLO` button that opens the form under it. Letters rise on a scrub; on fine pointers they stretch with the cursor. The form is always in the DOM, `inert` while closed. It opens with an instant `0fr` to `1fr` switch and only its opacity and y animate. Focus moves to the name field.
+- Form: Zod check on the client (the same `contactSchema` the API uses), per-field errors with `aria-invalid` and `aria-describedby`, one `role="status"` live region for errors, sending and success. Posts to `/api/contact`. The honeypot field stays.
+- Checked on a production build at 1440 and 390: CLS 0, no horizontal overflow, CTA fits at 390, all rows and letters settled at the bottom of the page, form opens and focuses with reduced motion and with the pause toggle, empty submit shows 3 field errors plus the summary line, the payload sent is correct.
+- **Not checked with a real send.** The route writes to the production database and sends an email, so I mocked `/api/contact` in the browser. A real submit needs your OK (or do one yourself); until then the live path is untested end to end.
+- **Decision:** extracted the hero's kinetic letters into `features/motion/kinetic-letters.ts` (same scaleX fallback from phase 3) so the CTA reuses them. Verified the hero still stretches under a mouse sweep.
+- **Decision:** the form has name, email and message as in the plan. The API requires a subject, so the client sends the fixed `Message from the portfolio`. No API change.
+- **Decision:** removed the phone number: the old contact block showed it and the home JSON-LD had `telephone`. `docs/resume.md` says no phone on the site. `profile.phone` is still in `lib/site.ts`, unused.
+- **Decision:** removed `QueryProvider` from the `(site)` layout (nothing public uses it now) and deleted the old `Contact`, `BlogGateway`, `TechStack` and `SectionHeading` components. The old Tech stack block is gone; the skills marquee covers it.
+- **Decision:** the CTA scrub ends at `bottom 85%` and the Writing rows trigger from their static mask. The first version of each could not finish at the last scroll position (CTA) or at 390 px (third row) because the trigger sat on a transformed or too-low element.
+- **Decision:** `ScrollTrigger.refresh()` after opening the form only runs when motion is on. With motion off there are no triggers, and the refresh sent the page back to the top on a real click.
+- **Decision:** `.cta-form` has `transition-property: none` because the global reduced-motion rule in `globals.css` gives everything a 0.01ms transition, which delayed the `0fr` to `1fr` switch by about a second.
+- Without JavaScript the form stays closed. The email is in the footer row.
+- Not done here: DevTools trace and Lighthouse on a production build (phase 11).
