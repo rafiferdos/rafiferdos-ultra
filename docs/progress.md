@@ -246,3 +246,19 @@ Part 1: items 6, 7, 1, 2, 3. Playwright screenshots in `docs/qa/fixing/<item>/` 
 - Grep over `app`, `features`, `components/site`, `data/services.ts` and `lib` for em dashes and the banned words (leveraged, robust, passionate, seamless, cutting-edge, innovative, solutions, elevate): no hits in site copy. The only mention of Webbly is the existing code comment in `experience.tsx`.
 - The new Statement still fits its sticky viewport: text ends at 665 of 900 at 1440 and 659 of 844 at 390 (`docs/qa/fixing/item-8/statement-*.png`).
 - `data/site-content.ts` still has old seed articles with em dashes. Nothing imports them, so no route shows them.
+
+### Fixing phase: final pass
+- Screenshots (0, 10, 25, 55, 85 and 100 percent) of `/`, `/projects` and `/projects/spotfix` at 1440, 1024 and 390 in `docs/qa/final/pass-*.png` (gitignored), `/services` in `docs/qa/fixing/item-9/`. No horizontal overflow on any of them.
+- Scroll on home at 1440 (headed Chromium, wheel scroll through the whole page): 320 frames, median 10 ms, 95th percentile 10.7 ms, worst 19 ms, none over 33 ms, one 53 ms long task, CLS 0.
+- Lighthouse (standalone Lighthouse 13.6 against the production build, `docs/qa/final/lh-f-*.json`; mobile run twice):
+
+| Page | Desktop perf | Mobile perf (2 runs) | Previous (this file) |
+|---|---|---|---|
+| `/` | 100 | 98, 98 | desktop 99 to 100, mobile 99 |
+| `/projects` | 100 | 83, 83 | desktop 100, mobile 85 |
+| `/projects/spotfix` | 98 to 99 | 81, 81 | desktop 100, mobile 86 |
+| `/services` (new) | 98 | 79, 78 | none |
+
+  CLS 0 everywhere. Accessibility 96 to 100, best practices 100, SEO 100. The project page desktop LCP is 1.0 s (was 0.8 s) and the cover image is the LCP element, which this phase did not change; I could not rebuild the old commit to compare on the same run (Turbopack rejects a linked `node_modules`). Mobile scores here read lower than the earlier notes on three pages, and the earlier ones came from a different Lighthouse runner on the same machine, so treat the 3 to 5 point gap as unconfirmed until it is run the same way.
+- Gate on the final tree: `pnpm lint` 0 errors (19 warnings in dashboard `components/ui`), `pnpm exec tsc --noEmit` clean, `pnpm build` passes.
+- The Chrome DevTools performance trace was not possible this run (MCP browser locked), so smoothness is the frame-gap measure above.
