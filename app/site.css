@@ -631,3 +631,52 @@ body:has(.site-root) {
   transform: scaleY(0);
   transform-origin: bottom;
 }
+
+/* Project detail. The title box has a fixed height so a measured FitText never moves what is below it; the text sits on its bottom edge. */
+.project-title {
+  --cap: clamp(4.5rem, 14vw, 14rem);
+  display: flex;
+  align-items: flex-end;
+  height: calc(var(--cap) * 0.9);
+}
+
+.project-title .fit {
+  flex: 1;
+}
+
+.project-title .fit-text,
+.next-project .fit-text {
+  font-size: min(calc(100cqw / var(--fit-w)), var(--cap));
+}
+
+.js-motion [data-project-title] .fit-text,
+.js-motion [data-reveal],
+.js-motion [data-next] .fit-text {
+  visibility: hidden;
+}
+
+.next-project {
+  --cap: clamp(4.5rem, 14vw, 14rem);
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: var(--spacing-section) var(--spacing-gutter);
+  background: var(--site-ink);
+  color: var(--site-bg);
+}
+
+.next-project-cover {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.next-project:hover .next-project-cover,
+.next-project:focus-visible .next-project-cover {
+  opacity: 0.55;
+}
+
+.next-project > :not(.next-project-cover) {
+  position: relative;
+}

@@ -7,7 +7,7 @@ const MIN_ITEMS = 3
 // Used when a cover has no stored size yet (before the backfill runs).
 const FALLBACK_RATIO = 1.6
 
-type Media = {
+export type Media = {
   url: string
   width: number
   height: number
@@ -41,12 +41,16 @@ const pad = (value: number) => String(value).padStart(2, '0')
 export function UpClose({ projects }: { projects: Project[] }) {
   const media = collectMedia(projects)
   if (media.length < MIN_ITEMS) return null
+  return <UpCloseView media={media} />
+}
 
+// Shared with the project detail page, which passes its own gallery.
+export function UpCloseView({ media, title = '(Up close)' }: { media: Media[]; title?: string }) {
   return (
     <UpCloseMotion id="up-close" className="upclose py-section">
       <header className="t-label flex items-baseline justify-between gap-6 px-gutter pb-6">
         <h2 id="upclose-title" className="t-label">
-          (Up close)
+          {title}
         </h2>
         <span className="text-site-muted">
           <span className="hidden md:inline">Drag or scroll</span>
