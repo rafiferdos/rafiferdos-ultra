@@ -374,6 +374,7 @@ All work happens on branch `redesign`. Each phase ends in one commit that stages
    - Work titles signal the active row with color, opacity and an x-shift only; no wdth/wght change.
    - On coarse pointers there is no axis animation at all, including the scroll compress on the name.
    - If the DevTools trace shows per-frame layout from the kinetic letters, switch to the scaleX fallback without asking.
+   - **Done in Phase 3:** the trace showed 362 layout passes and CLS 0.097 during a mouse sweep, so the hero uses the scaleX fallback. Each letter mask scales on X (max 1.55) and its neighbours are shifted by transform. The wght axis is not animated, so the name stays at wght 800 on scroll instead of going to 900. The footer CTA in Phase 8 should reuse this approach.
 4. **Stop after each phase commit** and wait for Rafi before starting the next one.
 
 ## Verification

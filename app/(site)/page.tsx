@@ -1,10 +1,11 @@
 import Contact from '@/components/Home/Contact/Contact'
 import { BlogGateway } from '@/components/Home/BlogGateway/BlogGateway'
 import Experience from '@/components/Home/Experience/Experience'
-import Hero from '@/components/Home/Hero/Hero'
 import Projects from '@/components/Home/Projects/Projects'
 import TechStack from '@/components/Home/TechStack/TechStack'
 import { WhyMe } from '@/components/Home/WhyMe/WhyMe'
+import { Hero } from '@/features/home/hero'
+import { SkillsMarquee } from '@/features/home/skills-marquee'
 import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
 import { profile, safeJsonLd, SITE_URL } from '@/lib/site'
@@ -118,6 +119,7 @@ export default async function Home() {
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
         />
         <Hero />
+        <SkillsMarquee />
         <div className="mx-auto w-[min(92%,80rem)]">
           <WhyMe />
           <TechStack />

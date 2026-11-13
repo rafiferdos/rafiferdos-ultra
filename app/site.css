@@ -136,3 +136,73 @@ body:has(.site-root) {
 .site-cursor button {
   cursor: none;
 }
+
+/* Hero: text stays visible without JS; the pre-paint js-motion class hides it only when motion will play. */
+.hero-line {
+  display: block;
+  white-space: nowrap;
+  contain: layout paint;
+}
+
+.js-motion [data-hero-name],
+.js-motion [data-hero-intro] {
+  visibility: hidden;
+}
+
+.js-motion [data-hero-fade] {
+  opacity: 0;
+}
+
+/* Marquee: a wrapped, static list by default; one scrolling row when motion is on. */
+.marquee {
+  overflow: hidden;
+}
+
+.marquee-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.5em;
+  row-gap: 0.15em;
+  padding: 1.25rem var(--spacing-gutter);
+  font-family: var(--font-site);
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+  font-style: italic;
+  font-stretch: 125%;
+  font-weight: 250;
+  line-height: 1.1;
+}
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  white-space: nowrap;
+}
+
+.marquee-mark {
+  color: var(--site-accent);
+  font-size: 0.4em;
+  font-style: normal;
+}
+
+.marquee-dup {
+  display: none;
+}
+
+.js-motion .marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.js-motion .marquee-group {
+  flex: none;
+  flex-wrap: nowrap;
+  padding-inline: 0 0.5em;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.js-motion .marquee-dup {
+  display: flex;
+}
