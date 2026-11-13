@@ -3,6 +3,8 @@ import { SmoothScrollProvider } from '@/components/providers/smooth-scroll-provi
 import { Cursor } from '@/components/site/cursor'
 import { SiteFooter } from '@/components/site/footer'
 import { Header } from '@/components/site/header'
+import { Intro } from '@/components/site/intro'
+import { PageTransition } from '@/components/site/page-transition'
 import { JetBrains_Mono, Mona_Sans } from 'next/font/google'
 
 const mona = Mona_Sans({
@@ -21,7 +23,7 @@ const jetbrains = JetBrains_Mono({
 
 // Runs before first paint so hidden initial states only apply when motion is allowed.
 const motionBoot =
-  "try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&localStorage.getItem('motion-paused')!=='1')document.documentElement.classList.add('js-motion')}catch(e){}"
+  "try{var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&localStorage.getItem('motion-paused')!=='1'){d.classList.add('js-motion');if(location.pathname==='/'&&!sessionStorage.getItem('intro-seen')){d.classList.add('js-intro');setTimeout(function(){d.classList.remove('js-intro')},4000)}}}catch(e){}"
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -41,6 +43,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           {children}
           <SiteFooter />
           <Cursor />
+          <PageTransition />
+          <Intro />
         </SmoothScrollProvider>
       </MotionProvider>
     </div>

@@ -88,3 +88,16 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - **Decision:** Plate static blocks (code, tables, callouts) still use shadcn tokens for their own colors; only prose, links, quotes and `pre` follow the site tokens. Looks fine on the 4 current articles, none of which use tables or callouts, so not checked there.
 - Deleted `ProjectExplorer` and `WritingExplorer`. `components/ui/reveal` (framer/motion) is no longer used on any public page.
 - Not done here: DevTools trace and Lighthouse (phase 11).
+
+## Phase 10 (Intro + page transitions), done
+
+- `components/site/intro.tsx`, `components/site/page-transition.tsx`, both mounted in the `(site)` layout. The pre-paint script adds `js-intro` on a full load of `/` when motion is allowed and `sessionStorage` has no `intro-seen`. It also removes the class after 4 s as a fail-safe. The overlay markup is in the server HTML and the CSS shows it only under `js-intro`.
+- Intro: 5 bars and a `RAFI ferdos` + 00 to 100 counter. The counter runs 0.3 s once the fonts are ready (capped at 1 s), then the text fades and the bars wipe out over about 0.7 s. The hero letters wait 0.3 s (`INTRO_HANDOFF`) so they rise as the bars open. Measured in Chrome: class on at 36 ms, counter at 100 by 441 ms, overlay gone at 1141 ms.
+- LCP guard passed. Trace on the production build, cold cache: LCP 330 ms without the intro (`intro-seen` set) and 115 ms with it, because the overlay text is the first large paint. CLS 0.00 in both. The counter had a 0.0005 shift from changing digit widths; fixed with `tabular-nums` and a reserved width.
+- Page transition: one capture-phase click listener on the document. Internal links to a different path or query cover the page with 5 bars (0.4 s), then `router.push`, then the bars open (0.5 s) when the pathname changes. Same-page hash links, other origins, new-tab clicks, modifier keys and downloads are left alone. Back and forward are native and show no bars.
+- Checked: a click from the bottom of `/` to `/blogs` covers at 0.4 s, is on `/blogs` at scroll 0 by 0.7 s and open by 1.2 s. Back returns to `/` with no bars. The mobile menu links from `/projects` to `/#work`, the menu closes and the bars clear. Hash links on `/` scroll with no bars. With reduced motion or the pause toggle there is no intro and no bars.
+- **Decision:** the mobile menu's open state is now tied to the pathname, so a route change closes it. The transition's capture listener stops the click before the menu's own `onClick={close}` would run.
+- **Decision:** the page bars use `--site-ink` and the intro bars `--site-bg`, so the transition reads as a dark wipe in light mode and a light one in dark mode.
+- **Decision:** the bug found in testing: the click listener lived in a `useGSAP` without `revertOnUpdate`, so it stayed registered after reduced motion switched on at hydration. Fixed.
+- Playwright's headless window throttles `requestAnimationFrame` to about 1 fps here, so animation timings above come from the Chrome DevTools page, not Playwright.
+- Not done here: a Lighthouse run (phase 11).

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
 import { CtaPill } from '@/components/site/cta-pill'
@@ -13,12 +14,23 @@ import { duration, gsap, useGSAP } from '@/lib/gsap'
 const FOCUSABLE = 'a[href], button:not([disabled])'
 
 export function MobileMenu() {
-  const [open, setOpen] = useState(false)
+  // Open state is tied to the path it was opened on, so any route change closes the menu.
+  const pathname = usePathname()
+  const [openAt, setOpenAt] = useState<string | null>(null)
+  const open = openAt === pathname
+  const setOpen = useCallback(
+    (next: boolean | ((value: boolean) => boolean)) =>
+      setOpenAt((current) => {
+        const value = typeof next === 'function' ? next(current === pathname) : next
+        return value ? pathname : null
+      }),
+    [pathname]
+  )
   const { motionAllowed } = useMotion()
   const root = useRef<HTMLDivElement>(null)
   const button = useRef<HTMLButtonElement>(null)
   const overlay = useRef<HTMLDivElement>(null)
-  const close = useCallback(() => setOpen(false), [])
+  const close = useCallback(() => setOpen(false), [setOpen])
 
   useEffect(() => {
     if (!open) return

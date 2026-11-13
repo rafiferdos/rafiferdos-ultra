@@ -547,3 +547,41 @@ body:has(.site-root) {
   font-size: 0.875rem;
   line-height: 1.6;
 }
+
+/* Intro (first visit, home only) and page transition bars. Both are plain transform wipes. */
+.intro {
+  display: none;
+}
+
+.js-intro .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: block;
+}
+
+.intro-bar,
+.page-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(20% + 1px);
+}
+
+.intro-bar {
+  background: var(--site-bg);
+  transform-origin: top;
+}
+
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  pointer-events: none;
+}
+
+.page-bar {
+  background: var(--site-ink);
+  transform: scaleY(0);
+  transform-origin: bottom;
+}

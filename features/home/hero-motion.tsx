@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { useMotion } from '@/components/providers/motion-provider'
+import { INTRO_HANDOFF } from '@/components/site/intro'
 import { createKinetic } from '@/features/motion/kinetic-letters'
 import { duration, gsap, SplitText, stagger, useGSAP } from '@/lib/gsap'
 
@@ -21,6 +22,9 @@ export function HeroMotion({ id, className, children }: Props) {
       const lines = gsap.utils.toArray<HTMLElement>('[data-hero-line]', el)
       const fades = gsap.utils.toArray<HTMLElement>('[data-hero-fade]', el)
       if (!name || !intro) return
+
+      // While the intro bars are up, the hero waits for them to start leaving.
+      const wait = document.documentElement.classList.contains('js-intro') ? INTRO_HANDOFF : 0
 
       const mm = gsap.matchMedia()
       // The always-true query keeps the callback running on coarse pointers too.
@@ -47,7 +51,8 @@ export function HeroMotion({ id, className, children }: Props) {
               yPercent: 110,
               duration: duration.display,
               ease: 'out',
-              stagger: stagger.chars
+              stagger: stagger.chars,
+              delay: wait
             })
           }
         })
@@ -63,7 +68,7 @@ export function HeroMotion({ id, className, children }: Props) {
               duration: duration.ui,
               ease: 'out',
               stagger: stagger.lines,
-              delay: 0.5
+              delay: 0.5 + wait
             })
           }
         })
@@ -72,7 +77,7 @@ export function HeroMotion({ id, className, children }: Props) {
         gsap.fromTo(
           fades,
           { opacity: 0, y: 12 },
-          { opacity: 1, y: 0, duration: duration.ui, ease: 'out', stagger: 0.08, delay: 0.5 }
+          { opacity: 1, y: 0, duration: duration.ui, ease: 'out', stagger: 0.08, delay: 0.5 + wait }
         )
 
         const leave = gsap.timeline({
