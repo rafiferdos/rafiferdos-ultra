@@ -44,8 +44,8 @@ export function ContactCta() {
               yPercent: 110,
               ease: 'none',
               stagger: stagger.chars,
-              // Ends at 85% so the last scroll position of a short page can still finish it.
-              scrollTrigger: { trigger: name, start: 'top 95%', end: 'bottom 85%', scrub: true }
+              // clamp() keeps the end inside the scrollable range: the footer is short, so on a tall viewport the name never gets to 85%.
+              scrollTrigger: { trigger: name, start: 'clamp(top 95%)', end: 'clamp(bottom 85%)', scrub: true }
             })
           }
         })
