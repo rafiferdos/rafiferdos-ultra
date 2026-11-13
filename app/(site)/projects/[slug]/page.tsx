@@ -185,13 +185,15 @@ export default async function ProjectPage({ params }: Params) {
         {gallery.length > 0 && <UpCloseView media={gallery} title="(Gallery)" />}
 
         {next && (
-          <Link href={`/projects/${projectKey(next)}`} data-next data-cursor="Open" className="next-project mt-section">
-            {next.imageUrl && (
-              <div className="next-project-cover" aria-hidden>
-                <ProjectCover project={next} decorative sizes="100vw" />
-              </div>
-            )}
-            <p className="t-label mb-6">[Next project]</p>
+          <Link href={`/projects/${projectKey(next)}`} data-next data-cursor="Open" className="next-project">
+            <div className="mb-10 flex items-start justify-between gap-6">
+              <p className="t-label">[Next project]</p>
+              {next.imageUrl && (
+                <div className="next-project-cover" aria-hidden>
+                  <ProjectCover project={next} decorative sizes="14vw" />
+                </div>
+              )}
+            </div>
             <FitText fallback={fitFallback(next.title)} className={titleClass}>
               {next.title}
             </FitText>

@@ -644,8 +644,7 @@ body:has(.site-root) {
   flex: 1;
 }
 
-.project-title .fit-text,
-.next-project .fit-text {
+.project-title .fit-text {
   font-size: min(calc(100cqw / var(--fit-w)), var(--cap));
 }
 
@@ -655,9 +654,8 @@ body:has(.site-root) {
   visibility: hidden;
 }
 
+/* Next project: an inverted full-bleed block; the title fills the width and the cover is a small frame, so the two never compete. */
 .next-project {
-  --cap: clamp(4.5rem, 14vw, 14rem);
-  position: relative;
   display: block;
   overflow: hidden;
   padding: var(--spacing-section) var(--spacing-gutter);
@@ -666,17 +664,14 @@ body:has(.site-root) {
 }
 
 .next-project-cover {
-  position: absolute;
-  inset: 0;
-  opacity: 0.3;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  width: clamp(6rem, 14vw, 12rem);
+  aspect-ratio: 4 / 5;
+  flex: none;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .next-project:hover .next-project-cover,
 .next-project:focus-visible .next-project-cover {
-  opacity: 0.55;
-}
-
-.next-project > :not(.next-project-cover) {
-  position: relative;
+  transform: translateY(-0.5rem);
 }
