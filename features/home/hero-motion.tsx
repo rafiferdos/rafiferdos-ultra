@@ -17,19 +17,21 @@ export function HeroMotion({ id, className, children }: Props) {
     () => {
       const el = root.current
       if (!motionAllowed || !el) return
-      const name = el.querySelector<HTMLElement>('[data-hero-name]')
       const intro = el.querySelector<HTMLElement>('[data-hero-intro]')
-      const lines = gsap.utils.toArray<HTMLElement>('[data-hero-line]', el)
       const fades = gsap.utils.toArray<HTMLElement>('[data-hero-fade]', el)
-      if (!name || !intro) return
+      if (!intro) return
 
       // While the intro bars are up, the hero waits for them to start leaving.
       const wait = document.documentElement.classList.contains('js-intro') ? INTRO_HANDOFF : 0
 
       const mm = gsap.matchMedia()
       // The always-true query keeps the callback running on coarse pointers too.
-      mm.add({ always: '(min-width: 0px)', fine: '(pointer: fine)' }, (context) => {
+      mm.add({ always: '(min-width: 0px)', fine: '(pointer: fine)', wide: '(min-width: 768px)' }, (context) => {
         const fine = Boolean(context.conditions?.fine)
+        // The wide name is one line, the narrow one is two; only one of them is displayed.
+        const name = el.querySelector<HTMLElement>(`[data-hero-name="${context.conditions?.wide ? 'wide' : 'narrow'}"]`)
+        if (!name) return
+        const lines = gsap.utils.toArray<HTMLElement>('[data-hero-line]', name)
         const scrub = { k: 1 }
         const kinetic = createKinetic(el, scrub)
 
@@ -87,7 +89,7 @@ export function HeroMotion({ id, className, children }: Props) {
         })
         leave
           .to(lines[0], { y: '-12vh' }, 0)
-          .to(lines[1], { y: '-4vh' }, 0)
+          .to(lines[1] ?? [], { y: '-4vh' }, 0)
           .to(intro, { opacity: 0, duration: 0.4 }, 0)
 
         if (!fine) return

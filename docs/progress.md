@@ -162,3 +162,13 @@ Branch `redesign`. Newest phase last. Decisions made without asking are marked *
 - Selected Work hover: one frame visible, the held one (`position: fixed`, `is-held`); the other two are hidden or at opacity 0.
 - Experience hover: the accent fill covers the whole tile (436 x 420 of 437 x 422), text flips to the dark ink.
 - **Open: hero name does not span the width.** The hero is two stacked lines sized by `clamp(6rem, 18vw, 17rem)`. Widest line vs container: 1440 px 674 of 1313 (indented), 1024 px 479 of 929, 390 px 250 of 335. Only Say hello and the footer wordmark use `FitText`. Fitting "FERDOS" to the width needs about 30vw type and two lines would not fit a 900 px viewport, so this is a layout choice, not a quick fix.
+
+## Hero name fitted to the width
+
+- At 768 px and up the name is one line, "RAFI FERDOS", in a `FitText`. Below 768 px it is two stacked lines, each in its own `FitText`. Both renderings are in the server HTML (`data-hero-name="wide"` / `"narrow"`, one hidden by CSS, both `aria-hidden`; the `h1` keeps its `sr-only` name). `HeroMotion` picks the visible one through a `(min-width: 768px)` condition in `gsap.matchMedia`, so crossing the breakpoint re-runs the reveal on the other one.
+- Measured widest line vs container (production build): 1440 px 1313/1313, 1024 px 929/929, 768 px 693/693, 390 px 335/335 for both lines. All 100%, no horizontal overflow. Screenshots in `docs/qa/final/hero-fit-*.png`.
+- `FitText` now also observes the text, because SplitText drops kerning between letters and changes its width after the first measure. Fallbacks (4.31, 1.54, 2.6 em) are the measured values, so the reserved height does not jump.
+- Lighthouse home, two runs each: desktop 100 and 100, mobile 99 and 99. CLS 0, LCP 0.3 to 0.4 s desktop and 1.4 s mobile, unchanged.
+- Kinetic stretch still works on the one line (6 letters up to 1.53x under the pointer). The line is clipped by its `FitText` box, so letters pushed past the right edge are cut instead of overflowing the page.
+- **No portrait in the hero:** the hero is text only. `components/ui/pixel-image.tsx` is not used on any page, so there was nothing to hand off to or move.
+- The `package.json` change in the working tree is only a `packageManager` field that pnpm 12.18.0 added; the `pnpm-lock.yaml` change is an extra document for pnpm's own self-management entry. No dependency changed, so neither is committed.

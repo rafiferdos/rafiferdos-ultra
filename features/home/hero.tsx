@@ -1,3 +1,4 @@
+import { FitText } from '@/components/site/fit-text'
 import { RollLink } from '@/components/site/roll-link'
 import { HeroMotion } from '@/features/home/hero-motion'
 
@@ -15,13 +16,19 @@ export function Hero() {
 
       <h1 className="flex flex-1 flex-col justify-center">
         <span className="sr-only">Rafi Ferdos</span>
-        <span aria-hidden data-hero-name className="t-display block">
-          <span data-hero-line className="hero-line">
+        {/* Two renderings, one per breakpoint: each line is fitted to the container, and HeroMotion animates the visible one. */}
+        <span aria-hidden data-hero-name="wide" className="hidden md:block">
+          <FitText fallback={4.31} data-hero-line className="t-display hero-line">
+            Rafi Ferdos
+          </FitText>
+        </span>
+        <span aria-hidden data-hero-name="narrow" className="block md:hidden">
+          <FitText fallback={1.54} data-hero-line className="t-display hero-line">
             Rafi
-          </span>
-          <span data-hero-line className="hero-line md:pl-[12vw]">
+          </FitText>
+          <FitText fallback={2.6} data-hero-line className="t-display hero-line">
             Ferdos
-          </span>
+          </FitText>
         </span>
       </h1>
 

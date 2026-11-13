@@ -27,6 +27,8 @@ export function FitText({ children, fallback, className = '', ...rest }: Props) 
     // The container width never changes the em width, but a font swap or a wrapped re-split can, so measure again on resize.
     const observer = new ResizeObserver(measure)
     observer.observe(box)
+    // SplitText drops kerning between letters, so the text's own width can change after the first measure.
+    observer.observe(text)
     return () => {
       alive = false
       observer.disconnect()
