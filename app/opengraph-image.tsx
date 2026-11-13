@@ -24,20 +24,21 @@ export default function OpengraphImage() {
         <div style={{ display: 'flex', fontSize: 28, letterSpacing: 2, color: '#6a665f' }}>{profile.jobTitle.toUpperCase()}</div>
         <div style={{ display: 'flex', alignItems: 'center', fontSize: 190, lineHeight: 1, letterSpacing: -6 }}>
           <span style={{ fontWeight: 800 }}>RAFI</span>
+          <span style={{ fontWeight: 300, margin: '0 0 0 36px', transform: 'skewX(-10deg)' }}>f</span>
+          <span style={{ fontWeight: 300 }}>erdos</span>
           <span
             style={{
               display: 'flex',
-              margin: '0 8px 0 36px',
-              padding: '0 28px 0 20px',
-              background: '#c7340e',
-              color: '#ffffff',
-              fontWeight: 300,
-              transform: 'skewX(-10deg)'
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 68,
+              height: 68,
+              marginLeft: 14,
+              background: '#c7340e'
             }}
           >
-            f
+            <span style={{ width: 36, height: 36, borderRadius: 18, background: '#ffffff' }} />
           </span>
-          <span style={{ fontWeight: 300 }}>erdos</span>
         </div>
         <div style={{ display: 'flex', fontSize: 32, color: '#6a665f' }}>{new URL(SITE_URL).host}</div>
       </div>
