@@ -13,14 +13,14 @@ export function Header() {
       <div className="grid h-16 grid-cols-[1fr_auto] items-center px-gutter xl:grid-cols-[1fr_auto_1fr]">
         <div className="flex items-center gap-8">
           <Wordmark />
-          <LocalTime label="Dhaka, BD" className="t-label-s hidden text-site-muted xl:inline" />
+          <LocalTime label="Dhaka, BD" className="nav-trim t-label-s hidden text-site-muted xl:block" />
         </div>
 
         <nav aria-label="Primary" className="hidden xl:block">
-          <ul className="flex gap-8">
+          <ul className="flex items-center gap-8">
             {navItems.map((item, index) => (
               <li key={item.href}>
-                <RollLink href={item.href} className="t-label">
+                <RollLink href={item.href} className="nav-trim t-label block">
                   {`${String(index + 1).padStart(2, '0')} ${item.label}`}
                 </RollLink>
               </li>

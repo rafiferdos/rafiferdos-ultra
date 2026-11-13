@@ -8,7 +8,7 @@ import { UpClose } from '@/features/home/up-close'
 import { SkillsMarquee } from '@/features/home/skills-marquee'
 import { getBlogs, getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
-import { profile, safeJsonLd, SITE_URL } from '@/lib/site'
+import { OG_IMAGE, profile, safeJsonLd, SITE_URL } from '@/lib/site'
 
 const homeTitle = `${profile.name}, ${profile.jobTitle}`
 
@@ -40,22 +40,15 @@ export const metadata: Metadata = {
     description: `${profile.jobTitle}. Web, mobile and real-time products built with Next.js, React Native, Node.js, GraphQL and Socket.IO.`,
     url: SITE_URL,
     siteName: 'Rafi Ferdos Portfolio',
-    images: [
-      {
-        url: '/og.png',
-        width: 1729,
-        height: 910,
-        alt: homeTitle
-      }
-    ],
     type: 'website',
-    locale: 'en_US'
+    locale: 'en_US',
+    images: [OG_IMAGE]
   },
   twitter: {
     card: 'summary_large_image',
     title: homeTitle,
     description: `Production web, mobile and real-time work from ${profile.jobTitle} ${profile.name}.`,
-    images: ['/og.png']
+    images: [OG_IMAGE]
   },
   alternates: {
     canonical: SITE_URL

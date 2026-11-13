@@ -58,7 +58,7 @@ export default async function BlogPostPage({
     datePublished: post.publishedAt,
     mainEntityOfPage: `${SITE_URL}/blogs/${post.slug}`,
     author: { '@type': 'Person', name: profile.name, url: SITE_URL },
-    image: post.imageUrl || `${SITE_URL}/og.png`,
+    image: post.imageUrl || `${SITE_URL}/opengraph-image`,
     keywords: post.tags?.join(', ')
   }
   return (

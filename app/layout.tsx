@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import type { Metadata } from 'next'
-import { SITE_URL, profile } from '@/lib/site'
+import { OG_IMAGE, SITE_URL, profile } from '@/lib/site'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -50,21 +50,14 @@ export const metadata: Metadata = {
     locale: 'en_US',
     title: fullTitle,
     description: `${profile.jobTitle}. Web, mobile, ecommerce and real-time products for teams and clients.`,
-    images: [
-      {
-        url: '/og.png',
-        width: 1729,
-        height: 910,
-        alt: `${profile.name}, ${profile.jobTitle}`
-      }
-    ]
+    images: [OG_IMAGE]
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@rafiferdos',
     title: fullTitle,
     description: `${profile.jobTitle}. Web, mobile and real-time products.`,
-    images: ['/og.png']
+    images: [OG_IMAGE]
   },
   robots: {
     index: true,

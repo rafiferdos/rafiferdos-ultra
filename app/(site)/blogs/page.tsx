@@ -1,4 +1,5 @@
 import { WritingArchive } from '@/features/writing/writing-archive'
+import { OG_IMAGE } from '@/lib/site'
 import { getBlogs } from '@/lib/content-store'
 import type { Metadata } from 'next'
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: 'Engineering Writing by Rafi Ferdos',
     description: 'Practical notes on Next.js, backend systems, mobile, realtime and production AI.',
     url: '/blogs',
-    images: ['/og.png']
+    images: [OG_IMAGE]
   }
 }
 

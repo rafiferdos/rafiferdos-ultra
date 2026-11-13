@@ -1,4 +1,5 @@
 import { ProjectArchive } from '@/features/projects/project-archive'
+import { OG_IMAGE } from '@/lib/site'
 import { getProjects } from '@/lib/content-store'
 import { Metadata } from 'next'
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: 'Projects by Rafi Ferdos',
     description: 'Full-stack, frontend, backend and mobile product engineering work.',
     url: '/projects',
-    images: ['/og.png']
+    images: [OG_IMAGE]
   }
 }
 

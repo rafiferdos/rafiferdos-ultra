@@ -15,7 +15,7 @@ export function ThemeToggle() {
       type="button"
       onClick={() => setTheme(dark ? 'light' : 'dark')}
       aria-label={mounted ? `Switch to ${dark ? 'light' : 'dark'} theme` : 'Switch theme'}
-      className="t-label inline-block w-[8ch] whitespace-nowrap text-left hover:text-site-accent"
+      className="nav-trim t-label block w-[8ch] whitespace-nowrap text-left hover:text-site-accent"
     >
       {/* Same-width placeholder until mounted keeps the header from shifting. */}
       {mounted ? (dark ? '(Dark)' : '(Light)') : ' '}

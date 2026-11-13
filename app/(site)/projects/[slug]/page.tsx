@@ -5,7 +5,7 @@ import { ProjectCover } from '@/features/projects/project-cover'
 import { fitFallback, titleClass } from '@/features/projects/title-style'
 import { ProjectMotion } from '@/features/projects/project-motion'
 import { getProjectByKey, getProjects } from '@/lib/content-store'
-import { SITE_URL } from '@/lib/site'
+import { OG_IMAGE, SITE_URL } from '@/lib/site'
 import { projectKey } from '@/lib/slug'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -26,13 +26,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!project) return { title: 'Project not found' }
   const url = `/projects/${projectKey(project)}`
   const description = project.subtitle || project.description
-  const image = project.imageUrl?.startsWith('http') ? project.imageUrl : '/og.png'
+  const images = [project.imageUrl?.startsWith('http') ? project.imageUrl : OG_IMAGE]
   return {
     title: project.title,
     description,
     alternates: { canonical: `${SITE_URL}${url}` },
-    openGraph: { title: project.title, description, url, type: 'website', images: [image] },
-    twitter: { card: 'summary_large_image', title: project.title, description, images: [image] }
+    openGraph: { title: project.title, description, url, type: 'website', images },
+    twitter: { card: 'summary_large_image', title: project.title, description, images }
   }
 }
 

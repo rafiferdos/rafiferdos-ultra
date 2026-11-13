@@ -87,7 +87,7 @@ export function MobileMenu() {
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen((value) => !value)}
-        className="t-label hover:text-site-accent"
+        className="nav-trim t-label block hover:text-site-accent"
       >
         {open ? '(Close)' : '(Menu)'}
       </button>
