@@ -658,10 +658,26 @@ body:has(.site-root) {
 }
 
 /* Header items: the box is the cap box, so flex centring is optical centring. The roll copies are trimmed the same way,
-   so each one is exactly one link tall. Header labels have no descenders or parentheses to clip. */
+   so each one is exactly one link tall. */
 .nav-trim,
 .nav-trim [data-roll] {
   text-box: trim-both cap alphabetic;
+}
+
+/* The roll mask clips at the link's padding box, which with the trim is only the cap box, so ascenders (d, k, l) and the descender of "g" were cut.
+   Padding gives the mask room and the negative margin takes it back, so layout still sees the cap box. Every copy carries the same padding:
+   one roll (yPercent -100) is then a copy plus its clearance, which hides the old label completely and parks the next one below the mask. */
+[data-roll-link].nav-trim {
+  padding-block: 0.3em;
+  margin-block: -0.3em;
+}
+
+[data-roll-link].nav-trim [data-roll] {
+  padding-block: 0.3em;
+}
+
+[data-roll-link].nav-trim > [data-roll]:first-child {
+  margin-block: -0.3em;
 }
 
 .wordmark-chip {

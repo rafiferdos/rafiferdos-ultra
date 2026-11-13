@@ -22,6 +22,7 @@ export function RollLink({ children, className, ...props }: RollLinkProps) {
   return (
     <Link
       ref={root}
+      data-roll-link
       className={cn('relative inline-block overflow-hidden align-top hover:text-site-accent focus-visible:text-site-accent', className)}
       onMouseEnter={() => roll(-100)}
       onMouseLeave={() => roll(0)}
