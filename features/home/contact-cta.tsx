@@ -89,6 +89,11 @@ export function ContactCta() {
     { scope: root, dependencies: [open] }
   )
 
+  const toggle = () => {
+    setOpened(true)
+    setOpen((value) => !value)
+  }
+
   return (
     <div ref={root}>
       <button
@@ -96,10 +101,7 @@ export function ContactCta() {
         aria-expanded={open}
         aria-controls="contact-form"
         data-cursor="Write"
-        onClick={() => {
-          setOpened(true)
-          setOpen((value) => !value)
-        }}
+        onClick={toggle}
         onPointerEnter={loadForm}
         onFocus={loadForm}
         className="block w-full text-left text-site-accent"
@@ -109,7 +111,15 @@ export function ContactCta() {
           Say hello
         </FitText>
       </button>
-      <p className="t-label mt-4 text-site-muted">{open ? '(Close)' : '(Click to write)'}</p>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls="contact-form"
+        onClick={toggle}
+        className="t-label mt-4 block text-left text-site-muted"
+      >
+        {open ? '(Close)' : '(Click to write)'}
+      </button>
 
       <div id="contact-form" className={`cta-form ${open ? 'is-open' : ''}`} inert={!open}>
         <div data-cta-form className="min-h-0 overflow-hidden">
