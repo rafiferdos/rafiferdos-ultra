@@ -69,6 +69,7 @@ function refreshPublicContent(
     revalidatePath('/blogs')
     revalidatePath('/blogs/[slug]', 'page')
     revalidatePath('/sitemap.xml')
+    revalidatePath('/feed.xml')
   }
 }
 

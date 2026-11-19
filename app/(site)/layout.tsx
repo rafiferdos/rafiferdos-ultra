@@ -5,6 +5,8 @@ import { SiteFooter } from '@/components/site/footer'
 import { Header } from '@/components/site/header'
 import { Intro } from '@/components/site/intro'
 import { PageTransition } from '@/components/site/page-transition'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { JetBrains_Mono, Mona_Sans } from 'next/font/google'
 
 const mona = Mona_Sans({
@@ -45,6 +47,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <Cursor />
           <PageTransition />
           <Intro />
+          {/* Cookie-free. Mounted here and not in the root layout, so the dashboard is never measured. */}
+          <Analytics />
+          <SpeedInsights />
         </SmoothScrollProvider>
       </MotionProvider>
     </div>

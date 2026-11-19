@@ -296,3 +296,33 @@ Each bug was reproduced first (headed Chromium through a standalone Playwright s
 
 Gate before each commit: `pnpm lint` 0 errors (19 existing warnings), `pnpm exec tsc --noEmit` clean, `pnpm build` passes. Nothing pushed, no database touched.
 Side effect: `pnpm build` rewrites `.next`, so a `pnpm dev` server that was already running on port 3000 started returning 500. Restart it.
+
+## SEO phase 1: foundation and measurement (branch `seo`)
+
+Plan: `~/.claude/plans/starry-roaming-pebble.md`. Fix posts get their own `/fixes` section (phase 2). Stops after each phase.
+
+- **Checker:** `pnpm seo:check <origin>` (`scripts/seo-check.mjs`, no dependencies). It reads the sitemap and checks every URL for one clean h1, title, description, a self canonical, `og:*` and `twitter:card` (and that the image fetches), JSON-LD that parses with no FAQPage, HowTo or SearchAction, no noindex. It also checks robots.txt, the sitemap, the feed and the 404 status.
+- **Baseline on production** (`docs/qa/seo/phase1/baseline.txt`): 18 failures. **Local production build after this phase** (`after-local.txt`): 0 failures, 4 warnings (two essay titles at 88 and 89 characters, two descriptions at 169).
+- **Fixed:**
+  - Articles had no `og:image`, `og:url` or large Twitter card.
+  - The home h1 read "Rafi FerdosRafiFerdosRafiFerdos". It is now one sr-only line, "Rafi Ferdos, Full Stack AI Engineer". The big name is a sibling `div` with the same classes and data attributes. Screenshots at 1440 and 390 match production, and the name box is identical.
+  - The sitemap put the current time on home, `/services` and `/projects`, and carried `priority` and `changeFrequency`. It now has a `lastmod` only where a real date exists, and `/services` has none. `robots.txt` lost its `Host:` line.
+  - `lib/site.ts` fell back to `rafiferdos.com`, which does not resolve. It now falls back to `https://rafiferdos.vercel.app`.
+  - The root layout set a canonical that any page without its own would inherit. Each page now sets its own through `pageMetadata`.
+- **Added:** `lib/seo.ts` (`pageMetadata`, JSON-LD builders), `lib/og.tsx` and generated share cards for articles and projects, `components/site/breadcrumbs.tsx` (visible trail that matches the BreadcrumbList), `/feed.xml` (RSS, revalidated on a dashboard save), `app/(site)/not-found.tsx`.
+- **JSON-LD:** home is a graph of WebSite, Person and ProfilePage. Articles are BlogPosting plus BreadcrumbList. Projects are CreativeWork plus BreadcrumbList. The index pages are CollectionPage. Author, publisher and creator repeat the name inline, because Google reads each page's JSON-LD on its own and an `@id` alone does not carry it. No `worksFor`: the current role is not confirmed in `docs/resume.md`.
+- **Vercel:** `@vercel/analytics` and `@vercel/speed-insights` are mounted in the `(site)` layout only, not the dashboard.
+- **Decisions:**
+  - **Project share image:** it is now a generated card (type and year, title, stack, accent) and no longer the Cloudinary cover. Next lets a route's own `opengraph-image` win over `openGraph.images`, so a cover fallback was not possible without a separate image route.
+  - **`hasOwnImage`:** the key is left out of `openGraph` instead of set to `undefined`. With `images: undefined` present, Next dropped the file-based image on every page.
+  - **JSON-LD `image`:** it names the cover, or the site image. The generated card's URL carries a build hash that code cannot know.
+  - **`/services` breadcrumb:** dropped. There is no visible trail on that page for it to match.
+  - **Description length:** a warning, not a failure. That copy comes from the database.
+- **Not run:** Lighthouse. It is not installed here, and the two Vercel scripts only load on Vercel, so a local run would not measure them. Run it on the deployed branch.
+- **Needs Rafi:**
+  - Review the new titles and descriptions on home, `/projects`, `/blogs` and `/services`.
+  - Set a shorter `seoTitle` in the dashboard for the two essays whose titles are 88 and 89 characters.
+  - Enable Web Analytics and Speed Insights for the project in Vercel (the API says Web Analytics is not enabled).
+  - Merge `seo` when you want phase 1 live, then run `pnpm seo:check https://rafiferdos.vercel.app`.
+- `pnpm add` re-resolved `scheduler` to 0.26.0 in `pnpm-lock.yaml` (about 67 version lines). React 19.1.0 asks for that version.
+- Gate: `pnpm exec tsc --noEmit` clean, `pnpm lint` 0 errors (19 existing warnings), `pnpm build` passes. No database writes.

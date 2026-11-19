@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import type { Metadata } from 'next'
-import { OG_IMAGE, SITE_URL, profile } from '@/lib/site'
+import { OG_IMAGE, SITE_NAME, SITE_URL, profile } from '@/lib/site'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -23,30 +23,19 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: fullTitle,
-    template: '%s · Rafi Ferdos'
+    template: `%s · ${SITE_NAME}`
   },
   description: `${profile.jobTitle} in Dhaka, Bangladesh. Web and mobile products built end to end with Next.js, React Native, Node.js and PostgreSQL.`,
-  applicationName: 'Rafi Ferdos Portfolio',
+  applicationName: SITE_NAME,
   authors: [{ name: profile.name, url: SITE_URL }],
   creator: profile.name,
   publisher: profile.name,
   category: 'technology',
-  keywords: [
-    'Full Stack AI Engineer',
-    'hire full stack developer Bangladesh',
-    'Next.js developer for hire',
-    'React Native developer Bangladesh',
-    'freelance web developer Bangladesh',
-    'remote full stack engineer',
-    'ecommerce developer',
-    'Node.js developer',
-    'Rafi Ferdos'
-  ],
-  alternates: { canonical: SITE_URL },
+  // No canonical here: a child that does not set its own would inherit the home URL. Each page sets it through pageMetadata.
   openGraph: {
     type: 'website',
     url: SITE_URL,
-    siteName: 'Rafi Ferdos',
+    siteName: SITE_NAME,
     locale: 'en_US',
     title: fullTitle,
     description: `${profile.jobTitle}. Web, mobile, ecommerce and real-time products for teams and clients.`,

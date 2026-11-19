@@ -1,6 +1,13 @@
+// The fallback is the live domain. Moving to a custom domain later is this one env var plus a redirect on Vercel.
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://rafiferdos.com'
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://rafiferdos.vercel.app'
 ).replace(/\/$/, '')
+
+export const SITE_NAME = 'Rafi Ferdos'
+
+// Stable ids so the JSON-LD on every page points at the same Person and WebSite.
+export const PERSON_ID = `${SITE_URL}/#person`
+export const WEBSITE_ID = `${SITE_URL}/#website`
 
 export const profile = {
   name: 'Rafi Ferdos',

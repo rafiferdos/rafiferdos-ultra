@@ -1,3 +1,5 @@
+import { JsonLd } from '@/components/seo/json-ld'
+import { Breadcrumbs } from '@/components/site/breadcrumbs'
 import { FitText } from '@/components/site/fit-text'
 import { RollLink } from '@/components/site/roll-link'
 import { UpCloseView, type Media } from '@/features/home/up-close'
@@ -5,7 +7,7 @@ import { ProjectCover } from '@/features/projects/project-cover'
 import { fitFallback, titleClass } from '@/features/projects/title-style'
 import { PageMotion } from '@/features/motion/page-motion'
 import { getProjectByKey, getProjects } from '@/lib/content-store'
-import { OG_IMAGE, SITE_URL } from '@/lib/site'
+import { breadcrumbNode, fitDescription, graph, pageMetadata, projectNode } from '@/lib/seo'
 import { projectKey } from '@/lib/slug'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -24,16 +26,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params
   const project = await getProjectByKey(slug)
   if (!project) return { title: 'Project not found' }
-  const url = `/projects/${projectKey(project)}`
-  const description = project.subtitle || project.description
-  const images = [project.imageUrl?.startsWith('http') ? project.imageUrl : OG_IMAGE]
-  return {
+  return pageMetadata({
     title: project.title,
-    description,
-    alternates: { canonical: `${SITE_URL}${url}` },
-    openGraph: { title: project.title, description, url, type: 'website', images },
-    twitter: { card: 'summary_large_image', title: project.title, description, images }
-  }
+    description: fitDescription(project.subtitle, project.description),
+    path: `/projects/${projectKey(project)}`,
+    // The generated card in this folder (opengraph-image.tsx) is the share image.
+    hasOwnImage: true
+  })
 }
 
 function Block({ label, children }: { label: string; children: React.ReactNode }) {
@@ -74,16 +73,26 @@ export default async function ProjectPage({ params }: Params) {
     project.caseStudyUrl && { label: 'Case study', href: project.caseStudyUrl }
   ].filter((link): link is { label: string; href: string } => Boolean(link))
   const gallery: Media[] = (project.gallery ?? []).map((item) => ({ ...item, label: item.label || project.title }))
+  const path = `/projects/${projectKey(project)}`
+  const jsonLd = graph(
+    projectNode(project),
+    breadcrumbNode([
+      { name: 'Home', path: '/' },
+      { name: 'Projects', path: '/projects' },
+      { name: project.title, path }
+    ])
+  )
   const ratio = Math.min(2.2, Math.max(1.2, (project.coverWidth ?? 16) / (project.coverHeight ?? 10)))
 
   return (
     <main id="main" className="min-h-svh pt-28">
       <PageMotion>
+        <JsonLd data={jsonLd} />
         <header className="px-gutter pb-10">
           <div className="t-label flex items-baseline justify-between gap-6 text-site-muted">
-            <RollLink href="/projects">← All projects</RollLink>
+            <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Projects', href: '/projects' }, { name: project.title }]} />
             {index >= 0 && (
-              <span>
+              <span className="shrink-0">
                 ({pad(index + 1)} / {pad(all.length)})
               </span>
             )}

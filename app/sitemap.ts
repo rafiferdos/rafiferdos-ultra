@@ -3,47 +3,33 @@ import { getBlogs, getProjects } from '@/lib/content-store'
 import { SITE_URL } from '@/lib/site'
 import { projectKey } from '@/lib/slug'
 
+// A database that was down at build time would otherwise leave an empty sitemap cached until the next save.
+export const revalidate = 3600
+
+const newest = (dates: (string | undefined)[]) =>
+  dates
+    .filter((date): date is string => Boolean(date))
+    .sort()
+    .at(-1)
+
+// Google reads lastmod only when it is accurate, so a page with no real date gets none.
+// It also ignores priority and changeFrequency, which are left out.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, projects] = await Promise.all([getBlogs(), getProjects()])
-  const latestProject = projects.length ? new Date() : new Date('2026-01-01')
+  const projectsChanged = newest(projects.map((project) => project.updatedAt))
+  const postsChanged = newest(posts.map((post) => post.publishedAt))
   return [
-    {
-      url: SITE_URL,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1
-    },
-    {
-      url: `${SITE_URL}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9
-    },
-    {
-      url: `${SITE_URL}/projects`,
-      lastModified: latestProject,
-      changeFrequency: 'monthly',
-      priority: 0.9
-    },
-    {
-      url: `${SITE_URL}/blogs`,
-      lastModified: posts[0]?.publishedAt
-        ? new Date(posts[0].publishedAt)
-        : new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9
-    },
+    { url: SITE_URL, lastModified: newest([projectsChanged, postsChanged]) },
+    { url: `${SITE_URL}/services` },
+    { url: `${SITE_URL}/projects`, lastModified: projectsChanged },
+    { url: `${SITE_URL}/blogs`, lastModified: postsChanged },
     ...projects.map((project) => ({
       url: `${SITE_URL}/projects/${projectKey(project)}`,
-      lastModified: project.updatedAt ? new Date(project.updatedAt) : latestProject,
-      changeFrequency: 'monthly' as const,
-      priority: 0.8
+      lastModified: project.updatedAt
     })),
     ...posts.map((post) => ({
       url: `${SITE_URL}/blogs/${post.slug}`,
-      lastModified: new Date(post.publishedAt),
-      changeFrequency: 'monthly' as const,
-      priority: 0.75
+      lastModified: post.publishedAt
     }))
   ]
 }

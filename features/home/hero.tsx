@@ -15,15 +15,19 @@ export function Hero() {
         <span>Dhaka, BD</span>
       </div>
 
-      <h1 className="flex flex-1 flex-col justify-center">
-        <span className="sr-only">Rafi Ferdos</span>
+      {/* The h1 is one clean string for crawlers and screen readers. The big name is drawn beside it, hidden from both,
+          so the heading is not read as the name three times. */}
+      <h1 className="sr-only">
+        {profile.name}, {profile.jobTitle}
+      </h1>
+      <div aria-hidden className="flex flex-1 flex-col justify-center">
         {/* Two renderings, one per breakpoint, and HeroMotion animates the visible one.
             Wide: a staircase, FERDOS starting under the end of RAFI, both lines at one size so the name spans the container.
             Narrow: two stacked lines, each fitted on its own, because a staircase would shrink the type to about 80px at 390. */}
-        <span aria-hidden data-hero-name="wide" className="hidden md:block">
+        <span data-hero-name="wide" className="hidden md:block">
           <FitText lines={['Rafi', 'Ferdos']} fallback={[1.54, 2.6]} data-hero-line className="t-display hero-line" />
         </span>
-        <span aria-hidden data-hero-name="narrow" className="block md:hidden">
+        <span data-hero-name="narrow" className="block md:hidden">
           <FitText fallback={1.54} data-hero-line className="t-display hero-line">
             Rafi
           </FitText>
@@ -31,7 +35,7 @@ export function Hero() {
             Ferdos
           </FitText>
         </span>
-      </h1>
+      </div>
 
       <div className="flex flex-col justify-between gap-8 pb-10 pt-8 md:flex-row md:items-end">
         <p data-hero-intro className="text-lead max-w-[34rem]">
